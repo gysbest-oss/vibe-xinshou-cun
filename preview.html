@@ -565,7 +565,8 @@ footer a{color:var(--green);text-decoration:none;}
   <h2><span class="no">07</span>🎓 练功房 · 边玩边学</h2>
   <p class="sec-sub">四样东西：<b style="color:var(--text)">黑话词典</b>（行话都能听懂）、<b style="color:var(--text)">出村资格考试</b>（10 题问答带评级）、<b style="color:var(--text)">技巧抽卡</b>（每天抽一招，集齐 12 张）、<b style="color:var(--text)">7 天上手计划</b>（照着走完就出师）。进度全部存本机。</p>
 
-  <div class="mh2">① 📖 黑话词典（18 个高频词，点卡片看人话解释）</div>
+  <div class="mh2">① 📖 黑话词典（30 个高频词，点卡片看人话解释，可搜索）</div>
+  <input type="text" id="termQ" placeholder="🔍 搜一个词，比如：localStorage、部署、AI 幻觉…" style="width:100%;max-width:420px;display:block;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:9px 13px;font-size:13.5px;outline:none;margin-bottom:12px" oninput="renderTerms()">
   <div class="grid c3" id="termCards"></div>
 
   <div class="mh2" style="margin-top:24px">② 📝 出村资格考试</div>
@@ -619,7 +620,7 @@ footer a{color:var(--green);text-decoration:none;}
 
 <footer>
   <b>黎小小VibeCoding新手村练手</b> · 完整版：AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置源码包<br>
-  适合转给任何想学用 AI 编程工具的小白 · v5.0 · 2026-10-12
+  适合转给任何想学用 AI 编程工具的小白 · v6.0 · 2026-10-12
 </footer>
 
 <!-- modal / toast / confetti -->
@@ -650,7 +651,11 @@ var HIDDEN = [
   {id:'h3', name:'打回重做', how:'不满意 AI 的结果，并说清原因要求返工——高级技巧'},
   {id:'h4', name:'十万个为什么', how:'一次会话里问满 5 个问题——爱问是好习惯'},
   {id:'h5', name:'第一次说不', how:'拒绝 AI 给的方案并说明自己的理由'},
-  {id:'h6', name:'考古学家·满级', how:'第 6 关把源码包里埋的 bug 全部找出来'}
+  {id:'h6', name:'考古学家·满级', how:'第 6 关把源码包里埋的 bug 全部找出来'},
+  {id:'h7', name:'考霸', how:'出村资格考试拿满分 10/10（练功房②，可反复刷）'},
+  {id:'h8', name:'集卡大师', how:'技巧抽卡集齐 12 张（练功房③）'},
+  {id:'h9', name:'自律标兵', how:'7 天上手计划全部打卡（练功房④）'},
+  {id:'h10', name:'工场开业', how:'在开工工场生成第一份开工令（产线B）'}
 ];
 var ALL = {}; CH.forEach(function(c){ ALL[c.id]=c; }); HIDDEN.forEach(function(h){ ALL[h.id]=h; });
 
@@ -666,8 +671,8 @@ function renderBadges(){
   });
   HIDDEN.forEach(function(h){
     var s = document.createElement('span');
-    s.className = 'badge off';
-    s.textContent = '？ ' + h.name;
+    s.className = 'badge' + (has(h.id) ? ' lit' : ' off');
+    s.textContent = (has(h.id) ? '🌟 ' : '？ ') + h.name;
     s.onclick = function(){ toast('获得条件：' + h.how); };
     w.appendChild(s);
   });
@@ -992,6 +997,12 @@ function modalCh07(){
   + '<h3>🎓 第 7 关 · 毕业</h3><div class="mh">ch07 · 独立走完全流程，领取证书</div>'
   + '<div class="body" id="certBox"></div>';
 }
+function openTrkDemo(url, name){
+  el('modal').innerHTML = '<button class="close" onclick="closeModal()">✕</button>'
+    + '<h3>👀 终点成品 · '+name+'</h3><div class="mh">这条路线图全走完，就是下面这个样子——数据存本机，随便玩</div>'
+    + '<iframe class="play" src="'+url+'"></iframe>';
+  el('mask').classList.add('on');
+}
 function tabTo(name){
   ['wam','ledger','src-todo','src-snake'].forEach(function(n){
     var b = el('tab-'+n), p = el('pane-'+n);
@@ -1283,7 +1294,7 @@ function copyText(txt, btn){
   if (btn){ var old = btn.textContent; btn.textContent = '✓ 已复制'; setTimeout(function(){ btn.textContent = old; }, 1500); }
 }
 var TRKS = [
-  {id:'saas', ico:'🏢', name:'SaaS 网页', sub:'示范：《客户管理小SaaS》——把名词换成你自己的项目',
+  {id:'saas', ico:'🏢', name:'SaaS 网页', sub:'示范：《客户管理小SaaS》——把名词换成你自己的项目', demo:'sample-projects/mini-crm/index.html',
    pre:'SaaS 就是「开箱即用的在线软件」。第一版我们做<b>纯前端单机版</b>：不用注册登录、不用数据库，数据先存在浏览器里——先把业务跑通，以后再升级。全程不需要安装任何环境。',
    steps:[
     {t:'立项：把开工令发给 Codex', why:'用下方「产线B 生成器」产出你的开工令（记得勾选 SaaS 类型），粘贴给 Codex，它会先复述需求找你确认，确认后建出第一版。',
@@ -1330,7 +1341,7 @@ var TRKS = [
      p:'我不会操作：一步步教我怎么用微信开发者工具，把这个小程序跑在自己手机上预览（包括哪里扫码、要开什么权限）。遇到问题我把截图发你。',
      c:'手机上能打开并打卡'}
    ]},
-  {id:'web', ico:'🌐', name:'基础网页', sub:'示范：《个人主页》',
+  {id:'web', ico:'🌐', name:'基础网页', sub:'示范：《个人主页》', demo:'sample-projects/portfolio/index.html',
    pre:'最推荐的第一个项目：一个单文件网页，双击就能打开，改起来最直观，成就感来得最快。',
    steps:[
     {t:'立项：生成主页骨架', why:'先把整体框架立起来。',
@@ -1352,7 +1363,7 @@ var TRKS = [
      p:'教我把这个网页免费部署上网（推荐 GitHub Pages 或类似平台），我是零基础，一步步带我做，每步说清在哪个网站点什么按钮。',
      c:'手机打开网址看到你的主页'}
    ]},
-  {id:'game', ico:'🎮', name:'小游戏', sub:'示范：《打地鼠》',
+  {id:'game', ico:'🎮', name:'小游戏', sub:'示范：《打地鼠》', demo:'ch04',
    pre:'小游戏是练"验收"最好的项目：每一改都能立刻玩出来。素材全用 emoji，音效现场合成，不依赖任何文件。',
    steps:[
     {t:'立项：生成游戏骨架', why:'把玩法说清楚，Codex 一次搭出可玩版本。',
@@ -1414,6 +1425,10 @@ function renderTrks(){
 function showTrk(i){
   var T = TRKS[i];
   var h = '<div class="result" style="margin-bottom:12px"><b>'+T.ico+' '+T.name+'</b> · '+T.sub+'<br><span style="font-size:12.5px">'+T.pre+'</span></div>';
+  if (T.demo){
+    var oc = (T.demo==='ch04') ? "openModal('ch04')" : "openTrkDemo('"+T.demo+"','"+T.name+"')";
+    h += '<div style="margin:-6px 0 12px"><button class="btn2 amber" onclick="'+oc+'">▶ 看这条路线的终点成品（真·可玩）</button></div>';
+  }
   T.steps.forEach(function(s, k){
     h += '<div class="rstep"><div class="rh"><span class="n">STEP '+(k+1)+'</span>'+s.t+'</div>'
       + '<div class="why">💡 '+s.why+'</div>'
@@ -1516,6 +1531,7 @@ function wizMake(){
   el('wizOut').textContent = p;
   el('wizOutBox').classList.remove('hidden');
   confetti();
+  award('h10');
   toast('开工令生成完毕 🎉');
 }
 function wizReset(){
@@ -1546,11 +1562,29 @@ var TERMS = [
   {t:'环境', e:'程序运行需要的条件。本页教的项目都是零环境——有个浏览器就是环境', m:'养鱼要水，养多肉只要晒太阳', r:'工具'},
   {t:'版本号', e:'v0.1、v0.2……数字越大越新。每改一轮记一版，出问题能退回去', m:'游戏的 1.0 版、2.0 版', r:'工程'},
   {t:'验收', e:'亲自动手检查东西合不合格：打开、点一遍、刷新看数据还在不在', m:'收货时当场开箱验货', r:'工程'},
-  {t:'响应式', e:'手机、平板、电脑上打开都显示正常。检查法：把浏览器窗口拖窄看塌不塌', m:'一件衣服胖瘦都能穿', r:'工程'}
+  {t:'响应式', e:'手机、平板、电脑上打开都显示正常。检查法：把浏览器窗口拖窄看塌不塌', m:'一件衣服胖瘦都能穿', r:'工程'},
+  {t:'服务器', e:'24 小时开机、帮所有人跑程序存数据的电脑', m:'永不打烊的中央厨房', r:'上线'},
+  {t:'网址（URL）', e:'每个网页的门牌号，全世界的门牌号都不重复', m:'XX路XX号', r:'上线'},
+  {t:'HTTPS', e:'网址前面的那把锁：数据加密传输，路上被人截走也看不懂。转账页面一定要有它', m:'上了锁的快递箱', r:'上线'},
+  {t:'HTML / CSS / JS', e:'网页三件套：HTML 是骨架（有什么），CSS 是皮肤（长什么样），JS 是肌肉（会什么动作）', m:'身体、衣服、动作', r:'前端'},
+  {t:'请求 / 响应', e:'浏览器问一句、服务器答一句，网页就是靠一问一答干活的', m:'点菜：你说要什么，厨房给什么', r:'后端'},
+  {t:'提示词（Prompt）', e:'你对 AI 说的每一句话。本页教的所有"说法"，都是提示词技巧', m:'对实习生下达的工作指令', r:'AI'},
+  {t:'上下文', e:'AI 单次对话能"记住"的内容，有长度上限。太早的话它会忘，关键需求要重新强调', m:'人的工作记忆，装满了就得把旧的请出去', r:'AI'},
+  {t:'AI 幻觉', e:'AI 一本正经编造不存在的东西：假链接、假函数名。防法：让它给来源，你亲自点开验证', m:'不懂装懂的学霸，语气特别自信', r:'AI'},
+  {t:'调试（Debug）', e:'找出 Bug 并修掉的过程。AI 时代你负责描述现象，它负责猜原因', m:'医生问诊', r:'Bug'},
+  {t:'控制台（Console）', e:'浏览器里的黑匣子，按 F12 打开，所有报错都写在里面。截图发给 AI 就是最好的报障', m:'飞机的黑匣子', r:'工具'},
+  {t:'迭代', e:'不做一步到位，而是一轮轮小改进：做→看→改→再看', m:'先上三桌菜试口味，再调菜谱', r:'工程'},
+  {t:'重构', e:'功能一点不变，只把代码内部整理干净。改完外观没变化，但更好维护', m:'收拾房间：东西没多没少，但找得到了', r:'工程'},
+  {t:'回滚', e:'改坏了就退回上一个版本。这就是要记版本号的最大底气', m:'游戏读档', r:'工程'},
+  {t:'全栈', e:'前端后端都精通的工程师。AI 时代，Codex 就是你的全栈搭档', m:'一个人能炒菜也能跑堂', r:'前端'},
+  {t:'缓存', e:'把常用的东西先存一份就近用，快，但可能是旧的。强刷 Ctrl+F5 就是绕开缓存拿最新版', m:'便利店：方便但未必最新日期', r:'存储'}
 ];
 function renderTerms(){
-  var box = el('termCards');
-  TERMS.forEach(function(t){
+  var kw = (el('termQ') ? el('termQ').value : '').trim();
+  var box = el('termCards'); box.innerHTML='';
+  var list = TERMS.filter(function(t){ return !kw || (t.t+t.e+t.r+t.m).indexOf(kw)>-1; });
+  if (!list.length){ box.innerHTML = '<p style="color:var(--muted);font-size:13px;grid-column:1/-1">没找到「'+kw+'」。可以让 AI 用一句话+比方给你解释，然后自己造一张词卡 🙂</p>'; return; }
+  list.forEach(function(t){
     var d = document.createElement('div'); d.className='card frag';
     d.innerHTML = '<p style="color:var(--green);font-weight:bold;font-size:14px">'+t.t+' <span style="font-size:10px;color:var(--muted);font-weight:normal">'+t.r+'</span></p>'
       + '<div class="more"><p style="font-size:12.5px">'+t.e+'</p><p class="out" style="font-size:12px;margin-top:6px">比方：'+t.m+'</p></div>'
@@ -1562,8 +1596,6 @@ function renderTerms(){
     box.appendChild(d);
   });
 }
-
-/* ================= 练功房 · 出村资格考试 ================= */
 var QUIZZ = [
   {q:'「需求四要素」是哪四个？', o:['给谁用 / 解决什么问题 / 长什么样 / 不要什么','功能多不多 / 界面美不美 / 速度快不快 / 价格贵不贵','技术 / 算法 / 数据 / 网络'], a:0, e:'四要素=给谁用、解决什么问题、大概长什么样、明确不要什么。「不要什么」是防跑偏的缰绳。'},
   {q:'报 bug 的四要素是？', o:['骂一顿 / 截图 / 重启 / 重装','我做了什么 / 期望什么 / 实际什么 / 怎么复现','标题 / 正文 / 图片 / 附件'], a:1, e:'四条齐了，AI 十有八九一次修对；只说「坏了」它只能猜。'},
@@ -1574,31 +1606,53 @@ var QUIZZ = [
   {q:'AI 说"做完了"，你应该？', o:['直接相信它','亲手验收：打开、点一遍、刷新看数据还在不在','马上发朋友圈'], a:1, e:'收货当场验货。你的角色是产品经理+验收官。'},
   {q:'localStorage 是什么？', o:['一种编程语言','浏览器里的小储物柜，数据刷新不丢','一个远程服务器'], a:1, e:'本页打地鼠的最高分就存在这里——所以刷新后纪录还在。'},
   {q:'朋友甩来一个源码包说"帮我改改"，第一步？', o:['直接让 AI 改好','先读懂：它是什么、什么结构、怎么跑起来','删了重写'], a:1, e:'没看过病别急着吃药。三步法：先读懂→再跑通→后修改，还要在副本上改。'},
-  {q:'想改界面颜色，怎么说？', o:['不好看，改好看点','主色换成墨绿 #2F5233，卡片加圆角','随便改改'], a:1, e:'提修改要说"改成什么样"：具体字号、颜色、间距。'}
+  {q:'想改界面颜色，怎么说？', o:['不好看，改好看点','主色换成墨绿 #2F5233，卡片加圆角','随便改改'], a:1, e:'提修改要说"改成什么样"：具体字号、颜色、间距。'},
+  {q:'小程序和普通网页最大的区别？', o:['小程序更高级','小程序要用微信开发者工具+AppID，代码结构也不一样','没有区别'], a:1, e:'分工：Codex 写代码，你粘进开发者工具看效果；网页则双击就能开。'},
+  {q:'纯前端单机版应用，数据存在哪？', o:['天上','浏览器 localStorage，刷新不丢','必须买数据库'], a:1, e:'第一版先存浏览器里跑通业务，以后再升级数据库。'},
+  {q:'部署上线是为了什么？', o:['看起来专业','让别人用网址访问你的应用','提高价格'], a:1, e:'部署=把菜从厨房端上桌。不上线就只有你自己能看。'},
+  {q:'哪种写法能让 AI 最少自作主张？', o:['【不要】里明确划掉：不要登录、不要图表','多夸它','全靠它发挥'], a:0, e:'「不要什么」是防跑偏的缰绳——AI 特别爱顺手多做事。'},
+  {q:'改需求不记档，最大的后果是？', o:['没有后果','三周后没人知道这功能当初为什么存在','AI 会生气'], a:1, e:'记一行：改了什么/为什么/哪一版。这是给自己看的。'},
+  {q:'AI 给了一个不存在的链接，这叫？', o:['AI 幻觉——正常现象，链接要亲自验证','它故意的','网络问题'], a:0, e:'防法：让它给来源+你亲自点开。一本正经编东西是 AI 的老毛病。'},
+  {q:'页面报错时，最好的报障方式是？', o:['说"坏了"','按 F12 打开控制台，把红色报错截图发给 AI','直接关机'], a:1, e:'控制台是黑匣子，报错原文比一千句描述都有用。'},
+  {q:'记版本号（v0.1→v0.2）最大的好处？', o:['名字好听','改动有记录，出问题能回滚','发朋友圈有素材'], a:1, e:'回滚=游戏读档，是改坏了的保险丝。'},
+  {q:'接手别人的代码，动手改之前的职业习惯？', o:['直接在原件上改，省事','复制一份副本，在副本上改','删掉重写'], a:1, e:'原件改坏了找谁哭？副本是保险。'},
+  {q:'「先复述一遍我的需求」这句提示词的作用？', o:['浪费时间','对齐理解，防跑偏——它理解错了你立刻能发现','显得礼貌'], a:1, e:'确认理解再动手，是防返工最便宜的一招。'},
+  {q:'AI 对话有"上下文限制"意味着？', o:['AI 会永远记住一切','太老的对话内容它会"忘"，关键约定要重新强调','不能超过十句话'], a:1, e:'长对话里重要的约定（如"不要登录"）要适时重复。'},
+  {q:'「先实现最丑但能用的版本」体现的是？', o:['小步提交，每一步都能验收','偷懒','不重视质量'], a:0, e:'跑通再变美，每轮改动小、风险低、看得见。'},
+  {q:'看开源项目最该先看什么？', o:['Star 多不多','License：能不能商用、要不要署名','作者帅不帅'], a:1, e:'学习参考基本没问题，直接拿去卖之前务必看条款。'},
+  {q:'检查"响应式"（手机上不乱）最快的方法？', o:['问 AI','把浏览器窗口拖窄看塌不塌','换个电脑'], a:1, e:'一秒钟能做完的验收。'},
+  {q:'把 API 密钥（key）直接发到 AI 对话里？', o:['没问题，AI 保密','不安全——密钥可能被记录，泄露要立即重置','AI 会帮你保管'], a:1, e:'密钥、密码、身份证号都不进对话。安全红线。'},
+  {q:'「重构」是什么？', o:['推倒重写','功能不变，把代码内部整理干净','删代码'], a:1, e:'像收拾房间：东西没变，但更好找了。'},
+  {q:'导出 CSV 打开中文乱码，最可能的原因？', o:['电脑坏了','文件缺 BOM，让 AI 加上','CSV 过时了'], a:1, e:'加 BOM（\\uFEFF）Excel 才认得 UTF-8 中文。'},
+  {q:'vibecoding 时代你最该苦练的两项核心能力？', o:['背代码 + 手速','把话说清楚 + 亲手验收','数学 + 英语'], a:1, e:'你是产品经理+验收官，说话和验货就是你的专业。'},
+  {q:'游戏里"点中地鼠播咚声"，不依赖音频文件的做法？', o:['Web Audio 现场合成','用文字"咚"代替','不能实现'], a:0, e:'Web Audio 能直接生成短音效，零文件零依赖。'}
 ];
-var qIdx = -1, qScore = 0, qDone = false;
+var qIdx = -1, qScore = 0, qDone = false, qDraw = [];
 function quizBest(){ try{ return +(localStorage.getItem('vxc_quiz_best')||0); }catch(e){ return 0; } }
 function quizStart(){
+  var idx = QUIZZ.map(function(_,i){ return i; });
+  for (var i=idx.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
+  qDraw = idx.slice(0,10);
   qIdx = 0; qScore = 0; qDone = false; quizRender();
 }
 function quizHome(){
   var best = quizBest();
   el('quizBody').innerHTML =
-    '<p style="font-size:13.5px">10 道选择题，全部出自本页教过的内容。合格线 7 题，满分是「出村王者」。</p>'
+    '<p style="font-size:13.5px">从 30 题题库<b>随机抽 10 题</b>，全部出自本页教过的内容。合格线 7 题，满分是「出村王者」。</p>'
     + '<p style="font-size:13px;margin:8px 0">历史最好成绩：<b style="color:var(--amber)">'+best+'/10</b></p>'
     + '<button class="btn2 primary" onclick="quizStart()">📝 开始考试</button>';
 }
 function quizRender(){
-  if (qIdx >= QUIZZ.length){ quizEnd(); return; }
-  var Q = QUIZZ[qIdx];
-  var h = '<p style="font-size:12.5px;color:var(--muted)">第 '+(qIdx+1)+'/'+QUIZZ.length+' 题 · 当前得分 '+qScore+'</p>'
+  if (qIdx >= qDraw.length){ quizEnd(); return; }
+  var Q = QUIZZ[qDraw[qIdx]];
+  var h = '<p style="font-size:12.5px;color:var(--muted)">第 '+(qIdx+1)+'/'+qDraw.length+' 题 · 当前得分 '+qScore+'</p>'
     + '<p style="font-size:14.5px;margin:6px 0 10px"><b>'+Q.q+'</b></p><div class="choices" id="qOpts">';
   Q.o.forEach(function(o,i){ h += '<button onclick="quizPick('+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>'; });
   h += '</div><div id="qExp"></div>';
   el('quizBody').innerHTML = h;
 }
 function quizPick(i){
-  var Q = QUIZZ[qIdx];
+  var Q = QUIZZ[qDraw[qIdx]];
   var btns = document.querySelectorAll('#qOpts button');
   Array.prototype.forEach.call(btns, function(b,j){
     b.disabled = true; b.onclick = null;
@@ -1623,6 +1677,7 @@ function quizEnd(){
     + '<p style="font-size:12.5px;color:var(--muted)">历史最好：'+best+'/10</p>'
     + '<button class="btn2" onclick="quizStart()">🔄 重考</button>';
   if (qScore>=7){ confetti(); }
+  if (qScore===10){ award('h7'); }
 }
 
 /* ================= 练功房 · 技巧抽卡 ================= */
@@ -1666,7 +1721,7 @@ function drawTip(){
   if (tipsGot.indexOf(t.t)===-1){ tipsGot.push(t.t); tipsSave(); }
   showTipCard(t, false);
   renderTipDots();
-  if (tipsGot.length===TIPS.length){ confetti(); toast('🎴 12 招集齐！出村资格+1'); }
+  if (tipsGot.length===TIPS.length){ confetti(); toast('🎴 12 招集齐！出村资格+1'); award('h8'); }
 }
 function showTipCard(t, again){
   el('tipCard').innerHTML = '<div class="tipcard"><div class="tt">🎴 '+t.t+(again?'（已集齐，随机复习）':'')+'</div>'
@@ -1697,7 +1752,7 @@ function renderPlan(){
       var k = planDone.indexOf(i);
       if (k>-1) planDone.splice(k,1); else planDone.push(i);
       planSave(); renderPlan();
-      if (planDone.length===PLANS.length){ confetti(); toast('📅 7 天计划全部完成，出师！'); }
+      if (planDone.length===PLANS.length){ confetti(); toast('📅 7 天计划全部完成，出师！'); award('h9'); }
     };
     box.appendChild(d);
   });
