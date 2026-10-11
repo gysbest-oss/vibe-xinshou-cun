@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>贪吃蛇 v0.1 - by 小王</title>
+<style>
+  body { font-family:"Microsoft YaHei",sans-serif; background:#1e2b1e; color:#cde8cd; max-width:460px; margin:30px auto; text-align:center; }
+  h1 { font-size:24px; }
+  #score { font-size:18px; margin:10px 0; }
+  canvas { background:#0e180e; border:2px solid #4a7a4a; border-radius:6px; }
+  button { padding:8px 22px; border:0; border-radius:4px; background:#4a7a4a; color:#fff; cursor:pointer; }
+  .tip { font-size:12px; color:#7a9a7a; }
+</style>
+</head>
+<body>
+<h1>🐍 贪吃蛇</h1>
+<div id="score">得分：0</div>
+<canvas id="cv" width="400" height="400"></canvas>
+<div style="margin-top:12px">
+  <button onclick="reStart()">重新开始</button>
+</div>
+<p class="tip">方向键控制 · 吃到红色食物得分</p>
+<script>
+var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+var G = 20, N = 20;
+var snake, dir, food, score, timer;
+
+function start() {
+  snake = [{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+  dir = {x:1,y:0};
+  score = 0;
+  document.getElementById('score').innerText = '得分：0';
+  food = makeFood();
+  clearInterval(timer);
+  timer = setInterval(step, 150);
+  draw();
+}
+
+function makeFood() {
+  return { x: Math.floor(Math.random()*N), y: Math.floor(Math.random()*N) };
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowUp')    dir = {x:0, y:-1};
+  if (e.key === 'ArrowDown')  dir = {x:0, y:1};
+  if (e.key === 'ArrowLeft')  dir = {x:-1, y:0};
+  if (e.key === 'ArrowRight') dir = {x:1, y:0};
+});
+
+function step() {
+  var head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+  if (head.x < 0 || head.y < 0 || head.x >= N || head.y >= N) { over(); return; }
+  for (var i = 0; i < snake.length; i++) {
+    if (snake[i].x === head.x && snake[i].y === head.y) { over(); return; }
+  }
+  snake.unshift(head);
+  if (head.x === food.x && head.y === food.y) {
+    score += 10;
+    document.getElementById('score').innerText = '得分：' + score;
+    food = makeFood();
+  } else {
+    snake.pop();
+  }
+  draw();
+}
+
+function over() {
+  clearInterval(timer);
+  alert('游戏结束！得分：' + score);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = '#e74c3c';
+  ctx.fillRect(food.x*G+3, food.y*G+3, G-6, G-6);
+  for (var i = 0; i < snake.length; i++) {
+    ctx.fillStyle = i === 0 ? '#8ee08e' : '#5aa85a';
+    ctx.fillRect(snake[i].x*G+1, snake[i].y*G+1, G-2, G-2);
+  }
+}
+
+start();
+</script>
+</body>
+</html>
