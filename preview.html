@@ -245,6 +245,18 @@ iframe.play{width:100%;height:460px;border:1px solid var(--line);border-radius:1
 .plan .cbx{width:20px;height:20px;border-radius:6px;border:1px solid var(--green-dim);display:flex;align-items:center;justify-content:center;color:var(--green);flex-shrink:0;font-size:13px;}
 .plan .dy{color:var(--green);font-family:Consolas,monospace;margin-right:4px;flex-shrink:0;}
 .plan a{color:var(--amber);text-decoration:none;}
+.lab-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.lstat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;}
+.lstat b{display:block;font-size:20px;color:var(--green);font-family:Consolas,monospace;}
+.lstat span{font-size:11.5px;color:var(--muted);}
+.lstat.act{cursor:pointer;}
+.lstat.act:hover{border-color:var(--amber);}
+.lstat.act b{color:var(--amber);}
+.memgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
+.mcard{min-height:64px;border:1px solid var(--line);border-radius:10px;background:#0a140d;display:flex;align-items:center;justify-content:center;font-size:11.5px;cursor:pointer;text-align:center;padding:5px;transition:.2s;user-select:none;color:transparent;}
+.mcard.flip{background:var(--panel);border-color:var(--green-dim);color:var(--text);}
+.mcard.ok{background:#12291a;border-color:var(--green);color:var(--green);opacity:.7;cursor:default;}
+@media(max-width:680px){.lab-stats{grid-template-columns:1fr 1fr;}}
 @media(max-width:680px){.wiz-panel .grid2{grid-template-columns:1fr;}}
 
 footer{max-width:920px;margin:40px auto 0;padding:24px 20px 44px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center;}
@@ -563,7 +575,10 @@ footer a{color:var(--green);text-decoration:none;}
 <!-- ============ 练功房 ============ -->
 <section id="lab">
   <h2><span class="no">07</span>🎓 练功房 · 边玩边学</h2>
-  <p class="sec-sub">四样东西：<b style="color:var(--text)">黑话词典</b>（行话都能听懂）、<b style="color:var(--text)">出村资格考试</b>（10 题问答带评级）、<b style="color:var(--text)">技巧抽卡</b>（每天抽一招，集齐 12 张）、<b style="color:var(--text)">7 天上手计划</b>（照着走完就出师）。进度全部存本机。</p>
+  <p class="sec-sub">六样东西：<b style="color:var(--text)">成长档案</b>（学习数据总览+导出）、<b style="color:var(--text)">黑话词典</b>、<b style="color:var(--text)">出村资格考试</b>（含每日一题）、<b style="color:var(--text)">技巧抽卡</b>、<b style="color:var(--text)">术语配对</b>、<b style="color:var(--text)">7 天上手计划</b>。进度全部存本机。</p>
+
+  <div class="lab-stats" id="labStats"></div>
+  <div class="inrow" style="border:none;margin:-8px 0 20px"><button class="btn2 ghost" onclick="exportProfile()">🎒 导出我的学习档案（txt）</button></div>
 
   <div class="mh2">① 📖 黑话词典（33 个高频词，点卡片看人话解释，可搜索）</div>
   <input type="text" id="termQ" placeholder="🔍 搜一个词，比如：localStorage、部署、AI 幻觉…" style="width:100%;max-width:420px;display:block;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:9px 13px;font-size:13.5px;outline:none;margin-bottom:12px" oninput="renderTerms()">
@@ -587,6 +602,13 @@ footer a{color:var(--green);text-decoration:none;}
   <div class="mh2" style="margin-top:24px">④ 📅 7 天上手计划（点一行打勾，勾完的当天任务就算出师一步）</div>
   <div id="planDays"></div>
   <p style="font-size:12.5px;color:var(--muted)" id="planProg"></p>
+
+  <div class="mh2" style="margin-top:24px">⑤ 🃏 术语记忆配对（16 张牌翻出术语和它的解释，练到条件反射）</div>
+  <div class="inrow" style="border:none">
+    <button class="btn2 primary" onclick="memInit()">🔄 开始/重开一局</button>
+    <span style="font-size:12.5px;color:var(--muted);align-self:center" id="memInfo">点牌翻开，两张配对（术语↔解释）即消除</span>
+  </div>
+  <div class="memgrid" id="memGrid"></div>
 </section>
 
 <!-- ============ 徽章墙 ============ -->
@@ -620,7 +642,7 @@ footer a{color:var(--green);text-decoration:none;}
 
 <footer>
   <b>黎小小VibeCoding新手村练手</b> · 完整版：AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置源码包<br>
-  适合转给任何想学用 AI 编程工具的小白 · v6.0 · 2026-10-12
+  适合转给任何想学用 AI 编程工具的小白 · v7.0 · 2026-10-12
 </footer>
 
 <!-- modal / toast / confetti -->
@@ -1532,6 +1554,8 @@ function wizMake(){
   el('wizOutBox').classList.remove('hidden');
   confetti();
   award('h10');
+  try{ localStorage.setItem('vxc_wizcount', wizCount()+1); }catch(e){}
+  renderLabStats();
   toast('开工令生成完毕 🎉');
 }
 function wizReset(){
@@ -1579,6 +1603,9 @@ var TERMS = [
   {t:'全栈', e:'前端后端都精通的工程师。AI 时代，Codex 就是你的全栈搭档', m:'一个人能炒菜也能跑堂', r:'前端'},
   {t:'缓存', e:'把常用的东西先存一份就近用，快，但可能是旧的。强刷 Ctrl+F5 就是绕开缓存拿最新版', m:'便利店：方便但未必最新日期', r:'存储'}
 ];
+var termsOpened = [];
+function termsLoad(){ try{ termsOpened = JSON.parse(localStorage.getItem('vxc_terms')||'[]'); }catch(e){ termsOpened = []; } }
+function termsSave(){ try{ localStorage.setItem('vxc_terms', JSON.stringify(termsOpened)); }catch(e){} }
 function renderTerms(){
   var kw = (el('termQ') ? el('termQ').value : '').trim();
   var box = el('termCards'); box.innerHTML='';
@@ -1592,6 +1619,7 @@ function renderTerms(){
     d.onclick = function(){
       d.classList.toggle('open');
       d.querySelector('.go').textContent = d.classList.contains('open') ? '收起 ▲' : '👆 人话解释';
+      if (d.classList.contains('open') && termsOpened.indexOf(t.t)===-1){ termsOpened.push(t.t); termsSave(); renderLabStats(); }
     };
     box.appendChild(d);
   });
@@ -1637,10 +1665,37 @@ function quizStart(){
 }
 function quizHome(){
   var best = quizBest();
-  el('quizBody').innerHTML =
-    '<p style="font-size:13.5px">从 29 题题库<b>随机抽 10 题</b>，全部出自本页教过的内容。合格线 7 题，满分是「出村王者」。</p>'
+  var d = new Date();
+  var dqKey = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  var dqI = (d.getDate() + (d.getMonth()+1)*17 + d.getFullYear()) % QUIZZ.length;
+  var dqState = {}; try{ dqState = JSON.parse(localStorage.getItem('vxc_dq')||'{}'); }catch(e){}
+  var Q = QUIZZ[dqI];
+  var h = '<div class="result" style="margin-bottom:14px"><b>📌 今日一题</b>（'+dqKey+'，每天换一题）'
+    + '<div style="margin-top:6px;font-size:13.5px"><b>'+Q.q+'</b></div>';
+  if (dqState.key===dqKey && dqState.done){
+    h += '<p style="font-size:12.5px;color:var(--muted);margin-top:6px">✅ 今天已完成，明天再来。'+Q.e+'</p>';
+  } else {
+    h += '<div class="choices" id="dqOpts" style="padding-top:8px">';
+    Q.o.forEach(function(o,i){ h += '<button onclick="dqPick('+dqI+','+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>'; });
+    h += '</div><div id="dqExp"></div>';
+  }
+  h += '</div>';
+  h += '<p style="font-size:13.5px">从 29 题题库<b>随机抽 10 题</b>，全部出自本页教过的内容。合格线 7 题，满分是「出村王者」。</p>'
     + '<p style="font-size:13px;margin:8px 0">历史最好成绩：<b style="color:var(--amber)">'+best+'/10</b></p>'
     + '<button class="btn2 primary" onclick="quizStart()">📝 开始考试</button>';
+  el('quizBody').innerHTML = h;
+}
+function dqPick(qi, i){
+  var Q = QUIZZ[qi];
+  var btns = document.querySelectorAll('#dqOpts button');
+  Array.prototype.forEach.call(btns, function(b,j){
+    b.disabled = true; b.onclick = null;
+    if (j===Q.a) b.classList.add('right');
+    if (j===i && i!==Q.a) b.classList.add('wrong');
+  });
+  var d = new Date();
+  try{ localStorage.setItem('vxc_dq', JSON.stringify({key:d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(), done:true})); }catch(e){}
+  el('dqExp').innerHTML = '<div class="qexp">'+(i===Q.a?'✅ <b>答对了，今天打卡成功！</b> ':'❌ <b>正确是 '+String.fromCharCode(65+Q.a)+'。</b> ')+Q.e+'</div>';
 }
 function quizRender(){
   if (qIdx >= qDraw.length){ quizEnd(); return; }
@@ -1678,6 +1733,7 @@ function quizEnd(){
     + '<button class="btn2" onclick="quizStart()">🔄 重考</button>';
   if (qScore>=7){ confetti(); }
   if (qScore===10){ award('h7'); }
+  renderLabStats();
 }
 
 /* ================= 练功房 · 技巧抽卡 ================= */
@@ -1721,6 +1777,7 @@ function drawTip(){
   if (tipsGot.indexOf(t.t)===-1){ tipsGot.push(t.t); tipsSave(); }
   showTipCard(t, false);
   renderTipDots();
+  renderLabStats();
   if (tipsGot.length===TIPS.length){ confetti(); toast('🎴 12 招集齐！出村资格+1'); award('h8'); }
 }
 function showTipCard(t, again){
@@ -1751,7 +1808,7 @@ function renderPlan(){
       if (e.target.tagName==='A') return;
       var k = planDone.indexOf(i);
       if (k>-1) planDone.splice(k,1); else planDone.push(i);
-      planSave(); renderPlan();
+      planSave(); renderPlan(); renderLabStats();
       if (planDone.length===PLANS.length){ confetti(); toast('📅 7 天计划全部完成，出师！'); award('h9'); }
     };
     box.appendChild(d);
@@ -1759,11 +1816,125 @@ function renderPlan(){
   el('planProg').textContent = '进度：'+planDone.length+'/'+PLANS.length+' 天';
 }
 
+/* ================= 练功房 · 记忆配对 / 成长档案 ================= */
+var MEMP = [
+  {a:'MVP', b:'最小但真的能用的第一版'},
+  {a:'前端', b:'你看到的那部分界面'},
+  {a:'localStorage', b:'浏览器的小储物柜，刷新不丢'},
+  {a:'部署上线', b:'让别人用网址访问你的应用'},
+  {a:'Bug', b:'本来该对的，它错了'},
+  {a:'开源', b:'代码公开，可看可用可改'},
+  {a:'验收', b:'打开、点一遍、刷新看数据'},
+  {a:'提示词', b:'你对 AI 说的每一句话'}
+];
+var memFirst = null, memLock = false, memMoves = 0, memPairs = 0;
+function memWins(){ try{ return +(localStorage.getItem('vxc_mem_wins')||0); }catch(e){ return 0; } }
+function memInit(){
+  memFirst = null; memLock = false; memMoves = 0; memPairs = 0;
+  el('memInfo').textContent = '点牌翻开，两张配对（术语↔解释）即消除';
+  var cards = [];
+  MEMP.forEach(function(p,i){ cards.push({p:i, txt:p.a}); cards.push({p:i, txt:p.b}); });
+  for (var i=cards.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=cards[i]; cards[i]=cards[j]; cards[j]=t; }
+  var g = el('memGrid'); g.innerHTML='';
+  cards.forEach(function(c){
+    var d = document.createElement('div');
+    d.className = 'mcard'; d.dataset.p = c.p; d.textContent = c.txt;
+    d.onclick = function(){ memFlip(d); };
+    g.appendChild(d);
+  });
+}
+function memFlip(card){
+  if (memLock || card.classList.contains('ok') || card===memFirst) return;
+  card.classList.add('flip');
+  if (!memFirst){ memFirst = card; return; }
+  memMoves++;
+  var f = memFirst; memFirst = null;
+  if (f.dataset.p === card.dataset.p){
+    f.classList.add('ok'); card.classList.add('ok');
+    f.classList.remove('flip'); card.classList.remove('flip');
+    memPairs++;
+    if (memPairs === MEMP.length){
+      var w = memWins()+1;
+      try{ localStorage.setItem('vxc_mem_wins', w); }catch(e){}
+      el('memInfo').textContent = '🎉 完成！本局 '+memMoves+' 步 · 累计胜局 '+w;
+      confetti(); renderLabStats();
+    } else {
+      el('memInfo').textContent = '配对 '+memPairs+'/'+MEMP.length+' · 已用 '+memMoves+' 步';
+    }
+  } else {
+    memLock = true;
+    setTimeout(function(){ f.classList.remove('flip'); card.classList.remove('flip'); memLock = false; }, 650);
+  }
+}
+function wizCount(){ try{ return +(localStorage.getItem('vxc_wizcount')||0); }catch(e){ return 0; } }
+function hiddenLitCount(){ return HIDDEN.filter(function(h){ return has(h.id); }).length; }
+function renderLabStats(){
+  var box = el('labStats'); if (!box) return;
+  var cells = [
+    ['🏅','徽章', litCount()+'+'+hiddenLitCount(), '章节+隐藏'],
+    ['📝','考试最好', quizBest()+'/10', '出村资格考试'],
+    ['🎴','技巧卡', tipsGot.length+'/12', '集齐有奖'],
+    ['📖','词汇量', termsOpened.length+'/'+TERMS.length, '点开词卡累计'],
+    ['📅','7天计划', planDone.length+'/7', '照着走出师'],
+    ['⚙️','开工令', wizCount()+' 份', '工场已生成'],
+    ['🃏','配对胜局', memWins(), '术语记忆配对'],
+    ['🎒','学习档案', '导出', '发给朋友/自己存档', "exportProfile()"]
+  ];
+  box.innerHTML = '';
+  cells.forEach(function(c){
+    var d = document.createElement('div');
+    d.className = 'lstat' + (c[4] ? ' act' : '');
+    d.innerHTML = '<b>'+c[2]+'</b><span>'+c[0]+' '+c[1]+' · '+c[3]+'</span>';
+    if (c[4]) d.onclick = function(){ exportProfile(); };
+    box.appendChild(d);
+  });
+}
+function buildProfileText(){
+  var L = [];
+  L.push('# 我的学习档案 · 黎小小VibeCoding新手村练手');
+  L.push('导出时间：' + new Date().toLocaleString());
+  L.push('');
+  L.push('## 徽章墙');
+  var any = false;
+  CH.concat(HIDDEN).forEach(function(b){ if (has(b.id)){ L.push('- 🌟 ' + b.name); any = true; } });
+  if (!any) L.push('- （还没点亮徽章，去试玩广场闯一关！）');
+  L.push('');
+  L.push('## 学习数据');
+  L.push('- 出村资格考试最好成绩：' + quizBest() + '/10');
+  L.push('- 技巧卡收集：' + tipsGot.length + '/12');
+  L.push('- 词汇量（点开过的词卡）：' + termsOpened.length + '/' + TERMS.length);
+  L.push('- 7天计划进度：' + planDone.length + '/7');
+  L.push('- 已生成开工令：' + wizCount() + ' 份');
+  L.push('- 术语配对胜局：' + memWins());
+  L.push('');
+  var w = null; try{ w = JSON.parse(localStorage.getItem('vxc_wiz')||'null'); }catch(e){}
+  if (w && (w.who||w.prob)){
+    L.push('## 我的开工令草稿（粘贴给 Codex 即可开工）');
+    var t = WTYPES.find(function(x){ return x.id===w.type; });
+    L.push('类型：' + (t?t.name:w.type) + '；名字：' + (w.name||'我的第一个应用'));
+    L.push('给谁用：' + w.who + '；解决什么：' + w.prob);
+  } else {
+    L.push('## 我的开工令草稿');
+    L.push('（还没填过去，去「开工工场 · 产线B」填 4 步生成）');
+  }
+  return L.join('\n');
+}
+function exportProfile(){
+  var txt = buildProfileText();
+  var blob = new Blob([txt], {type:'text/plain;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '我的学习档案.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast('学习档案已导出 🎒');
+}
+
 /* ================= init ================= */
 loadP(); renderBadges(); renderCh02(); renderCh05(); renderLevelCards(); renderTrackCards(); renderVs();
 renderFrag(); renderSD(); renderMis();
 wizLoad(); renderWizTypes(); syncPlaceholders(); showWizPanel(); renderTrks();
-renderTerms(); quizHome(); tipsLoad(); renderTipDots(); planLoad(); renderPlan();
+termsLoad(); renderTerms(); quizHome(); tipsLoad(); renderTipDots(); planLoad(); renderPlan();
+memInit(); renderLabStats();
 </script>
 </body>
 </html>
