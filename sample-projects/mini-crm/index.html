@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>客户管理小SaaS · 路线图终点示例</title>
+<style>
+body{font-family:"Microsoft YaHei",sans-serif;max-width:680px;margin:24px auto;padding:0 14px;color:#222;background:#f6f7f9;}
+h1{font-size:20px;}
+h1 small{font-size:12px;color:#999;font-weight:normal;}
+.card{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:12px;}
+.stats{display:flex;gap:10px;}
+.stat{flex:1;text-align:center;}
+.stat b{font-size:22px;color:#2f7a4a;display:block;}
+.stat span{font-size:12px;color:#888;}
+input{padding:8px;border:1px solid #ddd;border-radius:6px;font-size:13px;}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.row input{flex:1;min-width:100px;}
+button{padding:8px 14px;border:0;border-radius:6px;background:#2f7a4a;color:#fff;cursor:pointer;font-size:13px;}
+button.gray{background:#888;}
+.item{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px dashed #eee;font-size:13.5px;}
+.item b{flex:1;}
+.item span{color:#777;font-size:12px;}
+.item .ops button{padding:3px 8px;font-size:12px;}
+.del{background:#c0504d;}
+.tip{font-size:12px;color:#999;margin-top:8px;}
+</style>
+</head>
+<body>
+<h1>🏢 客户管理小SaaS <small>· SaaS 路线图终点示例（数据存本机）</small></h1>
+<div class="card stats">
+  <div class="stat"><b id="stTotal">0</b><span>客户总数</span></div>
+  <div class="stat"><b id="stMonth">0</b><span>本月新增</span></div>
+</div>
+<div class="card">
+  <div class="row">
+    <input id="fName" placeholder="姓名"><input id="fTel" placeholder="电话"><input id="fNote" placeholder="备注">
+    <button onclick="add()">添加</button>
+  </div>
+  <div class="row">
+    <input id="q" placeholder="🔍 搜索姓名/电话/备注" style="flex:1" oninput="render()">
+    <button class="gray" onclick="exportCsv()">导出CSV</button>
+  </div>
+  <div id="list"></div>
+  <p class="tip">这就是路线图 7 步走完的样子：录入/列表/搜索/编辑删除/统计/导出，全在一页里。数据存 localStorage，刷新不丢。</p>
+</div>
+<script>
+var data = [];
+try{ data = JSON.parse(localStorage.getItem('crm_demo')||'[]'); }catch(e){}
+function save(){ try{ localStorage.setItem('crm_demo', JSON.stringify(data)); }catch(e){} }
+function esc(s){ return String(s).replace(/</g,'&lt;'); }
+function add(){
+  var n = document.getElementById('fName').value.trim();
+  if(!n){ alert('姓名要填哦（表单校验）'); return; }
+  data.unshift({n:n, t:document.getElementById('fTel').value.trim(), m:document.getElementById('fNote').value.trim(), d:new Date().toISOString()});
+  save(); render();
+  document.getElementById('fName').value=''; document.getElementById('fTel').value=''; document.getElementById('fNote').value='';
+}
+function del(i){ if(!confirm('确定删除「'+data[i].n+'」？')) return; data.splice(i,1); save(); render(); }
+function edit(i){
+  var n = prompt('改成什么姓名？', data[i].n); if(n===null) return;
+  var t = prompt('改成什么电话？', data[i].t); if(t===null) return;
+  data[i].n = n.trim()||data[i].n; data[i].t = t.trim(); save(); render();
+}
+function render(){
+  var q = document.getElementById('q').value.trim();
+  var rows = data.map(function(x,i){ x._i=i; return x; }).filter(function(x){
+    return !q || (x.n+x.t+x.m).indexOf(q)>-1;
+  });
+  document.getElementById('list').innerHTML = rows.length ? rows.map(function(x){
+    return '<div class="item"><b>'+esc(x.n)+'</b><span>'+esc(x.t)+' '+esc(x.m)+'</span>'
+      + '<span class="ops"><button onclick="edit('+x._i+')">编辑</button><button class="del" onclick="del('+x._i+')">删</button></span></div>';
+  }).join('') : '<p style="color:#999;font-size:13px">还没有客户，或没有匹配搜索的结果。</p>';
+  var month = new Date().getMonth();
+  document.getElementById('stTotal').textContent = data.length;
+  document.getElementById('stMonth').textContent = data.filter(function(x){ return new Date(x.d).getMonth()===month; }).length;
+}
+function exportCsv(){
+  var bom = '\uFEFF';
+  var lines = ['姓名,电话,备注,添加时间'].concat(data.map(function(x){ return [x.n,x.t,x.m,x.d].join(','); }));
+  var blob = new Blob([bom + lines.join('\n')], {type:'text/csv'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = '客户名单.csv'; a.click();
+}
+render();
+</script>
+</body>
+</html>
