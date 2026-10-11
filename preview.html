@@ -565,7 +565,7 @@ footer a{color:var(--green);text-decoration:none;}
   <h2><span class="no">07</span>🎓 练功房 · 边玩边学</h2>
   <p class="sec-sub">四样东西：<b style="color:var(--text)">黑话词典</b>（行话都能听懂）、<b style="color:var(--text)">出村资格考试</b>（10 题问答带评级）、<b style="color:var(--text)">技巧抽卡</b>（每天抽一招，集齐 12 张）、<b style="color:var(--text)">7 天上手计划</b>（照着走完就出师）。进度全部存本机。</p>
 
-  <div class="mh2">① 📖 黑话词典（30 个高频词，点卡片看人话解释，可搜索）</div>
+  <div class="mh2">① 📖 黑话词典（33 个高频词，点卡片看人话解释，可搜索）</div>
   <input type="text" id="termQ" placeholder="🔍 搜一个词，比如：localStorage、部署、AI 幻觉…" style="width:100%;max-width:420px;display:block;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:9px 13px;font-size:13.5px;outline:none;margin-bottom:12px" oninput="renderTerms()">
   <div class="grid c3" id="termCards"></div>
 
@@ -1638,7 +1638,7 @@ function quizStart(){
 function quizHome(){
   var best = quizBest();
   el('quizBody').innerHTML =
-    '<p style="font-size:13.5px">从 30 题题库<b>随机抽 10 题</b>，全部出自本页教过的内容。合格线 7 题，满分是「出村王者」。</p>'
+    '<p style="font-size:13.5px">从 29 题题库<b>随机抽 10 题</b>，全部出自本页教过的内容。合格线 7 题，满分是「出村王者」。</p>'
     + '<p style="font-size:13px;margin:8px 0">历史最好成绩：<b style="color:var(--amber)">'+best+'/10</b></p>'
     + '<button class="btn2 primary" onclick="quizStart()">📝 开始考试</button>';
 }
