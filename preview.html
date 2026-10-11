@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="VibeCoding 新手村：装在 Codex/ZCode 里的对话式教学游戏，试玩第 0 关">
+<title>VibeCoding 新手村 · 试玩预览</title>
+<style>
+:root{
+  --bg:#0c1810; --panel:#122417; --panel2:#0f1f13; --line:#1e3a26;
+  --green:#57d977; --green-dim:#2f7a4a; --text:#cfe8d4; --muted:#7fa88b;
+  --amber:#e8c46a; --red:#e06c5f;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+  line-height:1.7;
+}
+main,section inner{max-width:880px;margin:0 auto;}
+section{max-width:880px;margin:0 auto;padding:44px 20px 8px;}
+.mono{font-family:Consolas,"Courier New",monospace;}
+
+/* ---------- hero ---------- */
+.hero{
+  padding:72px 20px 56px; text-align:center;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 34px, rgba(87,217,119,.045) 34px 35px),
+    repeating-linear-gradient(90deg, transparent 0 34px, rgba(87,217,119,.045) 34px 35px),
+    radial-gradient(ellipse at 50% -20%, #17331f 0%, var(--bg) 62%);
+  border-bottom:1px solid var(--line);
+}
+.tag{
+  display:inline-block; font-size:12px; letter-spacing:3px; color:var(--green);
+  border:1px solid var(--green-dim); border-radius:99px; padding:4px 14px; margin-bottom:22px;
+}
+h1{font-size:40px; letter-spacing:1px; color:#eafff0;}
+h1 .cursor{display:inline-block;width:20px;color:var(--green);animation:blink 1s steps(1) infinite;}
+@keyframes blink{50%{opacity:0;}}
+.sub{max-width:560px;margin:16px auto 0;color:var(--muted);font-size:16px;}
+.hero-btns{margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn{
+  display:inline-block;padding:12px 26px;border-radius:8px;text-decoration:none;
+  font-size:15px;border:1px solid var(--green-dim);color:var(--green);transition:.15s;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn.primary{background:var(--green-dim);color:#eafff0;font-weight:bold;}
+.btn.primary:hover{background:#3a9159;}
+.hero-meta{margin-top:22px;font-size:13px;color:var(--muted);}
+
+/* ---------- sections ---------- */
+h2{font-size:24px;color:#eafff0;margin-bottom:8px;}
+h2 .no{color:var(--green);font-family:Consolas,monospace;margin-right:8px;}
+.sec-sub{color:var(--muted);font-size:14px;margin-bottom:22px;}
+
+/* ---------- chat ---------- */
+.chat-wrap{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
+}
+.chat-head{
+  display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--panel2);
+  border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);
+}
+.chat-head .dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+.chat-head .mono{color:var(--green);}
+#chat{
+  height:420px;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:12px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 30px, rgba(87,217,119,.03) 30px 31px);
+}
+.msg{max-width:86%;padding:10px 14px;border-radius:10px;font-size:14.5px;animation:pop .22s ease;}
+@keyframes pop{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.msg.gm{align-self:flex-start;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--green);}
+.msg.gm b{color:var(--green);}
+.msg.me{align-self:flex-end;background:var(--green-dim);color:#eafff0;}
+.msg.sys{align-self:center;background:none;border:1px dashed var(--line);color:var(--muted);font-size:12.5px;}
+.msg.badge-card{
+  align-self:center;text-align:center;background:#1a2f1d;border:1px solid var(--amber);
+  color:var(--amber);font-weight:bold;font-size:15px;padding:16px 26px;border-radius:12px;
+  box-shadow:0 0 24px rgba(232,196,106,.15);
+}
+.msg.badge-card small{display:block;color:var(--muted);font-weight:normal;font-size:12px;margin-top:4px;}
+.msg.typing{display:flex;gap:5px;align-items:center;padding:14px 16px;}
+.msg.typing span{width:7px;height:7px;border-radius:50%;background:var(--green-dim);animation:tp 1s infinite;}
+.msg.typing span:nth-child(2){animation-delay:.15s;}
+.msg.typing span:nth-child(3){animation-delay:.3s;}
+@keyframes tp{30%{transform:translateY(-4px);background:var(--green);}}
+.chat-input-row{display:flex;gap:10px;padding:12px;border-top:1px solid var(--line);background:var(--panel2);}
+#chatIn{
+  flex:1;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);
+  padding:10px 14px;font-size:14px;outline:none;
+}
+#chatIn:focus{border-color:var(--green-dim);}
+#chatSend,#resetDemo{
+  background:var(--green-dim);border:none;color:#eafff0;border-radius:8px;padding:10px 20px;
+  cursor:pointer;font-size:14px;
+}
+#resetDemo{background:none;border:1px solid var(--line);color:var(--muted);}
+.choices{display:flex;flex-direction:column;gap:8px;padding:12px;border-top:1px solid var(--line);background:var(--panel2);}
+.choices button{
+  text-align:left;background:#0a140d;border:1px solid var(--line);color:var(--text);
+  padding:11px 14px;border-radius:8px;cursor:pointer;font-size:14px;transition:.15s;
+}
+.choices button:hover{border-color:var(--green-dim);}
+.choices button.wrong{border-color:var(--red);color:var(--red);opacity:.75;}
+.choices button.right{border-color:var(--green);color:var(--green);font-weight:bold;}
+.hidden{display:none;}
+
+/* ---------- cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.grid.c2{grid-template-columns:repeat(2,1fr);}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;
+  transition:.15s;
+}
+.card:hover{transform:translateY(-3px);border-color:var(--green-dim);}
+.card .lv{font-family:Consolas,monospace;color:var(--green);font-size:13px;}
+.card .ico{font-size:24px;margin:6px 0;}
+.card h3{font-size:15px;color:#eafff0;}
+.card p{font-size:12.5px;color:var(--muted);margin-top:4px;}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;counter-reset:s;}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.step .n{
+  counter-increment:s;display:inline-flex;width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--green-dim);color:var(--green);align-items:center;justify-content:center;
+  font-family:Consolas,monospace;margin-bottom:10px;
+}
+.step .n::before{content:counter(s);}
+.step h3{font-size:15px;color:#eafff0;}
+.step p{font-size:13px;color:var(--muted);margin-top:4px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.chip{font-size:12.5px;color:var(--green);border:1px solid var(--line);border-radius:99px;padding:5px 13px;background:var(--panel);}
+
+/* ---------- versus ---------- */
+.vs{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;}
+.vs h3{font-size:14px;color:#eafff0;margin-bottom:10px;}
+.vs .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.vs .bad,.vs .good{border-radius:8px;padding:10px 12px;font-size:13px;}
+.vs .bad{background:rgba(224,108,95,.08);border:1px solid rgba(224,108,95,.35);color:#f0b6ae;}
+.vs .good{background:rgba(87,217,119,.07);border:1px solid rgba(87,217,119,.3);color:#bce9c6;}
+.vs .why{font-size:12px;color:var(--muted);margin-top:8px;}
+
+/* ---------- badges ---------- */
+.badges{display:flex;flex-wrap:wrap;gap:10px;}
+.badge{
+  border:1px solid var(--green-dim);border-radius:10px;padding:8px 14px;font-size:13px;
+  color:var(--green);background:var(--panel);
+}
+.badge.lock{border-color:var(--line);color:var(--muted);}
+
+footer{
+  max-width:880px;margin:40px auto 0;padding:26px 20px 44px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px;text-align:center;
+}
+footer b{color:var(--green);}
+
+/* ---------- confetti ---------- */
+#confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:99;}
+#confetti i{
+  position:absolute;top:-12px;width:8px;height:8px;opacity:.95;
+  animation:fall linear forwards;
+}
+@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.4;}}
+
+@media (max-width:640px){
+  h1{font-size:30px;}
+  .grid{grid-template-columns:repeat(2,1fr);}
+  .grid.c2,.steps,.vs .row{grid-template-columns:1fr;}
+  .msg{max-width:94%;}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="tag">AGENT 原生 · 对话式教学游戏</div>
+  <h1>🏘️ VibeCoding 新手村<span class="cursor">▌</span></h1>
+  <p class="sub">你负责"说"，AI 负责"做"。8 个关卡，亲手"说"出一个真实能跑的小项目，顺便学会怎么向 AI 表达需求。像玩文字冒险一样学会 vibecoding。</p>
+  <div class="hero-btns">
+    <a class="btn primary" href="#demo">▶ 立即试玩第 0 关</a>
+    <a class="btn" href="#how">完整版怎么玩</a>
+  </div>
+  <div class="hero-meta">Codex / ZCode 双工具通用 · 自动存档 · 玩家零安装</div>
+</header>
+
+<main>
+<section id="demo">
+  <h2><span class="no">01</span>🎮 试玩 · 第 0 关「开机」</h2>
+  <p class="sec-sub">下面就是游戏的真实样子——你是玩家，阿V是游戏主持人。（演示版对话是写死的剧本；完整版里是真 AI 在接你的话、真帮你把项目做出来。）</p>
+  <div class="chat-wrap">
+    <div class="chat-head">
+      <span class="dot"></span> 阿V · 游戏主持人
+      <span class="mono" style="margin-left:auto">ch00 · 开机</span>
+    </div>
+    <div id="chat"></div>
+    <div class="chat-input-row">
+      <input id="chatIn" placeholder="点上方「立即试玩」开始…" disabled>
+      <button id="chatSend" disabled>发送</button>
+    </div>
+    <div id="choiceRow" class="choices hidden"></div>
+    <div class="chat-input-row" style="border-top:1px solid var(--line)">
+      <button id="resetDemo">↺ 重玩试玩</button>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <h2><span class="no">02</span>📦 完整版怎么玩</h2>
+  <p class="sec-sub">整个游戏就是一个文件夹。把文件夹发给任何人，三步开局。</p>
+  <div class="steps">
+    <div class="step"><span class="n"></span><h3>拿到文件夹</h3><p>解压 vibe-xinshou-cun.zip，里面是全部游戏：规则、关卡剧本、示例源码包。</p></div>
+    <div class="step"><span class="n"></span><h3>用工具打开</h3><p>用 Codex 或 ZCode 把工作目录打开到这个文件夹。不用装任何东西。</p></div>
+    <div class="step"><span class="n"></span><h3>说「开始游戏」</h3><p>AI 变身引导员阿V，读档或开新档，带玩家一关一关闯。</p></div>
+  </div>
+  <div class="chips">
+    <span class="chip">💾 自动存档 save/，随时关随时续</span>
+    <span class="chip">🏅 8 章节徽章 + 6 隐藏徽章</span>
+    <span class="chip">🧭 4 个项目方向可选</span>
+    <span class="chip">📜 毕业发证书</span>
+    <span class="chip">🚫 GM 铁律：不代打、不跳步、不剧透</span>
+  </div>
+</section>
+
+<section id="levels">
+  <h2><span class="no">03</span>🗺️ 关卡地图</h2>
+  <p class="sec-sub">每关教一种"向 AI 表达需求"的技巧，当场练、当场点评。顺序解锁。</p>
+  <div class="grid">
+    <div class="card"><div class="lv">ch00</div><div class="ico">🔌</div><h3>开机</h3><p>有话直说，不懂就问</p></div>
+    <div class="card"><div class="lv">ch01</div><div class="ico">🗣️</div><h3>说需求</h3><p>需求四要素：给谁用/干什么/长什么样/不要什么</p></div>
+    <div class="card"><div class="lv">ch02</div><div class="ico">🔪</div><h3>拆功能</h3><p>必须 / 可以 / 先不要，砍出 MVP</p></div>
+    <div class="card"><div class="lv">ch03</div><div class="ico">🧺</div><h3>找资源</h3><p>提问三段式：要什么/干什么用/有什么限制</p></div>
+    <div class="card"><div class="lv">ch04</div><div class="ico">🧱</div><h3>搭骨架</h3><p>验收标准前置——项目在这一关真的诞生</p></div>
+    <div class="card"><div class="lv">ch05</div><div class="ico">🛠️</div><h3>改需求</h3><p>报 bug 四要素；提修改说"改成什么样"</p></div>
+    <div class="card"><div class="lv">ch06</div><div class="ico">🏺</div><h3>源码包</h3><p>接手别人的代码：先读懂→再跑通→后修改</p></div>
+    <div class="card"><div class="lv">ch07</div><div class="ico">🎓</div><h3>毕业</h3><p>独立走一遍全流程，领毕业证书</p></div>
+  </div>
+</section>
+
+<section id="tracks">
+  <h2><span class="no">04</span>📮 四个方向（第 1 关选一个）</h2>
+  <p class="sec-sub">村口告示板上的四张委托，选玩家自己真想做出来的那个，后面 6 关都在它身上练功。</p>
+  <div class="grid">
+    <div class="card"><div class="ico">🏨</div><h3>管理后台</h3><p>客栈老板的客人名单：增删改查+搜索，v0.1 双击就能用</p></div>
+    <div class="card"><div class="ico">🎮</div><h3>小游戏</h3><p>游戏厅的打地鼠：点中加分、30秒倒计时、最高分</p></div>
+    <div class="card"><div class="ico">🧮</div><h3>实用小工具</h3><p>杂货铺的记账本：记一笔、流水、总金额</p></div>
+    <div class="card"><div class="ico">🧑‍💼</div><h3>个人主页</h3><p>村长的门面：介绍+作品卡片+联系方式+深色模式</p></div>
+  </div>
+</section>
+
+<section id="vs">
+  <h2><span class="no">05</span>💬 游戏里教的表达（差 vs 好）</h2>
+  <p class="sec-sub">节选自游戏内建的 12 组对照集。每一关的点评都基于这套标准。</p>
+  <div class="vs"><h3>报 bug</h3>
+    <div class="row"><div class="bad">❌ 坏了，出 bug 了，你看看</div><div class="good">✅ 我在搜索框输入"张"，本该只显示姓张的客人，结果列表整个空了。复现：添加两个客人，搜索任意一个字就出现</div></div>
+    <p class="why">四要素：做了什么 / 期望什么 / 实际什么 / 怎么复现——齐了 AI 一次修对</p>
+  </div>
+  <div class="vs"><h3>提样式修改</h3>
+    <div class="row"><div class="bad">❌ 界面不好看，改好看点</div><div class="good">✅ 标题字号从 20 调到 28，主色换墨绿，卡片之间留 16px 间距</div></div>
+    <p class="why">别让 AI 猜你的审美，说"改成什么样"</p>
+  </div>
+  <div class="vs"><h3>接手别人的源码包</h3>
+    <div class="row"><div class="bad">❌ 帮我把这个改好</div><div class="good">✅ 第一步：先帮我看看这个项目是做什么的、什么结构、怎么跑起来</div></div>
+    <p class="why">没看过病别急着吃药：先读懂 → 再跑通 → 后修改，还要在副本上改</p>
+  </div>
+</section>
+
+<section id="badges">
+  <h2><span class="no">06</span>🏅 徽章墙</h2>
+  <p class="sec-sub">章节徽章每关一枚；隐藏徽章做对了事才会蹦出来。</p>
+  <div class="badges">
+    <span class="badge">🔌 开机成功</span><span class="badge">🗣️ 把话说清楚</span>
+    <span class="badge">🔪 一刀砍出MVP</span><span class="badge">🧺 寻宝猎人</span>
+    <span class="badge">🧱 第一块砖</span><span class="badge">🛠️ 沟通大师</span>
+    <span class="badge">🏺 考古学家</span><span class="badge">🎓 新手村毕业</span>
+    <span class="badge lock">？跳关侠</span><span class="badge lock">？复读机</span>
+    <span class="badge lock">？打回重做</span><span class="badge lock">？十万个为什么</span>
+    <span class="badge lock">？第一次说不</span><span class="badge lock">？考古学家·满级</span>
+  </div>
+</section>
+</main>
+
+<footer>
+  <b>VibeCoding 新手村</b> · 完整版为 23 个文件的文件夹（AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置带 bug 源码包）<br>
+  适合转给任何想学用 AI 编程工具的小白 · v1.0 · 2026-10-11
+</footer>
+
+<div id="confetti"></div>
+
+<script>
+(function(){
+  var chat = document.getElementById('chat');
+  var input = document.getElementById('chatIn');
+  var send = document.getElementById('chatSend');
+  var choiceRow = document.getElementById('choiceRow');
+  var resetBtn = document.getElementById('resetDemo');
+  var stage = 'idle'; // idle → warmup → quiz → done
+
+  function scroll(){ chat.scrollTop = chat.scrollHeight; }
+  function addMsg(cls, html){
+    var d = document.createElement('div');
+    d.className = 'msg ' + cls;
+    d.innerHTML = html;
+    chat.appendChild(d); scroll();
+    return d;
+  }
+  function gmSay(html, cb){
+    var t = addMsg('gm typing', '<span></span><span></span><span></span>');
+    setTimeout(function(){
+      t.className = 'msg gm'; t.innerHTML = html;
+      scroll(); if (cb) cb();
+    }, 520 + Math.random()*380);
+  }
+  function confetti(){
+    var box = document.getElementById('confetti');
+    var colors = ['#57d977','#e8c46a','#eafff0','#2f7a4a'];
+    for (var i = 0; i < 40; i++){
+      var p = document.createElement('i');
+      p.style.left = (Math.random()*96 + 2) + '%';
+      p.style.background = colors[i % colors.length];
+      p.style.animationDuration = (1.5 + Math.random()*1.2) + 's';
+      p.style.animationDelay = (Math.random()*0.4) + 's';
+      p.style.width = p.style.height = (6 + Math.random()*5) + 'px';
+      box.appendChild(p);
+    }
+    setTimeout(function(){ box.innerHTML = ''; }, 3200);
+  }
+
+  var QUIZ = [
+    {k:'A', t:'A. 帮我做个网站'},
+    {k:'B', t:'B. 帮我写一个能记录每天花了多少钱、能统计总共花了多少的网页'},
+    {k:'C', t:'C. 你看着办，做个好的'}
+  ];
+
+  function startDemo(){
+    chat.innerHTML = '';
+    choiceRow.classList.add('hidden');
+    choiceRow.innerHTML = '';
+    stage = 'boot';
+    input.disabled = true; send.disabled = true;
+    input.placeholder = '阿V 正在打字…';
+    gmSay('<b>🏘️ 欢迎来到 VibeCoding 新手村！</b>我是村口的引导员 <b>阿V</b>。', function(){
+      gmSay('在这个村子里，你<b>不用会写代码</b>：你负责把想要的东西"说清楚"，AI 负责"做出来"——这就是 <b>vibecoding</b>。', function(){
+        gmSay('先试试水温 🔥 <b>热身任务：随便给我下一个小指令。</b>比如「帮我算一下 128 × 64」', function(){
+          stage = 'warmup';
+          input.disabled = false; send.disabled = false;
+          input.placeholder = '对阿V下一个小指令…';
+          input.focus();
+        });
+      });
+    });
+  }
+
+  function calc(txt){
+    var m = txt.match(/(\d+)\s*([*xX×])\s*(\d+)/);
+    if (m) return m[1] + ' × ' + m[3] + ' = ' + (parseInt(m[1],10) * parseInt(m[3],10));
+    m = txt.match(/(\d+)\s*([+\-])\s*(\d+)/);
+    if (m) return m[1] + ' ' + m[2] + ' ' + m[3] + ' = ' + (m[2]==='+' ? parseInt(m[1],10)+parseInt(m[3],10) : parseInt(m[1],10)-parseInt(m[3],10));
+    return null;
+  }
+
+  function onWarmup(txt){
+    addMsg('me', txt);
+    input.disabled = true; send.disabled = true;
+    var ans = calc(txt);
+    if (ans){
+      gmSay('啪！<b>' + ans + '</b> ✅', function(){
+        afterWarmup();
+      });
+    } else {
+      gmSay('收到！（演示版阿V只会算数😄 完整版里这句话由真 AI 接住，真的把事办了。）', afterWarmup);
+    }
+  }
+
+  function afterWarmup(){
+    gmSay('看到了吗？这就是和 AI 干活的基本循环：<b>你说 → 我做 → 你验收</b>。后面 7 关，把这个循环练成你的超能力。', function(){
+      gmSay('出村前有个<b>小考</b> 📝 下面三句话，哪句最适合对 AI 说，能让它一次做出你最想要的东西？');
+      showQuiz();
+    });
+  }
+
+  function showQuiz(){
+    choiceRow.innerHTML = '';
+    QUIZ.forEach(function(o){
+      var b = document.createElement('button');
+      b.textContent = o.t;
+      b.onclick = function(){ pick(o, b); };
+      choiceRow.appendChild(b);
+    });
+    choiceRow.classList.remove('hidden');
+    input.placeholder = '这题点下方选项作答～';
+    stage = 'quiz';
+  }
+
+  function pick(o, btn){
+    if (stage !== 'quiz') return;
+    addMsg('me', '我选 ' + o.k);
+    if (o.k === 'B'){
+      stage = 'done';
+      btn.classList.add('right');
+      Array.prototype.forEach.call(choiceRow.children, function(c){ c.disabled = true; });
+      choiceRow.classList.add('hidden');
+      gmSay('<b>正确！</b>B 把"做什么、统计什么"说得明明白白，AI 不用猜。', function(){
+        gmSay('A 太模糊——做什么网站？给谁用？C 看似省事，其实是把"你想要的"交给运气。', function(){
+          confetti();
+          addMsg('badge-card', '🎉 通关！获得徽章【开机成功】<small>完整版里，现在会写入你的存档，并解锁下一关</small>');
+          gmSay('这就是第 0 关的全部。完整版里接下来是 <b>ch01 说需求</b>：接一张村口委托，学会用<b>需求四要素</b>把一句话改造成 AI 一听就懂的完整需求——然后你的项目会一路被真的做出来 🧱', function(){
+            addMsg('sys', '— 试玩结束 · 点「↺ 重玩试玩」再来一次，或往下翻看完整版介绍 —');
+          });
+        });
+      });
+    } else {
+      btn.classList.add('wrong');
+      btn.disabled = true;
+      gmSay(o.k === 'A' ? 'A 太模糊了：做个什么网站？给谁用、要什么功能？AI 只能靠猜。再想想～' : 'C 把主导权全交出去了😄 "你看着办"= 要什么全凭运气。再想想～');
+    }
+  }
+
+  function onSend(){
+    var txt = input.value.trim();
+    if (!txt) return;
+    if (stage === 'warmup'){ input.value=''; onWarmup(txt); }
+  }
+
+  send.onclick = onSend;
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter') onSend(); });
+  resetBtn.onclick = startDemo;
+  startDemo();
+})();
+</script>
+</body>
+</html>
