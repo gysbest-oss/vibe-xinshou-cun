@@ -214,6 +214,25 @@ iframe.play{width:100%;height:460px;border:1px solid var(--line);border-radius:1
 .sd-body ul{padding-left:20px;margin:6px 0;}
 .tpl{background:#0a140d;border:1px solid var(--green-dim);border-radius:10px;padding:14px 16px;font-family:Consolas,"Courier New",monospace;font-size:12.5px;white-space:pre-wrap;color:#bce9c6;line-height:2;margin-top:8px;}
 
+.wiz-panel{display:none;}
+.wiz-panel.on{display:block;}
+.wiz-dots{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;}
+.wiz-dots span{padding:4px 14px;border-radius:99px;border:1px solid var(--line);color:var(--muted);font-size:12.5px;cursor:pointer;}
+.wiz-dots span.on{border-color:var(--green);color:var(--green);}
+.wiz-dots span.done{border-color:var(--green-dim);color:var(--green-dim);}
+.wiz-panel .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+.typeopt{background:#0a140d;border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;font-size:13.5px;color:var(--text);}
+.typeopt.on{border-color:var(--green);color:var(--green);}
+.typeopt b{display:block;}
+.typeopt small{color:var(--muted);}
+.rstep{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;}
+.rstep .rh{color:#eafff0;font-weight:bold;font-size:14px;margin-bottom:4px;}
+.rstep .rh .n{color:var(--green);font-family:Consolas,monospace;margin-right:6px;}
+.rstep .why{font-size:12.5px;color:var(--muted);margin-bottom:6px;}
+.rstep .tpl{font-size:12px;line-height:1.9;margin:8px 0;}
+.rstep .chk{font-size:12.5px;color:var(--amber);margin-top:8px;}
+@media(max-width:680px){.wiz-panel .grid2{grid-template-columns:1fr;}}
+
 footer{max-width:920px;margin:40px auto 0;padding:24px 20px 44px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center;}
 footer a{color:var(--green);text-decoration:none;}
 @media (max-width:680px){
@@ -232,6 +251,7 @@ footer a{color:var(--green);text-decoration:none;}
   <a href="#tracks">四个方向</a>
   <a href="#vs">表达对照</a>
   <a href="#school">学堂</a>
+  <a href="#factory">开工工场</a>
   <a href="#badges">徽章墙</a>
   <a href="#how">完整版</a>
   <span class="cnt" id="navCnt">🏅 0/8</span>
@@ -450,16 +470,84 @@ footer a{color:var(--green);text-decoration:none;}
 【节奏】先别写代码，先用你的话复述一遍我的需求，我确认无误后再动手。</div>
   <div class="inrow" style="border:none;padding-top:10px">
     <button class="btn2" onclick="copyTpl()">📋 复制这份骨架</button>
-    <span style="font-size:12px;color:var(--muted);align-self:center">填空后直接发给 Codex / ZCode 就能开工——这就是完整版第 4 关教你写的"开工令"</span>
+    <span style="font-size:12px;color:var(--muted);align-self:center">填空后发给 Codex 就能开工——想要现成的分步路线和更多骨架？下面「开工工场」有 5 套</span>
   </div>
 
   <div class="mh2">⑤ 新手六大误区（点卡片看正确做法）</div>
   <div class="grid c3" id="misCards"></div>
 </section>
 
+<!-- ============ 开工工场 ============ -->
+<section id="factory">
+  <h2><span class="no">06</span>🏭 开工工场 · 一步一步做出你自己的东西</h2>
+  <p class="sec-sub">两条产线：<b style="color:var(--text)">产线 A · 路线图</b>——5 种项目（SaaS / 微信小程序 / 基础网页 / 小游戏 / 专注工具），每一步都给一句可直接复制发给 Codex 的提示词 + 本步自查；<b style="color:var(--text)">产线 B · 生成器</b>——像填收集表一样填 4 步，自动产出你的专属开工令。</p>
+
+  <div class="mh2">产线 A · 项目路线图（选方向，照着一步步发给 Codex）</div>
+  <div class="tabs" id="trkTabs"></div>
+  <div id="trkBody"></div>
+
+  <div class="mh2" style="margin-top:26px">产线 B · 开工令生成器（填 4 步，产出你的专属提示词）</div>
+  <div class="demo open">
+    <div class="demo-body" style="display:block;border-top:none;padding-top:12px">
+      <div class="wiz-dots" id="wizDots"></div>
+
+      <div class="wiz-panel on" id="wp0">
+        <div class="qa"><label>第一步 · 选项目类型（决定技术路线，不知道选啥就选"基础网页"）</label>
+        <div class="grid2" id="wizTypes"></div></div>
+      </div>
+
+      <div class="wiz-panel" id="wp1">
+        <div class="qa">
+          <label>第二步 · 项目叫什么？（可先随便起，以后能改）</label>
+          <input type="text" id="w_name" placeholder="例：小美记账本" oninput="wizSave()">
+          <label>给谁用？</label>
+          <input type="text" id="w_who" placeholder="例：给我自己 / 给开小卖部的妈妈用" oninput="wizSave()">
+          <label>解决什么问题？（他现在怎么解决、痛在哪）</label>
+          <input type="text" id="w_prob" placeholder="例：她用小本子记账老忘，月底对不上总账" oninput="wizSave()">
+        </div>
+      </div>
+
+      <div class="wiz-panel" id="wp2">
+        <div class="qa">
+          <label>第三步 · 第一版只要这 3 个功能（想不出来就点一项写一项，MVP 心态！)</label>
+          <input type="text" id="w_f1" oninput="wizSave()">
+          <input type="text" id="w_f2" oninput="wizSave()" style="margin-top:8px">
+          <input type="text" id="w_f3" oninput="wizSave()" style="margin-top:8px">
+          <label>明确不要什么？（防止 AI 自作主张，可留空用推荐值）</label>
+          <input type="text" id="w_no" oninput="wizSave()">
+        </div>
+      </div>
+
+      <div class="wiz-panel" id="wp3">
+        <div class="qa">
+          <label>第四步 · 验收补充（可选，写一条你最在乎的）</label>
+          <input type="text" id="w_extra" placeholder="例：我妈这种新手不看说明也会用" oninput="wizSave()">
+          <p style="font-size:12.5px;color:var(--muted);margin-top:8px">通用验收会自动带上：打开不报错、数据刷新不丢、复述确认后再动手。</p>
+          <div class="inrow" style="border:none;padding-top:12px">
+            <button class="btn2 primary" onclick="wizMake()">⚙️ 生成我的开工令</button>
+            <button class="btn2 ghost" onclick="wizReset()">清空重填</button>
+          </div>
+        </div>
+        <div class="hidden" id="wizOutBox">
+          <p style="font-size:13px;margin-top:10px;color:var(--green)">✅ 生成完毕！复制下面整段 → 打开 Codex 粘贴发送 → 它会先复述需求找你确认 → 确认后开工：</p>
+          <div class="tpl" id="wizOut"></div>
+          <div class="inrow" style="border:none">
+            <button class="btn2" onclick="copyText(document.getElementById('wizOut').innerText,this)">📋 复制开工令</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="inrow" style="border:none;padding-top:6px">
+        <button class="btn2 ghost" id="wizPrev" onclick="wizGo(-1)">← 上一步</button>
+        <button class="btn2" id="wizNextB" onclick="wizGo(1)">下一步 →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ 徽章墙 ============ -->
 <section id="badges">
-  <h2><span class="no">06</span>🏅 徽章墙（点击看获得条件）</h2>
+  <h2><span class="no">07</span>🏅 徽章墙（点击看获得条件）</h2>
   <p class="sec-sub">章节徽章试玩对应关卡即可点亮；预览版把隐藏徽章的条件也公开了。</p>
   <div class="badges" id="badgeWall"></div>
   <div class="inrow" style="border:none;padding-top:14px"><button class="btn2 ghost" onclick="resetProgress()">🗑 清空本机存档重来</button></div>
@@ -467,7 +555,7 @@ footer a{color:var(--green);text-decoration:none;}
 
 <!-- ============ 完整版 ============ -->
 <section id="how">
-  <h2><span class="no">07</span>📦 完整版怎么玩</h2>
+  <h2><span class="no">08</span>📦 完整版怎么玩</h2>
   <p class="sec-sub">完整版是一个文件夹，由真 AI 当主持人：你说的话它真的接、真的执行、项目真的诞生。本页演示只是写死的剧本。</p>
   <div class="steps">
     <div class="step"><span class="n"></span><h3>下载并解压</h3><p>下载完整版 zip 并解压，里面是全部游戏：规则、8 关剧本、4 方向、2 个带 bug 的源码包。</p></div>
@@ -488,7 +576,7 @@ footer a{color:var(--green);text-decoration:none;}
 
 <footer>
   <b>黎小小VibeCoding新手村练手</b> · 完整版：AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置源码包<br>
-  适合转给任何想学用 AI 编程工具的小白 · v3.0 · 2026-10-12
+  适合转给任何想学用 AI 编程工具的小白 · v4.0 · 2026-10-12
 </footer>
 
 <!-- modal / toast / confetti -->
@@ -1138,9 +1226,268 @@ function copyTpl(){
   } else fallback();
 }
 
+/* ================= 开工工场 · 产线A 路线图 ================= */
+function copyText(txt, btn){
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('已复制 📋'); }catch(e){ toast('复制失败，请手动长按复制'); }
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast('已复制，去粘贴给 Codex 📋'); }, fallback);
+  } else fallback();
+  if (btn){ var old = btn.textContent; btn.textContent = '✓ 已复制'; setTimeout(function(){ btn.textContent = old; }, 1500); }
+}
+var TRKS = [
+  {id:'saas', ico:'🏢', name:'SaaS 网页', sub:'示范：《客户管理小SaaS》——把名词换成你自己的项目',
+   pre:'SaaS 就是「开箱即用的在线软件」。第一版我们做<b>纯前端单机版</b>：不用注册登录、不用数据库，数据先存在浏览器里——先把业务跑通，以后再升级。全程不需要安装任何环境。',
+   steps:[
+    {t:'立项：把开工令发给 Codex', why:'用下方「产线B 生成器」产出你的开工令（记得勾选 SaaS 类型），粘贴给 Codex，它会先复述需求找你确认，确认后建出第一版。',
+     p:'（这一步用「产线B · 开工令生成器」产出的提示词。若想手写，用学堂第④节的万能骨架填一份。）\n建议在【不要】里务必加上：不要登录注册、不要数据库、不要支付，数据先存浏览器本地。',
+     c:'Codex 建完后，双击打开它告诉你的文件，界面能显示、不报错'},
+    {t:'录入与列表', why:'第一块核心业务：数据进得来、看得见。',
+     p:'给客户列表新增"添加客户"功能：表单包含姓名、电话、备注，提交后立刻出现在列表里。\n完成标准：①新增后立即显示；②刷新页面数据还在（存 localStorage）；③只加这个功能，不要动其他部分。',
+     c:'连加 3 个客户 → 按 F5 刷新 → 3 条都还在'},
+    {t:'搜索筛选', why:'数据一多就必须找得到。',
+     p:'给客户列表加搜索框：输入关键字实时过滤，清空恢复全部。\n完成标准：①输"张"只显示含"张"的客户；②清空搜索框恢复完整列表；③不影响新增功能。',
+     c:'搜得到、清得掉'},
+    {t:'编辑与删除', why:'补齐管理闭环。',
+     p:'每条客户加"编辑"和"删除"：编辑点击后表单回填原内容，保存后列表更新；删除前弹确认框。\n完成标准：①编辑保存生效；②删除有确认且真的删掉；③刷新后结果保持。',
+     c:'改一条、删一条，刷新验证'},
+    {t:'统计看板', why:'SaaS 的"面子"：让老板一眼看到重点。',
+     p:'页面顶部加统计卡：客户总数、本月新增数。完成标准：数字随增删实时变化，刷新不丢。',
+     c:'增删一条，数字跟着变'},
+    {t:'导出备份', why:'数据是用户的命根子，给个出口。',
+     p:'加"导出CSV"按钮：一键把全部客户数据下载成表格文件。完成标准：Excel 打开不乱码（CSV 开头加 BOM），中文正常。',
+     c:'导出→Excel 打开→中文正常'},
+    {t:'上线', why:'变成真正"别人也能打开"的 SaaS。',
+     p:'我的应用做完了，我是零基础新手：教我把它免费部署成一个网址，推荐最简单的方式（比如 GitHub Pages 或类似平台），一步步带我做，每一步告诉我在哪个网页点什么按钮。',
+     c:'用手机打开你的网址，能看到应用'}
+   ]},
+  {id:'mp', ico:'📱', name:'微信小程序', sub:'示范：《习惯打卡小程序》',
+   pre:'小程序和网页不同：需要装免费的「微信开发者工具」+ 注册一个小程序 AppID（个人版免费）。分工是：<b>Codex 负责写代码，你负责把代码粘进开发者工具</b>看效果。遇到卡住就把报错截图发给它。',
+   steps:[
+    {t:'立项：生成小程序骨架', why:'开工令里写明小程序技术路线，Codex 会按 WXML/WXSS/JS 结构给代码和文件说明。',
+     p:'（用产线B 生成器选「微信小程序」类型生成开工令）\n技术要求写明：用微信小程序原生框架（WXML+WXSS+JS），暂不用云开发，数据存小程序本地 storage，界面简洁先跑通核心流程。',
+     c:'按 Codex 给的文件说明粘进开发者工具，编译预览能打开'},
+    {t:'首页与打卡按钮', why:'先有第一屏和核心动作。',
+     p:'给小程序做一个首页：顶部标题、今天日期、一个"打卡"按钮、打卡日历视图。完成标准：①点打卡按钮变成"今日已打卡"；②日历里今天的格子高亮；③只改首页，别动其他文件。',
+     c:'点按钮状态切换、日历高亮正确'},
+    {t:'数据持久化', why:'小程序重新编译数据不能丢。',
+     p:'打卡记录用小程序本地 storage 保存，并统计"连续打卡天数"显示在首页。完成标准：①关闭工具重新编译，记录还在；②连续天数计算正确。',
+     c:'重编译→记录还在'},
+    {t:'鼓励文案', why:'让产品有温度。',
+     p:'连续打卡满 3 天，首页显示鼓励文案；断签后显示"重新开始，今天是最好的开始"。完成标准：两种状态都能看到。',
+     c:'手动改本地数据测试两种状态'},
+    {t:'分享', why:'小程序的传播入口。',
+     p:'给小程序加转发分享：右上角菜单可转发，转发卡片标题显示「我已连续打卡 X 天，一起来！」。完成标准：真机或工具里能转发，标题正确。',
+     c:'转发卡片标题带天数'},
+    {t:'真机预览', why:'在手机上看真效果。',
+     p:'我不会操作：一步步教我怎么用微信开发者工具，把这个小程序跑在自己手机上预览（包括哪里扫码、要开什么权限）。遇到问题我把截图发你。',
+     c:'手机上能打开并打卡'}
+   ]},
+  {id:'web', ico:'🌐', name:'基础网页', sub:'示范：《个人主页》',
+   pre:'最推荐的第一个项目：一个单文件网页，双击就能打开，改起来最直观，成就感来得最快。',
+   steps:[
+    {t:'立项：生成主页骨架', why:'先把整体框架立起来。',
+     p:'（用产线B 生成器选「基础网页」生成开工令，内容填你的自我介绍）\n技术要求：纯 HTML+CSS+JS 单文件，不用任何外部库，双击浏览器就能打开。',
+     c:'双击打开，页面正常显示'},
+    {t:'首屏与自我介绍', why:'网页的门面。',
+     p:'给主页加首屏：头像（先用 emoji 或占位图）、我的名字、一句话介绍；下面加"关于我"段落。完成标准：手机宽度下不乱版。',
+     c:'把浏览器窗口拉窄，布局不塌'},
+    {t:'作品卡片', why:'主页的核心内容。',
+     p:'加三张作品卡片：每张有标题、一句话描述、链接占位；鼠标悬停卡片上浮。完成标准：三张卡整齐排列，手机上变单列。',
+     c:'悬停有效果、手机端单列'},
+    {t:'联系方式', why:'让人找得到你。',
+     p:'页面底部加联系方式区：微信、邮箱（先用占位文字）。完成标准：样式和整页统一。',
+     c:'样式不突兀'},
+    {t:'深色模式', why:'第一次"改需求"练习。',
+     p:'右上角加深色模式切换按钮：全站配色切换，用 localStorage 记住选择。完成标准：①切换立即生效；②刷新后保持上次选择。',
+     c:'切深色→刷新→还是深色'},
+    {t:'部署上线', why:'发给朋友看的必须是网址。',
+     p:'教我把这个网页免费部署上网（推荐 GitHub Pages 或类似平台），我是零基础，一步步带我做，每步说清在哪个网站点什么按钮。',
+     c:'手机打开网址看到你的主页'}
+   ]},
+  {id:'game', ico:'🎮', name:'小游戏', sub:'示范：《打地鼠》',
+   pre:'小游戏是练"验收"最好的项目：每一改都能立刻玩出来。素材全用 emoji，音效现场合成，不依赖任何文件。',
+   steps:[
+    {t:'立项：生成游戏骨架', why:'把玩法说清楚，Codex 一次搭出可玩版本。',
+     p:'（用产线B 生成器选「小游戏」生成开工令）\n技术要求：纯 HTML+CSS+JS 单文件；地鼠用 emoji 🐹，音效用 Web Audio 现场生成，不引用任何外部文件。',
+     c:'双击打开就能玩'},
+    {t:'核心玩法', why:'先让"打中"这件事成立。',
+     p:'实现 3×3 地鼠洞：地鼠随机冒头约 0.8 秒，点中 +10 分并立刻缩回。完成标准：点中必得分，冒头节奏稳定。',
+     c:'连打 5 只，得分 50'},
+    {t:'计时与结算', why:'有回合才有紧张感。',
+     p:'加 30 秒倒计时和结算面板：时间到弹出本局得分和"再来一局"按钮。完成标准：能完整玩一局并重开，重开后计分归零。',
+     c:'完整玩一局→结算→重开正常'},
+    {t:'最高分持久化', why:'v0.1 的经典短板，正好当第一课。',
+     p:'最高分用 localStorage 保存，在页面上显示"历史最高"。完成标准：打出高分→刷新页面→最高分还在。',
+     c:'刷大分→F5→纪录还在'},
+    {t:'音效', why:'反馈感翻倍。',
+     p:'点中地鼠时用 Web Audio 播放短促"咚"声，不用任何音频文件。完成标准：点中有声音，不点没有。',
+     c:'点中有咚、静默无噪音'},
+    {t:'难度曲线', why:'第一次"调参"练习。',
+     p:'冒头间隔从 800ms 开始，每 10 秒缩短 100ms，最快不低于 400ms。完成标准：越玩越快，但仍在可玩范围。',
+     c:'玩两局感受节奏'}
+   ]},
+  {id:'tool', ico:'🍅', name:'专注小工具', sub:'示范：《番茄钟》',
+   pre:'自带真实用途——做完你自己天天用。练"状态管理"：计时、统计、任务三种状态要互相不打架。',
+   steps:[
+    {t:'立项：生成番茄钟骨架', why:'先把计时核心立住。',
+     p:'（用产线B 生成器选「实用小工具」生成开工令）\n技术要求：纯 HTML+CSS+JS 单文件，数据存 localStorage，音效用 Web Audio 生成。',
+     c:'双击打开，界面完整'},
+    {t:'核心计时', why:'产品的灵魂。',
+     p:'实现番茄钟：25 分钟倒计时，开始/暂停/重置按钮，时间到页面标题闪动并播放提示音。完成标准：能完整跑完一轮，中途可暂停续走。',
+     c:'完整跑一轮（可先把 25 改成 1 分钟测试）'},
+    {t:'今日统计', why:'给自己一点正反馈。',
+     p:'每完成一个番茄计数+1，存 localStorage，页面显示"今日完成 X 个🍅"，跨天自动清零。完成标准：刷新不丢，隔天归零。',
+     c:'完成2个→刷新→显示2'},
+    {t:'白噪音', why:'专注场景的刚需。',
+     p:'加白噪音开关：用 Web Audio 生成雨声或白噪音（不用音频文件），可随时开关。完成标准：开着不影响计时，关掉无残留杂音。',
+     c:'开关切换自然'},
+    {t:'任务清单', why:'番茄钟配任务才是完整工作流。',
+     p:'加今日任务清单：可添加任务、勾选完成；每完成一个任务提示"要不要来一个番茄？"。完成标准：任务数据刷新不丢。',
+     c:'加任务→勾选→提示出现'},
+    {t:'部署上线', why:'手机也能用。',
+     p:'教我把这个工具免费部署上网（GitHub Pages 或类似），我是零基础，一步步带我操作。',
+     c:'手机打开网址开始专注'}
+   ]}
+];
+function renderTrks(){
+  var tabs = el('trkTabs'); tabs.innerHTML='';
+  TRKS.forEach(function(T, i){
+    var b = document.createElement('button');
+    b.textContent = T.ico + ' ' + T.name;
+    if (i===0) b.className='on';
+    b.onclick = function(){
+      document.querySelectorAll('#trkTabs button').forEach(function(x){ x.className=''; });
+      b.className='on'; showTrk(i);
+    };
+    tabs.appendChild(b);
+  });
+  showTrk(0);
+}
+function showTrk(i){
+  var T = TRKS[i];
+  var h = '<div class="result" style="margin-bottom:12px"><b>'+T.ico+' '+T.name+'</b> · '+T.sub+'<br><span style="font-size:12.5px">'+T.pre+'</span></div>';
+  T.steps.forEach(function(s, k){
+    h += '<div class="rstep"><div class="rh"><span class="n">STEP '+(k+1)+'</span>'+s.t+'</div>'
+      + '<div class="why">💡 '+s.why+'</div>'
+      + '<div class="tpl">'+s.p.replace(/\n/g,'<br>')+'</div>'
+      + '<button class="btn2" onclick="copyText(this.parentNode.querySelector(\'.tpl\').innerText,this)">📋 复制本步提示词</button>'
+      + '<div class="chk">✅ 本步自查：'+s.c+'</div></div>';
+  });
+  h += '<div class="result ok">🎓 走完这条路线，你就完整经历了一遍「立项→核心功能→打磨→上线」。把它套到任何项目上都成立。</div>';
+  el('trkBody').innerHTML = h;
+}
+
+/* ================= 开工工场 · 产线B 生成器 ================= */
+var WTYPES = [
+  {id:'saas', name:'SaaS 网页应用', small:'客户管理/库存/预约这类在线工具', tech:'纯 HTML+CSS+JavaScript 单文件网页应用，双击浏览器就能打开，不需要安装任何环境和数据库，数据先存浏览器 localStorage。',
+   no:'不要登录注册、不要数据库、不要支付、不要多语言。', demo:'新增一条数据并刷新页面，数据还在',
+   f1:'新增数据（表单提交后立刻出现在列表）', f2:'数据列表展示', f3:'删除和编辑'},
+  {id:'mp', name:'微信小程序', small:'打卡/查询这类手机上用的小程序', tech:'微信小程序原生框架（WXML+WXSS+JS），暂不使用云开发和后端，数据存小程序本地 storage，界面简洁，告诉我每个文件该放进开发者工具的哪里。',
+   no:'不要云开发、不要支付、不要登录。', demo:'在微信开发者工具编译预览正常，重新编译后数据还在',
+   f1:'核心操作页（打卡/查询的主界面）', f2:'数据本地保存与展示', f3:'统计或汇总视图'},
+  {id:'web', name:'基础网页', small:'个人主页/活动页/介绍页', tech:'纯 HTML+CSS+JavaScript 单文件，不使用任何外部框架和库，双击浏览器就能打开，手机上也不乱版。',
+   no:'不要后台管理、不要数据库、不要动画库。', demo:'刷新页面后内容和配色正常',
+   f1:'首屏（名字+一句话+头像占位）', f2:'内容区块（介绍/作品/联系方式）', f3:'移动端自适应'},
+  {id:'game', name:'小游戏', small:'打地鼠/贪吃蛇/猜数字这类', tech:'纯 HTML+CSS+JavaScript 单文件，图形用 CSS 和 emoji，音效用 Web Audio 现场生成，不引用任何外部文件，双击浏览器就能玩。',
+   no:'不要联网排行、不要外部素材图片和音频文件。', demo:'能完整玩一局，刷新后最高分还在',
+   f1:'核心玩法（能玩起来）', f2:'计分与结束结算面板', f3:'最高分持久化'},
+  {id:'tool', name:'实用小工具', small:'记账/番茄钟/倒计时这类天天用的', tech:'纯 HTML+CSS+JavaScript 单文件，双击浏览器就能打开，数据存 localStorage。',
+   no:'不要登录、不要联网功能。', demo:'记录一条数据并刷新，数据还在',
+   f1:'核心操作（一眼会用的大按钮）', f2:'数据本地保存', f3:'统计展示'}
+];
+var wizW = 0;
+var wiz = {type:'saas', name:'', who:'', prob:'', f1:'', f2:'', f3:'', no:'', extra:''};
+function wizLoad(){ try{ var s = JSON.parse(localStorage.getItem('vxc_wiz')||'null'); if (s) wiz = s; }catch(e){} }
+function wizSave(){
+  ['name','who','prob','f1','f2','f3','no','extra'].forEach(function(k){
+    var e = el('w_'+k); if (e) wiz[k] = e.value;
+  });
+  try{ localStorage.setItem('vxc_wiz', JSON.stringify(wiz)); }catch(e){}
+}
+function renderWizTypes(){
+  var box = el('wizTypes'); box.innerHTML='';
+  WTYPES.forEach(function(t){
+    var d = document.createElement('div');
+    d.className = 'typeopt' + (wiz.type===t.id ? ' on' : '');
+    d.innerHTML = '<b>'+t.name+'</b><small>'+t.small+'</small>';
+    d.onclick = function(){
+      wiz.type = t.id; wizSave(); renderWizTypes(); syncPlaceholders();
+    };
+    box.appendChild(d);
+  });
+}
+function syncPlaceholders(){
+  var t = WTYPES.find(function(x){ return x.id===wiz.type; });
+  el('w_f1').placeholder = '功能1，例：'+t.f1;
+  el('w_f2').placeholder = '功能2，例：'+t.f2;
+  el('w_f3').placeholder = '功能3，例：'+t.f3;
+  if (!el('w_no').value) el('w_no').placeholder = '留空则自动加：'+t.no;
+}
+var WLBL = ['类型','是谁·啥事','功能','生成'];
+function renderWizDots(){
+  var d = el('wizDots'); d.innerHTML='';
+  WLBL.forEach(function(w,i){
+    var sp = document.createElement('span');
+    sp.textContent = (i+1)+' '+w;
+    if (i===wizW) sp.className='on'; else if (i<wizW) sp.className='done';
+    sp.onclick = function(){ if (i<wizW){ wizW=i; showWizPanel(); } };
+    d.appendChild(sp);
+  });
+}
+function showWizPanel(){
+  for (var i=0;i<4;i++){ el('wp'+i).className = 'wiz-panel' + (i===wizW?' on':''); }
+  el('wizPrev').style.visibility = wizW===0 ? 'hidden' : 'visible';
+  el('wizNextB').textContent = wizW===3 ? '（在上面点「生成」）' : '下一步 →';
+  renderWizDots();
+}
+function wizGo(d){
+  if (d<0){ wizW = Math.max(0, wizW+d); showWizPanel(); return; }
+  if (wizW===1){
+    if (!el('w_who').value.trim() || !el('w_prob').value.trim()){ toast('「给谁用」和「解决什么问题」要填哦——这两句决定 AI 做得对不对'); return; }
+  }
+  if (wizW===2){
+    if (!el('w_f1').value.trim()){ toast('至少写 1 个第一版功能（MVP 心态，三五个就够）'); return; }
+  }
+  wizW = Math.min(3, wizW+d); showWizPanel();
+  if (wizW===3){ syncPlaceholders(); }
+}
+function wizMake(){
+  wizSave();
+  var t = WTYPES.find(function(x){ return x.id===wiz.type; });
+  var name = el('w_name').value.trim() || '我的第一个应用';
+  var no = el('w_no').value.trim() || t.no;
+  var fs = [el('w_f1').value.trim(), el('w_f2').value.trim()||t.f2, el('w_f3').value.trim()||t.f3].filter(Boolean);
+  var extra = el('w_extra').value.trim();
+  var p = '【背景】我是零基础新手，正在用 AI 边学边做软件。这个东西叫《'+name+'》，给 '+el('w_who').value.trim()+' 用，用来解决：'+el('w_prob').value.trim()+'。\n'
+        + '【任务】请帮我做一套'+t.name+'。\n'
+        + '【技术】'+t.tech+'\n'
+        + '【功能】第一版只要：' + fs.map(function(f,i){ return (i+1)+'、'+f; }).join('  ') + '\n'
+        + '【不要】'+no+'\n'
+        + '【验收】① 打开/编译不报错；② '+t.demo+'；③ '+(extra||'界面简洁，新手不看说明也会用')+'。\n'
+        + '【节奏】先用你的话复述一遍我的需求，我确认无误后再动手；做完告诉我怎么打开看效果；以后每次只改我要求的部分，别顺手改别的。';
+  el('wizOut').textContent = p;
+  el('wizOutBox').classList.remove('hidden');
+  confetti();
+  toast('开工令生成完毕 🎉');
+}
+function wizReset(){
+  wiz = {type:wiz.type, name:'', who:'', prob:'', f1:'', f2:'', f3:'', no:'', extra:''};
+  ['name','who','prob','f1','f2','f3','no','extra'].forEach(function(k){ el('w_'+k).value=''; });
+  try{ localStorage.setItem('vxc_wiz', JSON.stringify(wiz)); }catch(e){}
+  el('wizOutBox').classList.add('hidden');
+  wizW = 0; showWizPanel(); syncPlaceholders();
+  toast('已清空，重新填一份');
+}
+
 /* ================= init ================= */
 loadP(); renderBadges(); renderCh02(); renderCh05(); renderLevelCards(); renderTrackCards(); renderVs();
 renderFrag(); renderSD(); renderMis();
+wizLoad(); renderWizTypes(); syncPlaceholders(); showWizPanel(); renderTrks();
 </script>
 </body>
 </html>
