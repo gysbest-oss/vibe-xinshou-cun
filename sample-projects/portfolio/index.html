@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>林小满 · 个人主页 · 路线图终点示例</title>
+<style>
+body{font-family:"Microsoft YaHei",sans-serif;max-width:680px;margin:0 auto;padding:0 18px;color:#2b2b2b;background:#fafafa;transition:.25s;}
+nav{display:flex;justify-content:flex-end;padding:14px 0;}
+button{padding:7px 14px;border:1px solid #ccc;border-radius:99px;background:#fff;cursor:pointer;font-size:13px;}
+.hero{text-align:center;padding:36px 0 26px;}
+.hero .av{font-size:56px;}
+.hero h1{font-size:26px;margin:8px 0 4px;}
+.hero p{color:#888;font-size:14px;}
+h2{font-size:17px;border-left:4px solid #2f5233;padding-left:10px;margin:26px 0 10px;}
+.about{font-size:14px;line-height:1.9;color:#555;}
+.works{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.work{background:#fff;border:1px solid #eee;border-radius:12px;padding:14px;transition:.15s;font-size:13px;}
+.work:hover{transform:translateY(-4px);box-shadow:0 6px 16px rgba(0,0,0,.08);}
+.work b{display:block;margin-bottom:4px;}
+.work .em{font-size:26px;}
+.contact{font-size:14px;line-height:2;color:#555;}
+footer{text-align:center;color:#aaa;font-size:12px;padding:26px 0;}
+body.dark{background:#141a17;color:#cfe8d4;}
+body.dark .work{background:#1b2420;border-color:#2c3a30;}
+body.dark h2{border-color:#57d977;}
+body.dark .about,body.dark .contact{color:#9db8a4;}
+@media(max-width:560px){.works{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav><button onclick="toggleDark()">🌙 深色模式</button></nav>
+<div class="hero">
+  <div class="av">🧑‍🌾</div>
+  <h1>林小满</h1>
+  <p>正在学 vibecoding 的杂货铺老板娘 · 用 AI 做出自己的第一个软件</p>
+</div>
+<h2>关于我</h2>
+<p class="about">白天看店，晚上学 vibecoding。这个页面是我跟着「新手村」路线图，一步步对 Codex 说出来的——没有写过一行代码，全是"说需求"。</p>
+<h2>我的作品</h2>
+<div class="works">
+  <div class="work"><span class="em">🧮</span><b>小账本</b>我的第一个项目，每天关店记一笔，月底再也不对不上账。</div>
+  <div class="work"><span class="em">🎂</span><b>生日提醒</b>家人的生日一眼看到，再也没忘过。</div>
+  <div class="work"><span class="em">🍅</span><b>专注番茄钟</b>学 vibecoding 时用的，白噪音很好听。</div>
+</div>
+<h2>联系我</h2>
+<p class="contact">微信：xiaoman233（示例占位）<br>邮箱：xiaoman@example.com</p>
+<footer>© 2026 林小满 · 用 vibecoding 造 · 深色模式会记住你的选择</footer>
+<script>
+function applyDark(on){
+  document.body.classList.toggle('dark', on);
+  document.querySelector('nav button').textContent = on ? '☀️ 亮色模式' : '🌙 深色模式';
+}
+function toggleDark(){
+  var on = !document.body.classList.contains('dark');
+  try{ localStorage.setItem('pf_dark', on?'1':'0'); }catch(e){}
+  applyDark(on);
+}
+try{ applyDark(localStorage.getItem('pf_dark')==='1'); }catch(e){}
+</script>
+</body>
+</html>
