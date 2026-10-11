@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="VibeCoding 新手村：装在 Codex/ZCode 里的对话式教学游戏，8 关全可试玩">
-<title>VibeCoding 新手村 · 全关卡试玩</title>
+<meta name="description" content="黎小小VibeCoding新手村练手：装在 Codex/ZCode 里的对话式教学游戏，8 关全可试玩 + 需求规范化学堂">
+<title>黎小小VibeCoding新手村练手 · 全关卡试玩</title>
 <style>
 :root{
   --bg:#0c1810; --panel:#122417; --panel2:#0f1f13; --line:#1e3a26;
@@ -199,6 +199,20 @@ iframe.play{width:100%;height:460px;border:1px solid var(--line);border-radius:1
 .step .n{display:inline-flex;width:28px;height:28px;border-radius:50%;border:1px solid var(--green-dim);color:var(--green);align-items:center;justify-content:center;font-family:Consolas,monospace;margin-bottom:8px;}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
 .chip{font-size:12px;color:var(--green);border:1px solid var(--line);border-radius:99px;padding:5px 12px;background:var(--panel);}
+/* 学堂 */
+.mh2{color:var(--green);font-size:15px;margin:22px 0 8px;}
+.bubble{background:#0a140d;border:1px solid var(--line);border-left:3px solid var(--green);border-radius:10px;padding:10px 14px;font-size:14px;max-width:85%;}
+.bubble .who{font-size:11px;color:var(--muted);margin-bottom:2px;}
+.frag .more{display:none;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px;}
+.frag.open .more{display:block;}
+.frag .out{color:var(--amber);}
+.sd-dots{display:flex;gap:8px;justify-content:center;margin:14px 0 12px;flex-wrap:wrap;}
+.sd-dots span{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;font-family:Consolas,monospace;}
+.sd-dots span.on{border-color:var(--green);color:var(--green);box-shadow:0 0 10px rgba(87,217,119,.25);}
+.sd-dots span.done{border-color:var(--green-dim);color:var(--green-dim);}
+.sd-body{min-height:130px;font-size:13.5px;}
+.sd-body ul{padding-left:20px;margin:6px 0;}
+.tpl{background:#0a140d;border:1px solid var(--green-dim);border-radius:10px;padding:14px 16px;font-family:Consolas,"Courier New",monospace;font-size:12.5px;white-space:pre-wrap;color:#bce9c6;line-height:2;margin-top:8px;}
 
 footer{max-width:920px;margin:40px auto 0;padding:24px 20px 44px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center;}
 footer a{color:var(--green);text-decoration:none;}
@@ -212,19 +226,20 @@ footer a{color:var(--green);text-decoration:none;}
 <body>
 
 <nav>
-  <span class="logo">🏘️ 新手村</span>
+  <span class="logo">🏫 黎小小·新手村</span>
   <a href="#demo">试玩广场</a>
   <a href="#levels">关卡地图</a>
   <a href="#tracks">四个方向</a>
   <a href="#vs">表达对照</a>
+  <a href="#school">学堂</a>
   <a href="#badges">徽章墙</a>
   <a href="#how">完整版</a>
   <span class="cnt" id="navCnt">🏅 0/8</span>
 </nav>
 
 <header class="hero">
-  <div class="tag">AGENT 原生 · 对话式教学游戏</div>
-  <h1>🏘️ VibeCoding 新手村<span class="cursor">▌</span></h1>
+  <div class="tag">黎小小 · AGENT 原生 · 对话式教学游戏</div>
+  <h1>黎小小VibeCoding新手村练手<span class="cursor">▌</span></h1>
   <p class="sub">你负责"说"，AI 负责"做"。8 个关卡，亲手"说"出一个真实能跑的小项目。本页是全关卡试玩版——每一关都能玩，徽章全可点亮。</p>
   <div class="hero-btns">
     <a class="btn primary" href="#demo">▶ 进入试玩广场</a>
@@ -392,9 +407,59 @@ footer a{color:var(--green);text-decoration:none;}
   <div class="grid c3" id="vsCards"></div>
 </section>
 
+<!-- ============ 学堂 ============ -->
+<section id="school">
+  <h2><span class="no">05</span>📚 黎小小学堂 · 需求是怎么炼成的</h2>
+  <p class="sec-sub">游戏教你"怎么跟 AI 说话"，这一节往前再走一步：<b style="color:var(--text)">需求从哪来、碎片怎么变规范</b>。这是 vibecoding 的上游——上游清楚了，下游（游戏里的 8 关）全是水到渠成。</p>
+
+  <div class="result" style="margin-bottom:6px">
+    <b>先建立世界观：vibecoding 里你到底干什么？</b><br>
+    传统开发：人写代码，机器执行。vibecoding 反过来：<b>人写"需求"，AI 写代码</b>。你的角色从程序员变成<b>产品经理 + 验收官</b>，核心技能只剩两个——<b style="color:var(--green)">把话说清楚</b>、<b style="color:var(--green)">亲手验收</b>。AI 是一个无限耐心、干劲十足、但必须你把话说清楚它才能干活的初级程序员。
+  </div>
+
+  <div class="mh2">① 碎片是怎么来的 —— 需求从来不是完整文档，是日常掉落的碎片</div>
+  <p class="sec-sub" style="margin-bottom:10px">真项目的起点都是些一句话、一声叹气、一张截图。点卡片看它们怎么被追问成半个需求：</p>
+  <div class="grid c2" id="fragCards"></div>
+
+  <div class="mh2">② 一条需求的诞生 —— 从一句抱怨到一份开工令（6 步，点下一步走完全程）</div>
+  <div class="demo open" style="padding:0 16px 16px">
+    <div class="sd-dots" id="sdDots"></div>
+    <div class="sd-body" id="sdBody"></div>
+    <div class="inrow" style="border:none">
+      <button class="btn2 ghost" onclick="sdGo(-1)">← 上一步</button>
+      <button class="btn2" id="sdNext" onclick="sdGo(1)">下一步 →</button>
+    </div>
+  </div>
+
+  <div class="mh2">③ 碎片 → 规范的固定流水线（背下这五步）</div>
+  <div class="steps" style="grid-template-columns:repeat(3,1fr)">
+    <div class="step"><span class="n"></span><h3>原话入箱</h3><p>听到/想到就记：原话 + 日期 + 谁说的。先别加工——一加工就变成你自己脑补的东西了。</p></div>
+    <div class="step"><span class="n"></span><h3>场景追问</h3><p>固定四问：谁用？什么时候用？现在怎么解决的？最痛的是哪一下？问完这四个，半个需求就有了。</p></div>
+    <div class="step"><span class="n"></span><h3>四要素结构化</h3><p>给谁用 / 解决什么问题 / 大概长什么样 / 明确不要什么。写不出来说明追问没到位，回去补。</p></div>
+    <div class="step"><span class="n"></span><h3>MVP + 验收前置</h3><p>功能分三级，必须的三五个；"做完的标准"写在动手之前，AI 照着交卷。</p></div>
+    <div class="step"><span class="n"></span><h3>版本记档</h3><p>每次改需求记一行：改了什么 / 为什么 / 哪一版。不然三周后连自己都不知道这功能当初为啥加。</p></div>
+    <div class="step" style="border-style:dashed"><span class="n" style="border-color:var(--amber);color:var(--amber)">√</span><h3 style="color:var(--amber)">及格线自检</h3><p>把你的需求念给外行听，他不用追问就懂 = 及格。他反问的每一个问题，都是你漏写的要素。</p></div>
+  </div>
+
+  <div class="mh2">④ 万能提示词骨架（任何项目都从这段开始）</div>
+  <div class="tpl" id="tplText">【背景】我是（你的身份），这个东西给（谁）用，他现在的办法是（现状+痛点）。
+【任务】请帮我做一个（一句话说清的东西）。
+【功能】第一版只要：1、…  2、…  3、…（MVP 清单，三五个）
+【不要】不要（…）、不要（…）——防止你自作主张。
+【验收】做完的标准：① 双击打开不报错 ② （操作A→结果A） ③ （操作B→结果B）。
+【节奏】先别写代码，先用你的话复述一遍我的需求，我确认无误后再动手。</div>
+  <div class="inrow" style="border:none;padding-top:10px">
+    <button class="btn2" onclick="copyTpl()">📋 复制这份骨架</button>
+    <span style="font-size:12px;color:var(--muted);align-self:center">填空后直接发给 Codex / ZCode 就能开工——这就是完整版第 4 关教你写的"开工令"</span>
+  </div>
+
+  <div class="mh2">⑤ 新手六大误区（点卡片看正确做法）</div>
+  <div class="grid c3" id="misCards"></div>
+</section>
+
 <!-- ============ 徽章墙 ============ -->
 <section id="badges">
-  <h2><span class="no">05</span>🏅 徽章墙（点击看获得条件）</h2>
+  <h2><span class="no">06</span>🏅 徽章墙（点击看获得条件）</h2>
   <p class="sec-sub">章节徽章试玩对应关卡即可点亮；预览版把隐藏徽章的条件也公开了。</p>
   <div class="badges" id="badgeWall"></div>
   <div class="inrow" style="border:none;padding-top:14px"><button class="btn2 ghost" onclick="resetProgress()">🗑 清空本机存档重来</button></div>
@@ -402,7 +467,7 @@ footer a{color:var(--green);text-decoration:none;}
 
 <!-- ============ 完整版 ============ -->
 <section id="how">
-  <h2><span class="no">06</span>📦 完整版怎么玩</h2>
+  <h2><span class="no">07</span>📦 完整版怎么玩</h2>
   <p class="sec-sub">完整版是一个文件夹，由真 AI 当主持人：你说的话它真的接、真的执行、项目真的诞生。本页演示只是写死的剧本。</p>
   <div class="steps">
     <div class="step"><span class="n"></span><h3>下载并解压</h3><p>下载完整版 zip 并解压，里面是全部游戏：规则、8 关剧本、4 方向、2 个带 bug 的源码包。</p></div>
@@ -422,8 +487,8 @@ footer a{color:var(--green);text-decoration:none;}
 </main>
 
 <footer>
-  <b>VibeCoding 新手村</b> · 完整版：AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置源码包<br>
-  适合转给任何想学用 AI 编程工具的小白 · v2.0 · 2026-10-12
+  <b>黎小小VibeCoding新手村练手</b> · 完整版：AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置源码包<br>
+  适合转给任何想学用 AI 编程工具的小白 · v3.0 · 2026-10-12
 </footer>
 
 <!-- modal / toast / confetti -->
@@ -990,8 +1055,92 @@ function renderVs(){
   });
 }
 
+/* ================= 学堂：碎片卡 / 诞生流水线 / 误区 ================= */
+var FRAG = [
+  {ico:'💬', src:'老板娘 22:31：「烦死了，月底又对不上账，脑子记不过来了😭」', ask:'追问四连：谁用？——老板娘自己。什么时候用？——每晚关店后。现在怎么解决？——小本子记，老忘。最痛哪一下？——月底对不上。', out:'→ 能变成：记账小工具（游戏里「实用小工具」方向）'},
+  {ico:'🎂', src:'老板娘 08:12：「三姨生日又忘了，每年都坑」', ask:'多久一次？——一年好几回。要提前几天提醒？——最好提前 7 天，一目了然那种。', out:'→ 能变成：家人生日提醒页（完整版第 7 关的毕业考真题）'},
+  {ico:'📱', src:'同事：「你看这个小程序，咱也搞一个呗」', ask:'先别答应。追问：你到底看中它哪一点？——能扫码记账。咱自己真用得上吗？——先手工记一周试试。', out:'→ 能变成：先做最小版试一周，而不是照抄整个小程序（照抄=需求灾难）'},
+  {ico:'📋', src:'你自己：每周五手动汇总表格发群里，好烦', ask:'有规律吗？——固定周五、固定格式。AI 能替到哪步？——自动汇总+生成小结。', out:'→ 能变成：自动汇总页面，一键生成本周小结'}
+];
+function renderFrag(){
+  var box = el('fragCards');
+  FRAG.forEach(function(f){
+    var d = document.createElement('div'); d.className='card frag';
+    d.innerHTML = '<div class="ico">'+f.ico+'</div><p style="color:var(--text)">"'+f.src+'"</p>'
+      + '<div class="more"><p style="font-size:12.5px">'+f.ask+'</p><p class="out" style="font-size:12.5px;margin-top:6px">'+f.out+'</p></div>'
+      + '<div class="go">👆 点击：它怎么变成需求</div>';
+    d.onclick = function(){
+      d.classList.toggle('open');
+      d.querySelector('.go').textContent = d.classList.contains('open') ? '收起 ▲' : '👆 点击：它怎么变成需求';
+    };
+    box.appendChild(d);
+  });
+}
+var SD = [
+  {t:'碎片', h:'<div class="bubble"><div class="who">杂货铺老板娘 · 晚上 22:31 · 微信</div>烦死了，月底又对不上账，脑子记不过来了😭</div><p style="margin-top:8px;color:var(--muted);font-size:12.5px">真实项目的起点，往往就是这么一句没有结构的抱怨。直接把它丢给 AI？它只能瞎猜。</p>'},
+  {t:'追问', h:'<p><b style="color:var(--green)">场景追问四连</b>（面对面聊或发语音都行，五分钟）：</p><ul><li>谁用？——<b>老板娘自己</b></li><li>什么时候用？——<b>每天关店后记一笔</b></li><li>现在怎么解决？——<b>小本子，老忘，月底乱</b></li><li>最痛哪一下？——<b>月底对不上总账</b></li></ul>'},
+  {t:'四要素', h:'<p>追问的答案，顺手就摆成了<b>需求四要素</b>：</p><ul><li>给谁用：老板娘自己（不懂电脑）</li><li>解决什么：记每天流水，随时看总数</li><li>长什么样：网页，上面输入金额+备注，下面流水列表和总额</li><li>不要：登录、图表、分类统计</li></ul>'},
+  {t:'砍MVP', h:'<p>脑子里蹦出的功能有 10 个，挥刀：</p><ul><li><b style="color:var(--green)">必须（4）</b>：记一笔 / 流水列表 / 总金额 / 删除</li><li><b style="color:var(--amber)">可以（往后）</b>：按日期筛选、改错</li><li><b style="color:var(--red)">先不要</b>：图表、导出、多账本……</li></ul><p style="font-size:12.5px;color:var(--muted)">第一版只需要"最小但真的能用"。</p>'},
+  {t:'验收', h:'<p>动手前先写好<b>做完的标准</b>（给 AI 的交卷要求）：</p><ul><li>① 双击打开不报错</li><li>② 输入金额备注点"记一笔"，出现在列表，总额实时变</li><li>③ 每笔能删除</li><li>④ 刷新页面，账目还在</li></ul>'},
+  {t:'开工令', h:'<p><b>拼装完成——这就是发给 AI 的开工令：</b></p><div class="tpl">给不懂电脑的杂货铺老板娘做一个网页记账本，解决她每天手工记账老忘、月底对不上账的问题。\n第一版只要：记一笔（金额+备注）、流水列表、总金额实时显示、删除。\n不要登录、不要图表、不要分类统计。\n做完的标准：①双击打开不报错；②记一笔立刻出现在列表、总额实时变；③每笔可删；④刷新数据还在。\n先复述一遍我的需求，我确认后再动手。</div><p style="margin-top:8px;font-size:12.5px;color:var(--muted)">完整版里，这段话发出去，项目就真的诞生了。去下方「试玩广场」的成品屋玩做出来的东西 →</p>'}
+];
+var sdIdx = 0;
+function renderSD(){
+  var dots = el('sdDots'); dots.innerHTML='';
+  SD.forEach(function(s,i){
+    var sp = document.createElement('span');
+    sp.textContent = i;
+    if (i===sdIdx) sp.className='on'; else if (i<sdIdx) sp.className='done';
+    sp.onclick = function(){ sdIdx=i; renderSD(); };
+    dots.appendChild(sp);
+  });
+  el('sdBody').innerHTML = SD[sdIdx].h;
+  el('sdNext').textContent = sdIdx===SD.length-1 ? '🎉 完成，去玩成品' : '下一步 →';
+}
+function sdGo(d){
+  if (d>0 && sdIdx===SD.length-1){ closeModal&&closeModal(); scrollToId('demo'); toast('看完诞生记，去试玩广场动手吧'); return; }
+  sdIdx = Math.max(0, Math.min(SD.length-1, sdIdx+d));
+  renderSD();
+}
+var MIS = [
+  {b:'一口气提五个需求', g:'一次一个：改完、验收、再下一个。出了问题才知道是哪句引起的'},
+  {b:'「你看着办」', g:'主导权交给运气。哪怕只写两句具体要求，也好过全交出去'},
+  {b:'做完才想怎么验收', g:'验收标准前置：动手前就写好"做完的标准"，AI 照着交卷'},
+  {b:'AI 说"做完了"就信', g:'亲手验收三件套：打开不报错、操作一遍、刷新看数据还在不在'},
+  {b:'出 bug 只会喊「坏了」', g:'四要素：做了什么 / 期望什么 / 实际什么 / 怎么复现'},
+  {b:'改需求不记档', g:'记一行：改了什么 / 为什么 / 哪一版。三周后的你会感谢现在的你'}
+];
+function renderMis(){
+  var box = el('misCards');
+  MIS.forEach(function(m){
+    var d = document.createElement('div'); d.className='card frag';
+    d.innerHTML = '<p style="color:#f0b6ae;font-size:13.5px">❌ '+m.b+'</p>'
+      + '<div class="more"><p style="font-size:12.5px;color:#bce9c6">✅ '+m.g+'</p></div>'
+      + '<div class="go">👆 点击看正确做法</div>';
+    d.onclick = function(){
+      d.classList.toggle('open');
+      d.querySelector('.go').textContent = d.classList.contains('open') ? '收起 ▲' : '👆 点击看正确做法';
+    };
+    box.appendChild(d);
+  });
+}
+function copyTpl(){
+  var txt = el('tplText').innerText;
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('已复制，去粘贴给 AI 吧 📋'); }
+    catch(e){ toast('复制失败，请手动长按选择复制'); }
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast('已复制，去粘贴给 AI 吧 📋'); }, fallback);
+  } else fallback();
+}
+
 /* ================= init ================= */
 loadP(); renderBadges(); renderCh02(); renderCh05(); renderLevelCards(); renderTrackCards(); renderVs();
+renderFrag(); renderSD(); renderMis();
 </script>
 </body>
 </html>
