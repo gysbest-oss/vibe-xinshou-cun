@@ -819,8 +819,10 @@ function submitCh06(){
 }
 function renderCert(){
   var box = el('certBox');
+  var need = CH.filter(function(c){ return c.id!=='ch07'; });
+  var done = need.every(function(c){ return has(c.id); });
   var n = litCount();
-  if (n>=8){
+  if (done){
     box.innerHTML = '<div class="cert"><h3>🎓 VibeCoding 新手村 · 毕业证书</h3>'
     + '<div class="name">'+(P.name||'神秘玩家')+'</div>'
     + '<p>已完成全部 8 关试玩，点亮全部章节徽章</p>'
@@ -831,8 +833,8 @@ function renderCert(){
     + '<div class="inrow" style="border:none"><button class="btn2" onclick="claimName()">✍️ 证书上写我的名字</button></div>';
     award('ch07');
   } else {
-    var missing = CH.filter(function(c){ return !has(c.id); }).map(function(c){ return c.name; });
-    box.innerHTML = '<p>毕业要求：点亮全部 8 枚章节徽章。</p><p style="margin:8px 0">当前 <b style="color:var(--amber)">'+n+'/8</b>，还差：'+missing.join('、')+'</p><p style="font-size:12.5px;color:var(--muted)">去「试玩广场」把没玩的关卡玩完，回来领证～（进度存本机，关了页面也不丢）</p><div class="inrow" style="border:none"><button class="btn2 primary" onclick="closeModal();scrollToId(\'demo\')">去补关</button></div>';
+    var missing = need.filter(function(c){ return !has(c.id); }).map(function(c){ return c.name; });
+    box.innerHTML = '<p>毕业要求：点亮前 7 关的章节徽章（开机成功 → 考古学家）。</p><p style="margin:8px 0">当前 <b style="color:var(--amber)">'+n+'/8</b>，还差：'+missing.join('、')+'</p><p style="font-size:12.5px;color:var(--muted)">去「试玩广场」把没玩的关卡玩完，回来领证～（进度存本机，关了页面也不丢）</p><div class="inrow" style="border:none"><button class="btn2 primary" onclick="closeModal();scrollToId(\'demo\')">去补关</button></div>';
   }
 }
 function claimName(){
