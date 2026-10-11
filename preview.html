@@ -3,431 +3,993 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="VibeCoding 新手村：装在 Codex/ZCode 里的对话式教学游戏，试玩第 0 关">
-<title>VibeCoding 新手村 · 试玩预览</title>
+<meta name="description" content="VibeCoding 新手村：装在 Codex/ZCode 里的对话式教学游戏，8 关全可试玩">
+<title>VibeCoding 新手村 · 全关卡试玩</title>
 <style>
 :root{
   --bg:#0c1810; --panel:#122417; --panel2:#0f1f13; --line:#1e3a26;
   --green:#57d977; --green-dim:#2f7a4a; --text:#cfe8d4; --muted:#7fa88b;
   --amber:#e8c46a; --red:#e06c5f;
 }
-*{box-sizing:border-box; margin:0; padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{
-  background:var(--bg); color:var(--text);
-  font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
-  line-height:1.7;
-}
-main,section inner{max-width:880px;margin:0 auto;}
-section{max-width:880px;margin:0 auto;padding:44px 20px 8px;}
+body{background:var(--bg);color:var(--text);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.7;}
+button{font-family:inherit;}
+section{max-width:920px;margin:0 auto;padding:44px 20px 8px;}
 .mono{font-family:Consolas,"Courier New",monospace;}
+.hidden{display:none !important;}
 
-/* ---------- hero ---------- */
+/* nav */
+nav{
+  position:sticky;top:0;z-index:50;display:flex;gap:4px;align-items:center;
+  padding:10px 16px;background:rgba(12,24,16,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);overflow-x:auto;white-space:nowrap;
+}
+nav .logo{font-weight:bold;color:#eafff0;margin-right:10px;font-size:14px;}
+nav a{
+  color:var(--muted);text-decoration:none;font-size:13px;padding:5px 12px;border-radius:99px;
+  border:1px solid transparent;flex-shrink:0;
+}
+nav a:hover{color:var(--green);border-color:var(--line);}
+nav .cnt{margin-left:auto;font-size:12px;color:var(--amber);flex-shrink:0;}
+
+/* hero */
 .hero{
-  padding:72px 20px 56px; text-align:center;
+  padding:64px 20px 48px;text-align:center;
   background:
-    repeating-linear-gradient(0deg, transparent 0 34px, rgba(87,217,119,.045) 34px 35px),
-    repeating-linear-gradient(90deg, transparent 0 34px, rgba(87,217,119,.045) 34px 35px),
-    radial-gradient(ellipse at 50% -20%, #17331f 0%, var(--bg) 62%);
+    repeating-linear-gradient(0deg,transparent 0 34px,rgba(87,217,119,.045) 34px 35px),
+    repeating-linear-gradient(90deg,transparent 0 34px,rgba(87,217,119,.045) 34px 35px),
+    radial-gradient(ellipse at 50% -20%,#17331f 0%,var(--bg) 62%);
   border-bottom:1px solid var(--line);
 }
-.tag{
-  display:inline-block; font-size:12px; letter-spacing:3px; color:var(--green);
-  border:1px solid var(--green-dim); border-radius:99px; padding:4px 14px; margin-bottom:22px;
-}
-h1{font-size:40px; letter-spacing:1px; color:#eafff0;}
-h1 .cursor{display:inline-block;width:20px;color:var(--green);animation:blink 1s steps(1) infinite;}
+.tag{display:inline-block;font-size:12px;letter-spacing:3px;color:var(--green);border:1px solid var(--green-dim);border-radius:99px;padding:4px 14px;margin-bottom:20px;}
+h1{font-size:38px;color:#eafff0;}
+h1 .cursor{display:inline-block;width:18px;color:var(--green);animation:blink 1s steps(1) infinite;}
 @keyframes blink{50%{opacity:0;}}
-.sub{max-width:560px;margin:16px auto 0;color:var(--muted);font-size:16px;}
-.hero-btns{margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
-.btn{
-  display:inline-block;padding:12px 26px;border-radius:8px;text-decoration:none;
-  font-size:15px;border:1px solid var(--green-dim);color:var(--green);transition:.15s;
-}
+.sub{max-width:600px;margin:14px auto 0;color:var(--muted);font-size:15px;}
+.hero-btns{margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn{display:inline-block;padding:11px 24px;border-radius:8px;text-decoration:none;font-size:14px;border:1px solid var(--green-dim);color:var(--green);background:none;cursor:pointer;transition:.15s;}
 .btn:hover{transform:translateY(-2px);}
 .btn.primary{background:var(--green-dim);color:#eafff0;font-weight:bold;}
 .btn.primary:hover{background:#3a9159;}
-.hero-meta{margin-top:22px;font-size:13px;color:var(--muted);}
+.btn.small{padding:6px 14px;font-size:12.5px;}
+.btn.amber{border-color:var(--amber);color:var(--amber);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.hero-meta{margin-top:18px;font-size:13px;color:var(--muted);}
+.hero-prog{margin-top:10px;font-size:13px;color:var(--amber);}
 
-/* ---------- sections ---------- */
-h2{font-size:24px;color:#eafff0;margin-bottom:8px;}
+h2{font-size:23px;color:#eafff0;margin-bottom:8px;}
 h2 .no{color:var(--green);font-family:Consolas,monospace;margin-right:8px;}
-.sec-sub{color:var(--muted);font-size:14px;margin-bottom:22px;}
+.sec-sub{color:var(--muted);font-size:13.5px;margin-bottom:20px;}
 
-/* ---------- chat ---------- */
-.chat-wrap{
-  background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;
-  box-shadow:0 10px 40px rgba(0,0,0,.4);
-}
-.chat-head{
-  display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--panel2);
-  border-bottom:1px solid var(--line);font-size:13px;color:var(--muted);
-}
-.chat-head .dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
-.chat-head .mono{color:var(--green);}
-#chat{
-  height:420px;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:12px;
-  background:
-    repeating-linear-gradient(0deg, transparent 0 30px, rgba(87,217,119,.03) 30px 31px);
-}
-.msg{max-width:86%;padding:10px 14px;border-radius:10px;font-size:14.5px;animation:pop .22s ease;}
+/* cards & grids */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.grid.c3{grid-template-columns:repeat(3,1fr);}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;transition:.15s;cursor:pointer;text-align:left;}
+.card:hover{transform:translateY(-3px);border-color:var(--green-dim);}
+.card .lv{font-family:Consolas,monospace;color:var(--green);font-size:12.5px;display:flex;justify-content:space-between;align-items:center;}
+.card .ico{font-size:24px;margin:6px 0;}
+.card h3{font-size:15px;color:#eafff0;}
+.card p{font-size:12.5px;color:var(--muted);margin-top:4px;}
+.card .go{font-size:12px;color:var(--green);margin-top:8px;}
+.card .done-mark{color:var(--amber);font-size:12px;}
+
+/* accordion demos */
+.demo{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden;}
+.demo-head{display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;user-select:none;}
+.demo-head:hover{background:var(--panel2);}
+.demo-head .ico{font-size:22px;}
+.demo-head .t{font-weight:bold;color:#eafff0;font-size:15px;}
+.demo-head .d{font-size:12px;color:var(--muted);}
+.demo-head .arr{margin-left:auto;color:var(--muted);transition:.2s;}
+.demo.open .arr{transform:rotate(90deg);}
+.demo-head .st{margin-left:auto;margin-right:10px;font-size:12px;color:var(--amber);}
+.demo-head .st + .arr{margin-left:0;}
+.demo-body{display:none;padding:0 16px 16px;border-top:1px solid var(--line);}
+.demo.open .demo-body{display:block;}
+
+/* chat */
+.chatbox{height:380px;overflow-y:auto;padding:14px 4px;display:flex;flex-direction:column;gap:10px;}
+.msg{max-width:88%;padding:9px 13px;border-radius:10px;font-size:14px;animation:pop .22s ease;}
 @keyframes pop{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 .msg.gm{align-self:flex-start;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--green);}
 .msg.gm b{color:var(--green);}
 .msg.me{align-self:flex-end;background:var(--green-dim);color:#eafff0;}
-.msg.sys{align-self:center;background:none;border:1px dashed var(--line);color:var(--muted);font-size:12.5px;}
-.msg.badge-card{
-  align-self:center;text-align:center;background:#1a2f1d;border:1px solid var(--amber);
-  color:var(--amber);font-weight:bold;font-size:15px;padding:16px 26px;border-radius:12px;
-  box-shadow:0 0 24px rgba(232,196,106,.15);
-}
-.msg.badge-card small{display:block;color:var(--muted);font-weight:normal;font-size:12px;margin-top:4px;}
-.msg.typing{display:flex;gap:5px;align-items:center;padding:14px 16px;}
-.msg.typing span{width:7px;height:7px;border-radius:50%;background:var(--green-dim);animation:tp 1s infinite;}
-.msg.typing span:nth-child(2){animation-delay:.15s;}
-.msg.typing span:nth-child(3){animation-delay:.3s;}
-@keyframes tp{30%{transform:translateY(-4px);background:var(--green);}}
-.chat-input-row{display:flex;gap:10px;padding:12px;border-top:1px solid var(--line);background:var(--panel2);}
-#chatIn{
-  flex:1;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);
-  padding:10px 14px;font-size:14px;outline:none;
-}
-#chatIn:focus{border-color:var(--green-dim);}
-#chatSend,#resetDemo{
-  background:var(--green-dim);border:none;color:#eafff0;border-radius:8px;padding:10px 20px;
-  cursor:pointer;font-size:14px;
-}
-#resetDemo{background:none;border:1px solid var(--line);color:var(--muted);}
-.choices{display:flex;flex-direction:column;gap:8px;padding:12px;border-top:1px solid var(--line);background:var(--panel2);}
-.choices button{
-  text-align:left;background:#0a140d;border:1px solid var(--line);color:var(--text);
-  padding:11px 14px;border-radius:8px;cursor:pointer;font-size:14px;transition:.15s;
-}
+.msg.sys{align-self:center;background:none;border:1px dashed var(--line);color:var(--muted);font-size:12px;}
+.badge-card{align-self:center;text-align:center;background:#1a2f1d;border:1px solid var(--amber);color:var(--amber);font-weight:bold;font-size:14px;padding:14px 22px;border-radius:12px;box-shadow:0 0 24px rgba(232,196,106,.15);}
+.inrow{display:flex;gap:10px;padding-top:10px;border-top:1px solid var(--line);}
+.inrow input{flex:1;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:9px 13px;font-size:14px;outline:none;}
+.inrow input:focus{border-color:var(--green-dim);}
+.inrow button,.btn2{background:var(--green-dim);border:none;color:#eafff0;border-radius:8px;padding:9px 18px;cursor:pointer;font-size:13.5px;}
+.btn2.ghost{background:none;border:1px solid var(--line);color:var(--muted);}
+.choices{display:flex;flex-direction:column;gap:8px;padding-top:10px;}
+.choices button{text-align:left;background:#0a140d;border:1px solid var(--line);color:var(--text);padding:10px 13px;border-radius:8px;cursor:pointer;font-size:13.5px;}
 .choices button:hover{border-color:var(--green-dim);}
 .choices button.wrong{border-color:var(--red);color:var(--red);opacity:.75;}
 .choices button.right{border-color:var(--green);color:var(--green);font-weight:bold;}
-.hidden{display:none;}
 
-/* ---------- cards ---------- */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.grid.c2{grid-template-columns:repeat(2,1fr);}
-.card{
-  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;
-  transition:.15s;
-}
-.card:hover{transform:translateY(-3px);border-color:var(--green-dim);}
-.card .lv{font-family:Consolas,monospace;color:var(--green);font-size:13px;}
-.card .ico{font-size:24px;margin:6px 0;}
-.card h3{font-size:15px;color:#eafff0;}
-.card p{font-size:12.5px;color:var(--muted);margin-top:4px;}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;counter-reset:s;}
-.step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
-.step .n{
-  counter-increment:s;display:inline-flex;width:30px;height:30px;border-radius:50%;
-  border:1px solid var(--green-dim);color:var(--green);align-items:center;justify-content:center;
-  font-family:Consolas,monospace;margin-bottom:10px;
-}
-.step .n::before{content:counter(s);}
-.step h3{font-size:15px;color:#eafff0;}
-.step p{font-size:13px;color:var(--muted);margin-top:4px;}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
-.chip{font-size:12.5px;color:var(--green);border:1px solid var(--line);border-radius:99px;padding:5px 13px;background:var(--panel);}
+/* forms / quiz */
+.qa{margin:10px 0;}
+.qa label{display:block;font-size:12.5px;color:var(--muted);margin:8px 0 4px;}
+.qa input[type=text]{width:100%;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:9px 12px;font-size:14px;outline:none;}
+.qa input.err{border-color:var(--red);}
+.opts{display:flex;flex-direction:column;gap:6px;}
+.opts label{display:flex;gap:8px;align-items:flex-start;background:#0a140d;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--text);cursor:pointer;margin:0;}
+.opts label:hover{border-color:var(--green-dim);}
+.opts input{margin-top:5px;}
+.assign .row{display:flex;align-items:center;gap:8px;background:#0a140d;border:1px solid var(--line);border-radius:8px;padding:7px 10px;margin:6px 0;font-size:13.5px;}
+.assign .row span{flex:1;}
+.assign .row .g{display:flex;gap:5px;}
+.assign .b3{background:#0a140d;border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;}
+.assign .b3.on1{background:var(--green-dim);color:#fff;border-color:var(--green-dim);}
+.assign .b3.on2{background:#7a6a2f;color:#fff;border-color:var(--amber);}
+.assign .b3.on3{background:#5f3a3a;color:#fff;border-color:var(--red);}
+.result{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;border:1px solid var(--line);background:var(--panel2);}
+.result.ok{border-color:var(--green-dim);}
+.result.bad{border-color:var(--red);}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px;}
+.res-card{background:#0a140d;border:1px solid var(--green-dim);border-radius:10px;padding:10px;font-size:12.5px;}
+.res-card b{color:var(--green);display:block;font-size:13px;}
+.res-card a{color:var(--amber);text-decoration:none;font-size:12px;word-break:break-all;}
 
-/* ---------- versus ---------- */
-.vs{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;}
-.vs h3{font-size:14px;color:#eafff0;margin-bottom:10px;}
-.vs .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.vs .bad,.vs .good{border-radius:8px;padding:10px 12px;font-size:13px;}
-.vs .bad{background:rgba(224,108,95,.08);border:1px solid rgba(224,108,95,.35);color:#f0b6ae;}
-.vs .good{background:rgba(87,217,119,.07);border:1px solid rgba(87,217,119,.3);color:#bce9c6;}
-.vs .why{font-size:12px;color:var(--muted);margin-top:8px;}
+/* tabs */
+.tabs{display:flex;gap:8px;margin:10px 0;}
+.tabs button{background:#0a140d;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;}
+.tabs button.on{color:var(--green);border-color:var(--green-dim);}
+.tabpane{display:none;}
+.tabpane.on{display:block;}
+iframe.play{width:100%;height:460px;border:1px solid var(--line);border-radius:10px;background:#fff;}
 
-/* ---------- badges ---------- */
+/* whack-a-mole */
+.wam{background:#12200f;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;}
+.wam .bar{display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px;color:#cde8cd;}
+.wam .grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.wam .hole{height:74px;background:#0a140d;border:1px solid var(--line);border-radius:10px;font-size:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.1s;user-select:none;}
+.wam .hole.up{background:#1d3320;}
+.ledger input{background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px 10px;font-size:14px;outline:none;}
+.ledger li{display:flex;justify-content:space-between;padding:6px 4px;border-bottom:1px dashed var(--line);font-size:13.5px;list-style:none;}
+.ledger .del{background:none;border:1px solid var(--line);color:var(--red);border-radius:6px;padding:1px 8px;cursor:pointer;font-size:12px;}
+
+/* flip vs cards */
+.flip{perspective:900px;height:150px;cursor:pointer;}
+.flip .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+.flip.flipped .inner{transform:rotateY(180deg);}
+.flip .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;padding:14px;font-size:13px;display:flex;flex-direction:column;justify-content:center;}
+.flip .front{background:var(--panel);border:1px solid rgba(224,108,95,.4);color:#f0b6ae;}
+.flip .front .hint{font-size:11.5px;color:var(--muted);margin-top:8px;}
+.flip .back{background:var(--panel);border:1px solid rgba(87,217,119,.4);color:#bce9c6;transform:rotateY(180deg);}
+.flip .front b,.flip .back b{font-size:13px;margin-bottom:6px;}
+.flip .back b{color:var(--green);}
+
+/* modal */
+#mask{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:90;display:none;align-items:flex-start;justify-content:center;padding:40px 14px;overflow-y:auto;}
+#mask.on{display:flex;}
+#modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;max-width:640px;width:100%;padding:22px 24px;position:relative;animation:pop .2s ease;}
+#modal h3{color:#eafff0;font-size:18px;margin-bottom:4px;}
+#modal .mh{font-size:12px;color:var(--green);font-family:Consolas,monospace;margin-bottom:10px;}
+#modal .body{font-size:13.5px;}
+#modal .body h4{color:var(--green);font-size:13.5px;margin:12px 0 4px;}
+#modal .body p,#modal .body li{color:var(--text);font-size:13.5px;}
+#modal .body ul{padding-left:18px;}
+#modal .close{position:absolute;top:12px;right:14px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:15px;}
+#modal .mfoot{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+
+/* badges */
 .badges{display:flex;flex-wrap:wrap;gap:10px;}
-.badge{
-  border:1px solid var(--green-dim);border-radius:10px;padding:8px 14px;font-size:13px;
-  color:var(--green);background:var(--panel);
-}
-.badge.lock{border-color:var(--line);color:var(--muted);}
+.badge{border:1px solid var(--green-dim);border-radius:10px;padding:8px 14px;font-size:13px;color:var(--green);background:var(--panel);cursor:pointer;}
+.badge.off{border:1px dashed var(--line);color:var(--muted);opacity:.7;}
+.badge.lit{border-color:var(--amber);color:var(--amber);box-shadow:0 0 12px rgba(232,196,106,.2);}
 
-footer{
-  max-width:880px;margin:40px auto 0;padding:26px 20px 44px;border-top:1px solid var(--line);
-  color:var(--muted);font-size:13px;text-align:center;
-}
-footer b{color:var(--green);}
+/* certificate */
+.cert{border:2px solid var(--amber);border-radius:14px;padding:26px;text-align:center;background:linear-gradient(180deg,#1a2f1d,#122417);}
+.cert h3{font-size:20px;color:var(--amber);margin-bottom:8px;}
+.cert p{font-size:13.5px;}
+.cert .name{font-size:22px;color:#eafff0;margin:8px 0;}
 
-/* ---------- confetti ---------- */
+/* toast + confetti */
+#toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%);background:#1a2f1d;border:1px solid var(--amber);color:var(--amber);padding:10px 22px;border-radius:99px;font-size:14px;z-index:99;display:none;}
 #confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:99;}
-#confetti i{
-  position:absolute;top:-12px;width:8px;height:8px;opacity:.95;
-  animation:fall linear forwards;
-}
+#confetti i{position:absolute;top:-12px;animation:fall linear forwards;}
 @keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.4;}}
 
-@media (max-width:640px){
-  h1{font-size:30px;}
-  .grid{grid-template-columns:repeat(2,1fr);}
-  .grid.c2,.steps,.vs .row{grid-template-columns:1fr;}
-  .msg{max-width:94%;}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;}
+.step h3{font-size:14.5px;color:#eafff0;}
+.step p{font-size:12.5px;color:var(--muted);margin-top:4px;}
+.step .n{display:inline-flex;width:28px;height:28px;border-radius:50%;border:1px solid var(--green-dim);color:var(--green);align-items:center;justify-content:center;font-family:Consolas,monospace;margin-bottom:8px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.chip{font-size:12px;color:var(--green);border:1px solid var(--line);border-radius:99px;padding:5px 12px;background:var(--panel);}
+
+footer{max-width:920px;margin:40px auto 0;padding:24px 20px 44px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center;}
+footer a{color:var(--green);text-decoration:none;}
+@media (max-width:680px){
+  h1{font-size:29px;}
+  .grid,.grid.c3,.steps,.res-grid{grid-template-columns:1fr 1fr;}
+  .res-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
+<nav>
+  <span class="logo">🏘️ 新手村</span>
+  <a href="#demo">试玩广场</a>
+  <a href="#levels">关卡地图</a>
+  <a href="#tracks">四个方向</a>
+  <a href="#vs">表达对照</a>
+  <a href="#badges">徽章墙</a>
+  <a href="#how">完整版</a>
+  <span class="cnt" id="navCnt">🏅 0/8</span>
+</nav>
+
 <header class="hero">
   <div class="tag">AGENT 原生 · 对话式教学游戏</div>
   <h1>🏘️ VibeCoding 新手村<span class="cursor">▌</span></h1>
-  <p class="sub">你负责"说"，AI 负责"做"。8 个关卡，亲手"说"出一个真实能跑的小项目，顺便学会怎么向 AI 表达需求。像玩文字冒险一样学会 vibecoding。</p>
+  <p class="sub">你负责"说"，AI 负责"做"。8 个关卡，亲手"说"出一个真实能跑的小项目。本页是全关卡试玩版——每一关都能玩，徽章全可点亮。</p>
   <div class="hero-btns">
-    <a class="btn primary" href="#demo">▶ 立即试玩第 0 关</a>
-    <a class="btn" href="#how">完整版怎么玩</a>
+    <a class="btn primary" href="#demo">▶ 进入试玩广场</a>
+    <button class="btn" onclick="scrollToId('how')">下载完整版</button>
   </div>
+  <div class="hero-prog" id="heroProg">进度：0/8 关点亮</div>
   <div class="hero-meta">Codex / ZCode 双工具通用 · 自动存档 · 玩家零安装</div>
 </header>
 
 <main>
+<!-- ============ 试玩广场 ============ -->
 <section id="demo">
-  <h2><span class="no">01</span>🎮 试玩 · 第 0 关「开机」</h2>
-  <p class="sec-sub">下面就是游戏的真实样子——你是玩家，阿V是游戏主持人。（演示版对话是写死的剧本；完整版里是真 AI 在接你的话、真帮你把项目做出来。）</p>
-  <div class="chat-wrap">
-    <div class="chat-head">
-      <span class="dot"></span> 阿V · 游戏主持人
-      <span class="mono" style="margin-left:auto">ch00 · 开机</span>
+  <h2><span class="no">01</span>🎮 试玩广场（6 个都能玩）</h2>
+  <p class="sec-sub">点卡片展开。每通过一个试玩，对应徽章点亮并存档（存本机浏览器，刷新不丢）。</p>
+
+  <!-- ch00 -->
+  <div class="demo" id="d-ch00">
+    <div class="demo-head" onclick="toggleDemo('d-ch00')">
+      <span class="ico">🔌</span><span><span class="t">第 0 关 · 开机</span><br><span class="d">认识阿V，体验"你说我做"</span></span>
+      <span class="st" data-st="ch00"></span><span class="arr">▶</span>
     </div>
-    <div id="chat"></div>
-    <div class="chat-input-row">
-      <input id="chatIn" placeholder="点上方「立即试玩」开始…" disabled>
-      <button id="chatSend" disabled>发送</button>
+    <div class="demo-body">
+      <div class="chatbox" id="chat"></div>
+      <div class="inrow">
+        <input id="chatIn" placeholder="点上方卡片展开后开始…" disabled>
+        <button id="chatSend" disabled>发送</button>
+      </div>
+      <div class="choices hidden" id="choiceRow"></div>
+      <div class="inrow"><button class="btn2 ghost" id="resetDemo">↺ 重玩本关</button></div>
     </div>
-    <div id="choiceRow" class="choices hidden"></div>
-    <div class="chat-input-row" style="border-top:1px solid var(--line)">
-      <button id="resetDemo">↺ 重玩试玩</button>
+  </div>
+
+  <!-- ch01 -->
+  <div class="demo" id="d-ch01">
+    <div class="demo-head" onclick="toggleDemo('d-ch01')">
+      <span class="ico">🗣️</span><span><span class="t">第 1 关 · 说需求</span><br><span class="d">需求四要素：把"做个记账的"说成 AI 一听就懂</span></span>
+      <span class="st" data-st="ch01"></span><span class="arr">▶</span>
+    </div>
+    <div class="demo-body">
+      <div class="result" style="margin-top:14px">📮 <b>委托</b>：杂货铺老板想要个记账小工具。你的任务：别喊"开工"，先用<b>需求四要素</b>把话说清楚，填在下面（想想答案再填，这就是完整版第 1 关的练习）。</div>
+      <div class="qa">
+        <label>① 给谁用？</label><input type="text" id="q1a" placeholder="例：给杂货铺老板自己用">
+        <label>② 解决什么问题？</label><input type="text" id="q1b" placeholder="例：每天记一笔花了多少钱，月底看总数">
+        <label>③ 大概长什么样？</label><input type="text" id="q1c" placeholder="例：一个网页，上面输入金额备注，下面是列表和总额">
+        <label>④ 明确不要什么？</label><input type="text" id="q1d" placeholder="例：不要登录、不要图表">
+        <div class="inrow" style="border:none;padding-top:12px">
+          <button class="btn2" onclick="submitCh01()">提交需求</button>
+          <button class="btn2 ghost" onclick="hintCh01()">卡住了，要提示</button>
+        </div>
+      </div>
+      <div class="result hidden" id="r-ch01"></div>
+    </div>
+  </div>
+
+  <!-- ch02 -->
+  <div class="demo" id="d-ch02">
+    <div class="demo-head" onclick="toggleDemo('d-ch02')">
+      <span class="ico">🔪</span><span><span class="t">第 2 关 · 拆功能</span><br><span class="d">10 个功能，砍出 MVP：必须 / 可以 / 先不要</span></span>
+      <span class="st" data-st="ch02"></span><span class="arr">▶</span>
+    </div>
+    <div class="demo-body">
+      <div class="result" style="margin-top:14px">🔪 游戏厅要<b>网页打地鼠</b>。下面 10 个功能，你给每个定级：<b style="color:var(--green)">必须</b>（没有就不成立）/ <b style="color:var(--amber)">可以</b>（有更好）/ <b style="color:var(--red)">先不要</b>（防跑偏）。</div>
+      <div class="assign" id="ch02rows" style="margin-top:10px"></div>
+      <div class="inrow" style="border:none">
+        <button class="btn2" onclick="submitCh02()">交卷</button>
+        <button class="btn2 ghost" onclick="resetCh02()">重做</button>
+      </div>
+      <div class="result hidden" id="r-ch02"></div>
+    </div>
+  </div>
+
+  <!-- ch03 -->
+  <div class="demo" id="d-ch03">
+    <div class="demo-head" onclick="toggleDemo('d-ch03')">
+      <span class="ico">🧺</span><span><span class="t">第 3 关 · 找资源</span><br><span class="d">提问三段式：问得好，AI 才找得准</span></span>
+      <span class="st" data-st="ch03"></span><span class="arr">▶</span>
+    </div>
+    <div class="demo-body">
+      <div class="result" style="margin-top:14px">🧺 想让 AI 帮你找开源的打地鼠参考。一句「有没有好项目」只能换来瞎蒙——<b>提问三段式</b>，每段选最佳说法：</div>
+      <div class="qa">
+        <label>第一段 · 我要什么？</label>
+        <div class="opts" data-ans="b">
+          <label><input type="radio" name="c3a" value="a">A. 找点好东西推荐一下</label>
+          <label><input type="radio" name="c3a" value="b">B. 帮我找 3 个 GitHub 上开源的网页版打地鼠游戏</label>
+          <label><input type="radio" name="c3a" value="c">C. 找个游戏</label>
+        </div>
+        <label>第二段 · 拿来干什么？</label>
+        <div class="opts" data-ans="a">
+          <label><input type="radio" name="c3b" value="a">A. 我想参考它们的玩法和界面设计</label>
+          <label><input type="radio" name="c3b" value="b">B. 都发我看看再说</label>
+          <label><input type="radio" name="c3b" value="c">C. 你看着办</label>
+        </div>
+        <label>第三段 · 我的限制？</label>
+        <div class="opts" data-ans="b">
+          <label><input type="radio" name="c3c" value="a">A. 没有要求，都可以</label>
+          <label><input type="radio" name="c3c" value="b">B. 要求免费开源、能直接在浏览器打开、界面简洁</label>
+          <label><input type="radio" name="c3c" value="c">C. 最好是个特别出名的</label>
+        </div>
+        <div class="inrow" style="border:none;padding-top:12px">
+          <button class="btn2" onclick="submitCh03()">提交，看看 AI 找到什么</button>
+        </div>
+      </div>
+      <div class="result hidden" id="r-ch03"></div>
+    </div>
+  </div>
+
+  <!-- ch04（成品屋，弹窗） -->
+  <div class="demo" id="d-ch04">
+    <div class="demo-head" onclick="openModal('ch04')">
+      <span class="ico">🧱</span><span><span class="t">第 4 关 · 搭骨架 → 成品屋</span><br><span class="d">项目诞生了！打地鼠 & 记账本真机试玩</span></span>
+      <span class="st" data-st="ch04"></span><span class="arr">▶</span>
+    </div>
+  </div>
+
+  <!-- ch05 -->
+  <div class="demo" id="d-ch05">
+    <div class="demo-head" onclick="toggleDemo('d-ch05')">
+      <span class="ico">🛠️</span><span><span class="t">第 5 关 · 改需求</span><br><span class="d">报 bug 四要素：像医生问诊一样报告问题</span></span>
+      <span class="st" data-st="ch05"></span><span class="arr">▶</span>
+    </div>
+    <div class="demo-body">
+      <div class="result" style="margin-top:14px">🛠️ 你在打地鼠 v0.1 里撞见一个问题：<b>打出的最高分，刷新页面就没了</b>。下面四句话打乱了，请把每句归到正确的要素（这就是能让 AI 一次修对的报错格式）：</div>
+      <div class="assign" id="ch05rows" style="margin-top:10px"></div>
+      <div class="inrow" style="border:none">
+        <button class="btn2" onclick="submitCh05()">提交报告</button>
+        <button class="btn2 ghost" onclick="resetCh05()">重做</button>
+      </div>
+      <div class="result hidden" id="r-ch05"></div>
+    </div>
+  </div>
+
+  <!-- ch06（弹窗） / ch07（弹窗） -->
+  <div class="demo" id="d-ch06">
+    <div class="demo-head" onclick="openModal('ch06')">
+      <span class="ico">🏺</span><span><span class="t">第 6 关 · 源码包 → 找茬现场</span><br><span class="d">接手"小王"的待办清单：先读懂，再跑通，后修改</span></span>
+      <span class="st" data-st="ch06"></span><span class="arr">▶</span>
+    </div>
+  </div>
+  <div class="demo" id="d-ch07">
+    <div class="demo-head" onclick="openModal('ch07')">
+      <span class="ico">🎓</span><span><span class="t">第 7 关 · 毕业</span><br><span class="d">集齐 7 枚徽章，领取你的毕业证书</span></span>
+      <span class="st" data-st="ch07"></span><span class="arr">▶</span>
     </div>
   </div>
 </section>
 
+<!-- ============ 关卡地图 ============ -->
+<section id="levels">
+  <h2><span class="no">02</span>🗺️ 关卡地图（点卡片看详情）</h2>
+  <p class="sec-sub">每关教一种"向 AI 表达需求"的技巧。完整版按顺序解锁，预览版全部开放。</p>
+  <div class="grid" id="levelCards"></div>
+</section>
+
+<!-- ============ 四方向 ============ -->
+<section id="tracks">
+  <h2><span class="no">03</span>📮 四个方向（点卡片看委托详情）</h2>
+  <p class="sec-sub">村口告示板上的四张委托，完整版在第 1 关选一个，后面 6 关都在它身上练功。</p>
+  <div class="grid" id="trackCards"></div>
+</section>
+
+<!-- ============ 表达对照（翻卡） ============ -->
+<section id="vs">
+  <h2><span class="no">04</span>💬 表达对照 · 翻卡测验</h2>
+  <p class="sec-sub">先看菜鸟说法，<b style="color:var(--green)">点卡片翻转</b>看高手怎么说。完整版共 12 组对照。</p>
+  <div class="grid c3" id="vsCards"></div>
+</section>
+
+<!-- ============ 徽章墙 ============ -->
+<section id="badges">
+  <h2><span class="no">05</span>🏅 徽章墙（点击看获得条件）</h2>
+  <p class="sec-sub">章节徽章试玩对应关卡即可点亮；预览版把隐藏徽章的条件也公开了。</p>
+  <div class="badges" id="badgeWall"></div>
+  <div class="inrow" style="border:none;padding-top:14px"><button class="btn2 ghost" onclick="resetProgress()">🗑 清空本机存档重来</button></div>
+</section>
+
+<!-- ============ 完整版 ============ -->
 <section id="how">
-  <h2><span class="no">02</span>📦 完整版怎么玩</h2>
-  <p class="sec-sub">整个游戏就是一个文件夹。把文件夹发给任何人，三步开局。</p>
+  <h2><span class="no">06</span>📦 完整版怎么玩</h2>
+  <p class="sec-sub">完整版是一个文件夹，由真 AI 当主持人：你说的话它真的接、真的执行、项目真的诞生。本页演示只是写死的剧本。</p>
   <div class="steps">
-    <div class="step"><span class="n"></span><h3>拿到文件夹</h3><p>解压 vibe-xinshou-cun.zip，里面是全部游戏：规则、关卡剧本、示例源码包。</p></div>
-    <div class="step"><span class="n"></span><h3>用工具打开</h3><p>用 Codex 或 ZCode 把工作目录打开到这个文件夹。不用装任何东西。</p></div>
-    <div class="step"><span class="n"></span><h3>说「开始游戏」</h3><p>AI 变身引导员阿V，读档或开新档，带玩家一关一关闯。</p></div>
+    <div class="step"><span class="n"></span><h3>下载并解压</h3><p>下载完整版 zip 并解压，里面是全部游戏：规则、8 关剧本、4 方向、2 个带 bug 的源码包。</p></div>
+    <div class="step"><span class="n"></span><h3>用工具打开</h3><p>用 Codex 或 ZCode 把工作目录打开到这个文件夹。玩家不用装任何东西。</p></div>
+    <div class="step"><span class="n"></span><h3>说「开始游戏」</h3><p>AI 变身引导员阿V，读档或开新档，带玩家一关一关闯，最后发毕业证书。</p></div>
   </div>
   <div class="chips">
-    <span class="chip">💾 自动存档 save/，随时关随时续</span>
-    <span class="chip">🏅 8 章节徽章 + 6 隐藏徽章</span>
-    <span class="chip">🧭 4 个项目方向可选</span>
-    <span class="chip">📜 毕业发证书</span>
-    <span class="chip">🚫 GM 铁律：不代打、不跳步、不剧透</span>
+    <span class="chip">💾 自动存档 save/</span><span class="chip">🏅 8 章节 + 6 隐藏徽章</span>
+    <span class="chip">🧭 4 个项目方向</span><span class="chip">📜 毕业证书</span>
+    <span class="chip">🚫 GM 铁律：不代打/不跳步/不剧透</span><span class="chip">📦 内置 2 个带 bug 源码包</span>
   </div>
-</section>
-
-<section id="levels">
-  <h2><span class="no">03</span>🗺️ 关卡地图</h2>
-  <p class="sec-sub">每关教一种"向 AI 表达需求"的技巧，当场练、当场点评。顺序解锁。</p>
-  <div class="grid">
-    <div class="card"><div class="lv">ch00</div><div class="ico">🔌</div><h3>开机</h3><p>有话直说，不懂就问</p></div>
-    <div class="card"><div class="lv">ch01</div><div class="ico">🗣️</div><h3>说需求</h3><p>需求四要素：给谁用/干什么/长什么样/不要什么</p></div>
-    <div class="card"><div class="lv">ch02</div><div class="ico">🔪</div><h3>拆功能</h3><p>必须 / 可以 / 先不要，砍出 MVP</p></div>
-    <div class="card"><div class="lv">ch03</div><div class="ico">🧺</div><h3>找资源</h3><p>提问三段式：要什么/干什么用/有什么限制</p></div>
-    <div class="card"><div class="lv">ch04</div><div class="ico">🧱</div><h3>搭骨架</h3><p>验收标准前置——项目在这一关真的诞生</p></div>
-    <div class="card"><div class="lv">ch05</div><div class="ico">🛠️</div><h3>改需求</h3><p>报 bug 四要素；提修改说"改成什么样"</p></div>
-    <div class="card"><div class="lv">ch06</div><div class="ico">🏺</div><h3>源码包</h3><p>接手别人的代码：先读懂→再跑通→后修改</p></div>
-    <div class="card"><div class="lv">ch07</div><div class="ico">🎓</div><h3>毕业</h3><p>独立走一遍全流程，领毕业证书</p></div>
-  </div>
-</section>
-
-<section id="tracks">
-  <h2><span class="no">04</span>📮 四个方向（第 1 关选一个）</h2>
-  <p class="sec-sub">村口告示板上的四张委托，选玩家自己真想做出来的那个，后面 6 关都在它身上练功。</p>
-  <div class="grid">
-    <div class="card"><div class="ico">🏨</div><h3>管理后台</h3><p>客栈老板的客人名单：增删改查+搜索，v0.1 双击就能用</p></div>
-    <div class="card"><div class="ico">🎮</div><h3>小游戏</h3><p>游戏厅的打地鼠：点中加分、30秒倒计时、最高分</p></div>
-    <div class="card"><div class="ico">🧮</div><h3>实用小工具</h3><p>杂货铺的记账本：记一笔、流水、总金额</p></div>
-    <div class="card"><div class="ico">🧑‍💼</div><h3>个人主页</h3><p>村长的门面：介绍+作品卡片+联系方式+深色模式</p></div>
-  </div>
-</section>
-
-<section id="vs">
-  <h2><span class="no">05</span>💬 游戏里教的表达（差 vs 好）</h2>
-  <p class="sec-sub">节选自游戏内建的 12 组对照集。每一关的点评都基于这套标准。</p>
-  <div class="vs"><h3>报 bug</h3>
-    <div class="row"><div class="bad">❌ 坏了，出 bug 了，你看看</div><div class="good">✅ 我在搜索框输入"张"，本该只显示姓张的客人，结果列表整个空了。复现：添加两个客人，搜索任意一个字就出现</div></div>
-    <p class="why">四要素：做了什么 / 期望什么 / 实际什么 / 怎么复现——齐了 AI 一次修对</p>
-  </div>
-  <div class="vs"><h3>提样式修改</h3>
-    <div class="row"><div class="bad">❌ 界面不好看，改好看点</div><div class="good">✅ 标题字号从 20 调到 28，主色换墨绿，卡片之间留 16px 间距</div></div>
-    <p class="why">别让 AI 猜你的审美，说"改成什么样"</p>
-  </div>
-  <div class="vs"><h3>接手别人的源码包</h3>
-    <div class="row"><div class="bad">❌ 帮我把这个改好</div><div class="good">✅ 第一步：先帮我看看这个项目是做什么的、什么结构、怎么跑起来</div></div>
-    <p class="why">没看过病别急着吃药：先读懂 → 再跑通 → 后修改，还要在副本上改</p>
-  </div>
-</section>
-
-<section id="badges">
-  <h2><span class="no">06</span>🏅 徽章墙</h2>
-  <p class="sec-sub">章节徽章每关一枚；隐藏徽章做对了事才会蹦出来。</p>
-  <div class="badges">
-    <span class="badge">🔌 开机成功</span><span class="badge">🗣️ 把话说清楚</span>
-    <span class="badge">🔪 一刀砍出MVP</span><span class="badge">🧺 寻宝猎人</span>
-    <span class="badge">🧱 第一块砖</span><span class="badge">🛠️ 沟通大师</span>
-    <span class="badge">🏺 考古学家</span><span class="badge">🎓 新手村毕业</span>
-    <span class="badge lock">？跳关侠</span><span class="badge lock">？复读机</span>
-    <span class="badge lock">？打回重做</span><span class="badge lock">？十万个为什么</span>
-    <span class="badge lock">？第一次说不</span><span class="badge lock">？考古学家·满级</span>
+  <div class="hero-btns" style="justify-content:flex-start;margin-top:20px">
+    <a class="btn primary" href="vibecoding-xinshou-cun.zip" download>⬇ 下载完整版 zip（42KB）</a>
+    <a class="btn" href="https://github.com/gysbest-oss/vibe-xinshou-cun" target="_blank"> GitHub 仓库</a>
   </div>
 </section>
 </main>
 
 <footer>
-  <b>VibeCoding 新手村</b> · 完整版为 23 个文件的文件夹（AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置带 bug 源码包）<br>
-  适合转给任何想学用 AI 编程工具的小白 · v1.0 · 2026-10-11
+  <b>VibeCoding 新手村</b> · 完整版：AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置源码包<br>
+  适合转给任何想学用 AI 编程工具的小白 · v2.0 · 2026-10-12
 </footer>
 
+<!-- modal / toast / confetti -->
+<div id="mask" onclick="if(event.target===this)closeModal()"><div id="modal"></div></div>
+<div id="toast"></div>
 <div id="confetti"></div>
 
 <script>
-(function(){
-  var chat = document.getElementById('chat');
-  var input = document.getElementById('chatIn');
-  var send = document.getElementById('chatSend');
-  var choiceRow = document.getElementById('choiceRow');
-  var resetBtn = document.getElementById('resetDemo');
-  var stage = 'idle'; // idle → warmup → quiz → done
+/* ================= 存档 ================= */
+var P = {badges:{}};
+function loadP(){ try{ P = JSON.parse(localStorage.getItem('vxc_preview')||'{"badges":{}}'); }catch(e){ P={badges:{}}; } }
+function saveP(){ try{ localStorage.setItem('vxc_preview', JSON.stringify(P)); }catch(e){} }
+function has(id){ return !!P.badges[id]; }
 
-  function scroll(){ chat.scrollTop = chat.scrollHeight; }
-  function addMsg(cls, html){
-    var d = document.createElement('div');
-    d.className = 'msg ' + cls;
-    d.innerHTML = html;
-    chat.appendChild(d); scroll();
-    return d;
-  }
-  function gmSay(html, cb){
-    var t = addMsg('gm typing', '<span></span><span></span><span></span>');
-    setTimeout(function(){
-      t.className = 'msg gm'; t.innerHTML = html;
-      scroll(); if (cb) cb();
-    }, 520 + Math.random()*380);
-  }
-  function confetti(){
-    var box = document.getElementById('confetti');
-    var colors = ['#57d977','#e8c46a','#eafff0','#2f7a4a'];
-    for (var i = 0; i < 40; i++){
-      var p = document.createElement('i');
-      p.style.left = (Math.random()*96 + 2) + '%';
-      p.style.background = colors[i % colors.length];
-      p.style.animationDuration = (1.5 + Math.random()*1.2) + 's';
-      p.style.animationDelay = (Math.random()*0.4) + 's';
-      p.style.width = p.style.height = (6 + Math.random()*5) + 'px';
-      box.appendChild(p);
-    }
-    setTimeout(function(){ box.innerHTML = ''; }, 3200);
-  }
+var CH = [
+  {id:'ch00', ico:'🔌', name:'开机成功'},
+  {id:'ch01', ico:'🗣️', name:'把话说清楚'},
+  {id:'ch02', ico:'🔪', name:'一刀砍出MVP'},
+  {id:'ch03', ico:'🧺', name:'寻宝猎人'},
+  {id:'ch04', ico:'🧱', name:'第一块砖'},
+  {id:'ch05', ico:'🛠️', name:'沟通大师'},
+  {id:'ch06', ico:'🏺', name:'考古学家'},
+  {id:'ch07', ico:'🎓', name:'新手村毕业'}
+];
+var HIDDEN = [
+  {id:'h1', name:'跳关侠', how:'完整版：坚持跳关时会发（提醒你后面会考）'},
+  {id:'h2', name:'复读机', how:'同一条提示词自己主动改了 3 遍以上——褒义，迭代精神'},
+  {id:'h3', name:'打回重做', how:'不满意 AI 的结果，并说清原因要求返工——高级技巧'},
+  {id:'h4', name:'十万个为什么', how:'一次会话里问满 5 个问题——爱问是好习惯'},
+  {id:'h5', name:'第一次说不', how:'拒绝 AI 给的方案并说明自己的理由'},
+  {id:'h6', name:'考古学家·满级', how:'第 6 关把源码包里埋的 bug 全部找出来'}
+];
+var ALL = {}; CH.forEach(function(c){ ALL[c.id]=c; }); HIDDEN.forEach(function(h){ ALL[h.id]=h; });
 
-  var QUIZ = [
-    {k:'A', t:'A. 帮我做个网站'},
-    {k:'B', t:'B. 帮我写一个能记录每天花了多少钱、能统计总共花了多少的网页'},
-    {k:'C', t:'C. 你看着办，做个好的'}
-  ];
+function litCount(){ return CH.filter(function(c){ return has(c.id); }).length; }
+function renderBadges(){
+  var w = document.getElementById('badgeWall'); w.innerHTML='';
+  CH.forEach(function(c){
+    var s = document.createElement('span');
+    s.className = 'badge' + (has(c.id)?' lit':'');
+    s.textContent = c.ico + ' ' + c.name;
+    s.onclick = function(){ toast(c.ico+' '+c.name+'：试玩广场里通关「'+ALL[c.id].name+'」对应关卡即可点亮'); };
+    w.appendChild(s);
+  });
+  HIDDEN.forEach(function(h){
+    var s = document.createElement('span');
+    s.className = 'badge off';
+    s.textContent = '？ ' + h.name;
+    s.onclick = function(){ toast('获得条件：' + h.how); };
+    w.appendChild(s);
+  });
+  var n = litCount();
+  document.getElementById('navCnt').textContent = '🏅 ' + n + '/8';
+  document.getElementById('heroProg').textContent = '进度：' + n + '/8 关点亮' + (n>=8 ? ' · 🎉 已可毕业！' : '');
+  document.querySelectorAll('.st').forEach(function(el){
+    var id = el.getAttribute('data-st');
+    el.textContent = has(id) ? '✓ 已点亮' : '';
+  });
+}
+function award(id){
+  if (has(id)) return;
+  P.badges[id] = true; saveP(); renderBadges();
+  confetti();
+  toast('🎉 通关！徽章【' + ALL[id].name + '】已点亮并存档');
+}
+function resetProgress(){
+  P = {badges:{}}; saveP(); renderBadges(); renderCh02(); renderCh05();
+  document.getElementById('r-ch01').classList.add('hidden');
+  document.getElementById('r-ch03').classList.add('hidden');
+  toast('存档已清空');
+}
+function toast(t){
+  var el = document.getElementById('toast');
+  el.textContent = t; el.style.display = 'block';
+  clearTimeout(el._t); el._t = setTimeout(function(){ el.style.display='none'; }, 3200);
+}
+function confetti(){
+  var box = document.getElementById('confetti');
+  var colors = ['#57d977','#e8c46a','#eafff0','#2f7a4a'];
+  box.innerHTML = '';
+  for (var i=0;i<40;i++){
+    var p = document.createElement('i');
+    p.style.left = (Math.random()*96+2)+'%';
+    p.style.background = colors[i%4];
+    p.style.animationDuration = (1.5+Math.random()*1.2)+'s';
+    p.style.animationDelay = (Math.random()*0.4)+'s';
+    p.style.width = p.style.height = (6+Math.random()*5)+'px';
+    box.appendChild(p);
+  }
+  setTimeout(function(){ box.innerHTML=''; }, 3200);
+}
+function scrollToId(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+function toggleDemo(id){
+  var d = document.getElementById(id);
+  var wasOpen = d.classList.contains('open');
+  d.classList.toggle('open');
+  if (!wasOpen && id==='d-ch00' && !d._started){ d._started = true; startDemo(); }
+}
 
-  function startDemo(){
-    chat.innerHTML = '';
-    choiceRow.classList.add('hidden');
-    choiceRow.innerHTML = '';
-    stage = 'boot';
-    input.disabled = true; send.disabled = true;
-    input.placeholder = '阿V 正在打字…';
-    gmSay('<b>🏘️ 欢迎来到 VibeCoding 新手村！</b>我是村口的引导员 <b>阿V</b>。', function(){
-      gmSay('在这个村子里，你<b>不用会写代码</b>：你负责把想要的东西"说清楚"，AI 负责"做出来"——这就是 <b>vibecoding</b>。', function(){
-        gmSay('先试试水温 🔥 <b>热身任务：随便给我下一个小指令。</b>比如「帮我算一下 128 × 64」', function(){
-          stage = 'warmup';
-          input.disabled = false; send.disabled = false;
-          input.placeholder = '对阿V下一个小指令…';
-          input.focus();
-        });
+/* ================= ch00 对话 ================= */
+var stage = 'idle';
+function el(id){ return document.getElementById(id); }
+function addMsg(cls, html){
+  var d = document.createElement('div'); d.className='msg '+cls; d.innerHTML = html;
+  el('chat').appendChild(d); el('chat').scrollTop = el('chat').scrollHeight; return d;
+}
+function gmSay(html, cb){
+  var t = addMsg('gm typing','<span></span><span></span><span></span>');
+  setTimeout(function(){ t.className='msg gm'; t.innerHTML=html; el('chat').scrollTop=el('chat').scrollHeight; if(cb)cb(); }, 500+Math.random()*350);
+}
+function startDemo(){
+  el('chat').innerHTML=''; el('choiceRow').classList.add('hidden');
+  stage='boot'; el('chatIn').disabled=true; el('chatSend').disabled=true; el('chatIn').placeholder='阿V 正在打字…';
+  gmSay('<b>🏘️ 欢迎来到 VibeCoding 新手村！</b>我是村口的引导员 <b>阿V</b>。', function(){
+    gmSay('在这个村子里，你<b>不用会写代码</b>：你负责把想要的东西"说清楚"，AI 负责"做出来"——这就是 <b>vibecoding</b>。', function(){
+      gmSay('先试试水温 🔥 <b>热身任务：随便给我下一个小指令。</b>比如「帮我算一下 128 × 64」', function(){
+        stage='warmup'; el('chatIn').disabled=false; el('chatSend').disabled=false;
+        el('chatIn').placeholder='对阿V下一个小指令…'; el('chatIn').focus();
       });
     });
-  }
-
-  function calc(txt){
-    var m = txt.match(/(\d+)\s*([*xX×])\s*(\d+)/);
-    if (m) return m[1] + ' × ' + m[3] + ' = ' + (parseInt(m[1],10) * parseInt(m[3],10));
-    m = txt.match(/(\d+)\s*([+\-])\s*(\d+)/);
-    if (m) return m[1] + ' ' + m[2] + ' ' + m[3] + ' = ' + (m[2]==='+' ? parseInt(m[1],10)+parseInt(m[3],10) : parseInt(m[1],10)-parseInt(m[3],10));
-    return null;
-  }
-
-  function onWarmup(txt){
-    addMsg('me', txt);
-    input.disabled = true; send.disabled = true;
-    var ans = calc(txt);
-    if (ans){
-      gmSay('啪！<b>' + ans + '</b> ✅', function(){
-        afterWarmup();
+  });
+}
+function calc(t){
+  var m = t.match(/(\d+)\s*[*xX×]\s*(\d+)/);
+  if (m) return m[1]+' × '+m[3]+' = '+(+m[1]*+m[3]);
+  m = t.match(/(\d+)\s*([+\-])\s*(\d+)/);
+  if (m) return m[1]+' '+m[2]+' '+m[3]+' = '+(m[2]==='+' ? +m[1]+ +m[3] : +m[1]-+m[3]);
+  return null;
+}
+var QUIZ = [
+  {k:'A', t:'A. 帮我做个网站'},
+  {k:'B', t:'B. 帮我写一个能记录每天花了多少钱、能统计总共花了多少的网页'},
+  {k:'C', t:'C. 你看着办，做个好的'}
+];
+function showQuiz(){
+  var row = el('choiceRow'); row.innerHTML='';
+  QUIZ.forEach(function(o){
+    var b = document.createElement('button'); b.textContent = o.t;
+    b.onclick = function(){ pick(o,b); };
+    row.appendChild(b);
+  });
+  row.classList.remove('hidden');
+  el('chatIn').placeholder='这题点下方选项作答～'; stage='quiz';
+}
+function pick(o, btn){
+  if (stage!=='quiz') return;
+  addMsg('me','我选 '+o.k);
+  if (o.k==='B'){
+    stage='done'; btn.classList.add('right');
+    Array.prototype.forEach.call(el('choiceRow').children,function(c){c.disabled=true;});
+    el('choiceRow').classList.add('hidden');
+    gmSay('<b>正确！</b>B 把"做什么、统计什么"说得明明白白，AI 不用猜。A 太模糊，C 是把主导权交给运气。', function(){
+      gmSay('这就是第 0 关。往下翻还有 5 个试玩 + 2 个彩蛋，全部通关可以领<b>毕业证书</b> 🎓', function(){
+        addMsg('badge-card','🎉 徽章【开机成功】<small>已点亮到下方徽章墙</small>');
+        award('ch00');
+        addMsg('sys','— 本关试玩结束 · 可继续玩第 1 关 —');
       });
-    } else {
-      gmSay('收到！（演示版阿V只会算数😄 完整版里这句话由真 AI 接住，真的把事办了。）', afterWarmup);
-    }
-  }
-
-  function afterWarmup(){
-    gmSay('看到了吗？这就是和 AI 干活的基本循环：<b>你说 → 我做 → 你验收</b>。后面 7 关，把这个循环练成你的超能力。', function(){
-      gmSay('出村前有个<b>小考</b> 📝 下面三句话，哪句最适合对 AI 说，能让它一次做出你最想要的东西？');
-      showQuiz();
     });
+  } else {
+    btn.classList.add('wrong'); btn.disabled=true;
+    gmSay(o.k==='A' ? 'A 太模糊：做什么网站？给谁用？AI 只能靠猜，再想想～' : 'C 把主导权全交出去了😄 要什么全凭运气，再想想～');
   }
+}
+el('chatSend').onclick = function(){
+  var t = el('chatIn').value.trim(); if(!t || stage!=='warmup') return;
+  el('chatIn').value=''; addMsg('me', t);
+  el('chatIn').disabled=true; el('chatSend').disabled=true;
+  var ans = calc(t);
+  if (ans){ gmSay('啪！<b>'+ans+'</b> ✅ 看到了吗？<b>你说 → 我做 → 你验收</b>，这就是和 AI 干活的基本循环。', afterWarmup); }
+  else { gmSay('收到！（演示版阿V只会算数😄 完整版里这句话由真 AI 接住，真的把事办了。）<b>你说 → 我做 → 你验收</b>，这就是基本循环。', afterWarmup); }
+};
+function afterWarmup(){
+  gmSay('出村前有个<b>小考</b> 📝 三句话，哪句最适合对 AI 说，能让它一次做出你最想要的？');
+  showQuiz();
+}
+el('chatIn').addEventListener('keydown', function(e){ if(e.key==='Enter') el('chatSend').onclick(); });
+el('resetDemo').onclick = function(){ startDemo(); };
 
-  function showQuiz(){
-    choiceRow.innerHTML = '';
-    QUIZ.forEach(function(o){
-      var b = document.createElement('button');
-      b.textContent = o.t;
-      b.onclick = function(){ pick(o, b); };
-      choiceRow.appendChild(b);
+/* ================= ch01 需求四要素 ================= */
+function hintCh01(){
+  toast('提示：四要素=给谁用/解决什么问题/长什么样/不要什么。想想老板娘每天怎么用它？');
+}
+function submitCh01(){
+  var v = [el('q1a').value.trim(), el('q1b').value.trim(), el('q1c').value.trim(), el('q1d').value.trim()];
+  var names = ['给谁用','解决什么问题','长什么样','不要什么'];
+  var miss = [], empty = [false,false,false,false];
+  ['q1a','q1b','q1c','q1d'].forEach(function(id,i){
+    el(id).classList.remove('err');
+    if (!v[i]){ empty[i]=true; el(id).classList.add('err'); miss.push(names[i]); }
+  });
+  var r = el('r-ch01'); r.classList.remove('hidden','ok','bad');
+  if (miss.length){
+    r.classList.add('bad');
+    r.innerHTML = '😅 阿V：「还缺 <b>'+miss.join('、')+'</b>。红框的地方补上再交——缺了这几句，AI 就得靠猜。」<br><span style="color:var(--muted);font-size:12px">（这坑你在完整版第 1 关还会反复踩，踩熟了就出师了）</span>';
+    return;
+  }
+  r.classList.add('ok');
+  r.innerHTML = '✅ <b>阿V：「这就是一份合格的需求！」</b><br><br>「给<b>'+v[0]+'</b>用的记账小工具，用来<b>'+v[1]+'</b>。打开大概是<b>'+v[2]+'</b>。<b>不要</b>：'+v[3]+'。」<br><span style="color:var(--muted);font-size:12px">四要素齐全，AI 拿到就能开工，几乎不会跑偏。完整版里，这句话会存进你的《玩家档案》，成为整个项目的基石。</span>';
+  award('ch01');
+}
+
+/* ================= ch02 功能分类 ================= */
+var C2 = [
+  {t:'1. 地鼠随机冒头', a:1},{t:'2. 点中地鼠加分', a:1},{t:'3. 30 秒倒计时', a:1},{t:'4. 结束显示得分+重玩按钮', a:1},
+  {t:'5. 最高分记录', a:2},{t:'6. 音效', a:2},{t:'7. 难度递增（越打越快）', a:2},
+  {t:'8. 好友排行榜', a:3},{t:'9. 连击奖励', a:3},{t:'10. 皮肤商店（换地鼠造型）', a:3}
+];
+var c2pick = {};
+function renderCh02(){
+  c2pick = {};
+  var box = el('ch02rows'); box.innerHTML='';
+  C2.forEach(function(f, i){
+    var row = document.createElement('div'); row.className='row';
+    var s = document.createElement('span'); s.textContent = f.t;
+    var g = document.createElement('div'); g.className='g';
+    [['必须',1],['可以',2],['先不要',3]].forEach(function(o){
+      var b = document.createElement('button'); b.className='b3'; b.textContent=o[0];
+      b.onclick = function(){
+        c2pick[i]=o[1];
+        Array.prototype.forEach.call(g.children,function(c){c.className='b3';});
+        b.className = 'b3 on'+o[1];
+      };
+      g.appendChild(b);
     });
-    choiceRow.classList.remove('hidden');
-    input.placeholder = '这题点下方选项作答～';
-    stage = 'quiz';
+    row.appendChild(s); row.appendChild(g); box.appendChild(row);
+  });
+  el('r-ch02').classList.add('hidden');
+}
+function resetCh02(){ renderCh02(); }
+function submitCh02(){
+  var r = el('r-ch02'); r.classList.remove('hidden','ok','bad');
+  if (Object.keys(c2pick).length < C2.length){
+    r.classList.add('bad'); r.textContent = '还有功能没定级，全部定完再交卷～';
+    return;
   }
-
-  function pick(o, btn){
-    if (stage !== 'quiz') return;
-    addMsg('me', '我选 ' + o.k);
-    if (o.k === 'B'){
-      stage = 'done';
-      btn.classList.add('right');
-      Array.prototype.forEach.call(choiceRow.children, function(c){ c.disabled = true; });
-      choiceRow.classList.add('hidden');
-      gmSay('<b>正确！</b>B 把"做什么、统计什么"说得明明白白，AI 不用猜。', function(){
-        gmSay('A 太模糊——做什么网站？给谁用？C 看似省事，其实是把"你想要的"交给运气。', function(){
-          confetti();
-          addMsg('badge-card', '🎉 通关！获得徽章【开机成功】<small>完整版里，现在会写入你的存档，并解锁下一关</small>');
-          gmSay('这就是第 0 关的全部。完整版里接下来是 <b>ch01 说需求</b>：接一张村口委托，学会用<b>需求四要素</b>把一句话改造成 AI 一听就懂的完整需求——然后你的项目会一路被真的做出来 🧱', function(){
-            addMsg('sys', '— 试玩结束 · 点「↺ 重玩试玩」再来一次，或往下翻看完整版介绍 —');
-          });
-        });
-      });
-    } else {
-      btn.classList.add('wrong');
-      btn.disabled = true;
-      gmSay(o.k === 'A' ? 'A 太模糊了：做个什么网站？给谁用、要什么功能？AI 只能靠猜。再想想～' : 'C 把主导权全交出去了😄 "你看着办"= 要什么全凭运气。再想想～');
-    }
+  var wrong = [];
+  C2.forEach(function(f,i){ if (c2pick[i]!==f.a) wrong.push(f.t); });
+  var must = C2.filter(function(f,i){ return c2pick[i]===1; }).length;
+  if (wrong.length<=2 && must>=3 && must<=5){
+    r.classList.add('ok');
+    r.innerHTML = '✅ <b>刀法合格！</b>'+(wrong.length? '略有争议的：'+wrong.join('、')+'（ 不同人砍法不同，能说出理由就行）':'全对，毫无争议。')+'<br>MVP 口诀：<b>必须的三五个，可以往后排，先不要写明</b>。完整版里这份清单会变成你项目的施工范围。';
+    award('ch02');
+  } else {
+    r.classList.add('bad');
+    r.innerHTML = '😅 阿V：「再砍砍。参考：没有它这游戏还成立吗？不成立才是<b>必须</b>（1/2/3/4）；最高分/音效/难度是<b>可以</b>（5/6/7）；排行榜/连击/皮肤商店？第一版就上这些，游戏厅老板等得花儿都谢了——<b>先不要</b>（8/9/10）。」';
   }
+}
 
-  function onSend(){
-    var txt = input.value.trim();
-    if (!txt) return;
-    if (stage === 'warmup'){ input.value=''; onWarmup(txt); }
+/* ================= ch03 三段式 ================= */
+function submitCh03(){
+  var r = el('r-ch03'); r.classList.remove('hidden','ok','bad');
+  var ok = true;
+  document.querySelectorAll('#d-ch03 .opts').forEach(function(g){
+    var picked = g.querySelector('input:checked');
+    if (!picked || picked.value !== g.getAttribute('data-ans')) ok = false;
+  });
+  if (!ok){
+    r.classList.add('bad');
+    r.innerHTML = '😅 阿V：「三段里有没选对的。口诀：<b>我要什么（具体数量+类型）+ 拿来干什么（用途）+ 我的限制（免费/浏览器直接跑/简洁）</b>。」';
+    return;
   }
+  r.classList.add('ok');
+  r.innerHTML = '✅ 三段齐全！看，同样的需求，这么问 AI 立刻给出精准结果：<div class="res-grid">'
+    + '<div class="res-card"><b>🐭 whack-a-mole-js</b>2.1k★ · 纯 JS 打地鼠，单文件可直接跑<a href="https://github.com/search?q=whack+a+mole+javascript" target="_blank">github.com/search → 查看</a></div>'
+    + '<div class="res-card"><b>🎮 awesome-canvas-games</b>网页小游戏合集，打地鼠/贪吃蛇都在<a href="https://github.com/search?q=canvas+game+collection" target="_blank">github.com/search → 查看</a></div>'
+    + '<div class="res-card"><b>📖 MDN 小游戏教程</b>从零做一个浏览器小游戏（中文）<a href="https://developer.mozilla.org/zh-CN/docs/Games" target="_blank">developer.mozilla.org → 查看</a></div></div>'
+    + '<span style="color:var(--muted);font-size:12px">（预览版演示链接为示意；完整版里真 AI 会按你选的方向现场找）</span>';
+  award('ch03');
+}
 
-  send.onclick = onSend;
-  input.addEventListener('keydown', function(e){ if (e.key === 'Enter') onSend(); });
-  resetBtn.onclick = startDemo;
-  startDemo();
-})();
+/* ================= ch05 报bug四要素 ================= */
+var C5 = [
+  {t:'「我打了一局得了 80 分」', a:1},
+  {t:'「最高分应该记录并显示 80」', a:2},
+  {t:'「刷新页面后最高分变回 0 了」', a:3},
+  {t:'「打出高分后按 F5 刷新，就能复现」', a:4}
+];
+var c5order = [2,0,3,1], c5pick = {};
+function renderCh05(){
+  c5pick = {};
+  var box = el('ch05rows'); box.innerHTML='';
+  c5order.forEach(function(idx){
+    var f = C5[idx];
+    var row = document.createElement('div'); row.className='row';
+    var s = document.createElement('span'); s.textContent = f.t;
+    var g = document.createElement('div'); g.className='g';
+    [['做了什么',1],['期望什么',2],['实际什么',3],['怎么复现',4]].forEach(function(o){
+      var b = document.createElement('button'); b.className='b3'; b.textContent=o[0];
+      b.onclick = function(){
+        c5pick[idx]=o[1];
+        Array.prototype.forEach.call(g.children,function(c){c.className='b3';});
+        b.className='b3 on'+(o[1]===1?1:(o[1]===2?1:1)); // 统一绿色系
+        b.style.background = 'var(--green-dim)'; b.style.color='#fff'; b.style.borderColor='var(--green-dim)';
+      };
+      g.appendChild(b);
+    });
+    row.appendChild(s); row.appendChild(g); box.appendChild(row);
+  });
+  el('r-ch05').classList.add('hidden');
+}
+function resetCh05(){ renderCh05(); }
+function submitCh05(){
+  var r = el('r-ch05'); r.classList.remove('hidden','ok','bad');
+  if (Object.keys(c5pick).length < C5.length){ r.classList.add('bad'); r.textContent='每句话都要归类，还有漏的～'; return; }
+  var wrong = C5.filter(function(f,i){ return c5pick[i]!==f.a; });
+  if (!wrong.length){
+    r.classList.add('ok');
+    r.innerHTML = '✅ <b>阿V：「完美的 bug 报告，可以直接进大厂工单系统。」</b><br>四要素：<b>我做了什么 / 期望发生什么 / 实际发生什么 / 怎么复现</b>。AI 收到这种报告，一次修对的概率极高——完整版里我会当场修好，项目升级 v0.2。';
+    award('ch05');
+  } else {
+    r.classList.add('bad');
+    r.innerHTML = '😅 阿V：「有 '+wrong.length+' 句归错位了。提示：80 分是你<b>做了什么</b>；「应该显示 80」是<b>期望</b>；「变回 0」是<b>实际</b>；按 F5 是<b>怎么复现</b>。」';
+  }
+}
+
+/* ================= modal ================= */
+function openModal(kind){
+  var m = el('modal');
+  if (kind==='ch04') m.innerHTML = modalCh04();
+  if (kind==='ch06') m.innerHTML = modalCh06();
+  if (kind==='ch07') m.innerHTML = modalCh07();
+  el('mask').classList.add('on');
+  if (kind==='ch04'){ wamInit(); ledgerInit(); }
+  if (kind==='ch06'){ tabTo('src-todo'); }
+  if (kind==='ch07'){ renderCert(); }
+}
+function closeModal(){ el('mask').classList.remove('on'); }
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+
+function modalCh04(){
+  return '<button class="close" onclick="closeModal()">✕</button>'
+  + '<h3>🧱 第 4 关 · 成品屋</h3><div class="mh">ch04 · 搭骨架 —— 项目在这一关真的诞生</div>'
+  + '<div class="body"><p>完整版里，你写出带<b>验收标准</b>的开工令，AI 当场把项目做出来，双击就能打开。下面两个就是按游戏规格做出来的<b>真成品</b>（不是图片！）——玩一下：</p>'
+  + '<div class="tabs"><button id="tab-wam" class="on" onclick="tabTo(\'wam\')">🐭 打地鼠</button><button id="tab-ledger" onclick="tabTo(\'ledger\')">🧮 记账本</button></div>'
+  + '<div class="tabpane on" id="pane-wam"><div class="wam">'
+  + '<div class="bar"><span>得分：<b id="wamScore">0</b></span><span>最高分：<b id="wamBest">0</b>（刷新不丢，这就是 v0.2 修好的效果）</span><span>时间：<b id="wamTime">30</b>s</span></div>'
+  + '<div class="grid9" id="wamGrid"></div>'
+  + '<div style="margin-top:10px"><button class="btn2" id="wamBtn" onclick="wamStart()">开始挑战（30 秒）</button> <span id="wamMsg" style="font-size:13px;color:var(--amber)"></span></div>'
+  + '</div></div>'
+  + '<div class="tabpane" id="pane-ledger"><div class="ledger">'
+  + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">'
+  + '<input id="ledAmt" type="text" placeholder="金额" style="width:90px"><input id="ledNote" type="text" placeholder="买了什么" style="flex:1;min-width:140px">'
+  + '<button class="btn2" onclick="ledAdd()">记一笔</button></div>'
+  + '<p style="font-size:13px">总支出：<b id="ledTotal" style="color:var(--amber)">0</b> 元 <span style="color:var(--muted);font-size:12px">（数据存本机，刷新不丢——对比第 6 关小王的源码包试试）</span></p>'
+  + '<ul id="ledList"></ul>'
+  + '</div></div>'
+  + '<p style="margin-top:10px;font-size:12px;color:var(--muted)">教的表达技巧：<b style="color:var(--green)">验收标准前置</b>——下指令时先写好"做完的标准"（打开看到什么/点什么/发生什么），AI 照着交卷。</p></div>';
+}
+function modalCh06(){
+  return '<button class="close" onclick="closeModal()">✕</button>'
+  + '<h3>🏺 第 6 关 · 源码包找茬现场</h3><div class="mh">ch06 · 接手别人的代码：先读懂 → 再跑通 → 后修改</div>'
+  + '<div class="body"><p>深夜，朋友小王发来他的老项目：「帮我改改呗」就下线了。<b>下面就是他源码包里的真页面（可玩）</b>——规矩：先玩两分钟找茬，再报告问题。里面<b>确实埋了 bug</b>。</p>'
+  + '<div class="tabs"><button id="tab-src-todo" class="on" onclick="tabTo(\'src-todo\')">📝 待办清单</button><button id="tab-src-snake" onclick="tabTo(\'src-snake\')">🐍 贪吃蛇</button></div>'
+  + '<div class="tabpane on" id="pane-src-todo"><iframe class="play" src="legacy-todo/index.html"></iframe></div>'
+  + '<div class="tabpane" id="pane-src-snake"><iframe class="play" src="legacy-snake/index.html"></iframe></div>'
+  + '<p style="margin-top:10px;font-size:13px">找到不对劲的地方了吗？勾选你实锤的 bug（走完整版时要用<b>报错四要素</b>报告，我才会修）：</p>'
+  + '<div style="font-size:13.5px;line-height:2" id="bugList">'
+  + '<label style="display:block"><input type="checkbox" value="1"> 输入框按<b>回车</b>根本没法添加，只能点按钮</label>'
+  + '<label style="display:block"><input type="checkbox" value="2"> <b>刷新后条目全丢</b>，数据没保存</label>'
+  + '<label style="display:block"><input type="checkbox" value="3"> 空内容也能添加，出现一排空白条目</label>'
+  + '<label style="display:block"><input type="checkbox" value="4"> 删除按钮小得离谱，鼠标悬停才出现</label>'
+  + '<label style="display:block"><input type="checkbox" value="0"> 按钮是蓝色的，丑（这是审美问题，不是 bug！）</label>'
+  + '</div>'
+  + '<div class="inrow" style="border:none"><button class="btn2" onclick="submitCh06()">提交考古报告</button></div>'
+  + '<div class="result hidden" id="r-ch06"></div>'
+  + '<p style="margin-top:8px;font-size:12px;color:var(--muted)">完整版：副本操作（不在原件上改）→ 规范报告 → AI 修复 → 发「考古学家」徽章。</p></div>';
+}
+function modalCh07(){
+  return '<button class="close" onclick="closeModal()">✕</button>'
+  + '<h3>🎓 第 7 关 · 毕业</h3><div class="mh">ch07 · 独立走完全流程，领取证书</div>'
+  + '<div class="body" id="certBox"></div>';
+}
+function tabTo(name){
+  ['wam','ledger','src-todo','src-snake'].forEach(function(n){
+    var b = el('tab-'+n), p = el('pane-'+n);
+    if (b){ b.className = (n===name)?'on':''; }
+    if (p){ p.className = 'tabpane' + (n===name?' on':''); }
+  });
+}
+function submitCh06(){
+  var picked = Array.prototype.slice.call(document.querySelectorAll('#bugList input:checked')).map(function(i){ return i.value; });
+  var r = el('r-ch06'); r.classList.remove('hidden','ok','bad');
+  var real = picked.filter(function(v){ return v!=='0'; });
+  var false_ = picked.indexOf('0')>-1;
+  if (!real.length){
+    r.classList.add('bad'); r.textContent = (false_ ? '蓝色按钮只是审美问题，不是 bug。' : '') + '再玩玩看，提示：试试按回车、刷新页面、连点两下空添加。';
+    return;
+  }
+  r.classList.add('ok');
+  var full = real.length===4;
+  r.innerHTML = '✅ <b>实锤 '+real.length+'/4 个 bug！</b>' + (full ? '全找到了——小王的代码果然名不虚传 😏 <b>考古学家·满级！</b>' : '剩下的彩蛋：还有一个你还没撞见，回去再玩玩。') + '<br><span style="color:var(--muted);font-size:12px">真实报告时别说「有 bug」，用四要素：做了什么/期望什么/实际什么/怎么复现。</span>';
+  award('ch06');
+}
+function renderCert(){
+  var box = el('certBox');
+  var n = litCount();
+  if (n>=8){
+    box.innerHTML = '<div class="cert"><h3>🎓 VibeCoding 新手村 · 毕业证书</h3>'
+    + '<div class="name">'+(P.name||'神秘玩家')+'</div>'
+    + '<p>已完成全部 8 关试玩，点亮全部章节徽章</p>'
+    + '<p style="margin:6px 0;color:var(--muted)">出村忠告：先想清楚再开口 · 一次一个需求 · 验收标准前置 · 报 bug 说四要素</p>'
+    + '<p style="color:var(--amber)">AI 会越来越强，但把话说清楚的人，永远能把 AI 用得最好。</p>'
+    + '<p style="margin-top:8px;font-size:12px;color:var(--muted)">—— 引导员 阿V & 村长 敬上</p></div>'
+    + '<p style="margin-top:10px;font-size:13px">完整版里，现在你会带着真项目、真存档和这张证书出村，去做自己想做的东西。</p>'
+    + '<div class="inrow" style="border:none"><button class="btn2" onclick="claimName()">✍️ 证书上写我的名字</button></div>';
+    award('ch07');
+  } else {
+    var missing = CH.filter(function(c){ return !has(c.id); }).map(function(c){ return c.name; });
+    box.innerHTML = '<p>毕业要求：点亮全部 8 枚章节徽章。</p><p style="margin:8px 0">当前 <b style="color:var(--amber)">'+n+'/8</b>，还差：'+missing.join('、')+'</p><p style="font-size:12.5px;color:var(--muted)">去「试玩广场」把没玩的关卡玩完，回来领证～（进度存本机，关了页面也不丢）</p><div class="inrow" style="border:none"><button class="btn2 primary" onclick="closeModal();scrollToId(\'demo\')">去补关</button></div>';
+  }
+}
+function claimName(){
+  var n = prompt('毕业证书上的名字：', P.name||'');
+  if (n===null) return;
+  P.name = (n.trim()||'神秘玩家'); saveP(); renderCert(); confetti();
+}
+
+/* ================= ch04 成品：打地鼠 ================= */
+var wamTimer=null, wamPop=null, wamScore=0, wamLeft=0;
+function wamInit(){
+  var g = el('wamGrid'); if(!g || g.children.length) return;
+  for (var i=0;i<9;i++){
+    (function(i){
+      var h = document.createElement('div'); h.className='hole'; h.textContent='🕳️';
+      h.onclick = function(){
+        if (h.textContent==='🐹'){ wamScore+=10; el('wamScore').textContent=wamScore; h.textContent='💥';
+          setTimeout(function(){ if(h.textContent==='💥') h.textContent='🕳️'; },150);
+          if (!has('ch04')) award('ch04');
+        }
+      };
+      g.appendChild(h);
+    })(i);
+  }
+  var best = 0; try{ best = +(localStorage.getItem('vxc_wam_best')||0); }catch(e){}
+  el('wamBest').textContent = best;
+}
+function wamStart(){
+  if (wamTimer) return;
+  wamScore=0; wamLeft=30;
+  el('wamScore').textContent='0'; el('wamTime').textContent='30'; el('wamMsg').textContent='';
+  el('wamBtn').textContent='进行中…';
+  wamPop = setInterval(function(){
+    var holes = document.querySelectorAll('#wamGrid .hole');
+    Array.prototype.forEach.call(holes,function(h){ if(h.textContent==='🐹') h.textContent='🕳️'; h.classList.remove('up'); });
+    var h = holes[Math.floor(Math.random()*9)];
+    h.textContent='🐹'; h.classList.add('up');
+  }, 700);
+  wamTimer = setInterval(function(){
+    wamLeft--; el('wamTime').textContent = wamLeft;
+    if (wamLeft<=0){ wamEnd(); }
+  }, 1000);
+}
+function wamEnd(){
+  clearInterval(wamTimer); clearInterval(wamPop); wamTimer=null;
+  var holes = document.querySelectorAll('#wamGrid .hole');
+  Array.prototype.forEach.call(holes,function(h){ h.textContent='🕳️'; h.classList.remove('up'); });
+  var best = 0; try{ best = +(localStorage.getItem('vxc_wam_best')||0); }catch(e){}
+  if (wamScore>best){ best=wamScore; try{ localStorage.setItem('vxc_wam_best', best); }catch(e){} }
+  el('wamBest').textContent = best;
+  el('wamBtn').textContent='再来一局';
+  el('wamMsg').textContent = '时间到！得分 '+wamScore+'，最高分 '+best+'（已持久化 ✓）';
+  if (wamScore>0 && !has('ch04')) award('ch04');
+}
+/* 记账本 */
+function ledgerInit(){
+  var l = el('ledList'); if(!l || l.dataset.init) return;
+  l.dataset.init = 1;
+  var data = []; try{ data = JSON.parse(localStorage.getItem('vxc_led')||'[]'); }catch(e){}
+  l._data = data;
+  ledRender();
+}
+function ledRender(){
+  var l = el('ledList'); var data = l._data||[];
+  l.innerHTML = data.map(function(it,i){
+    return '<li><span>'+it.note+'</span><span>-'+it.amt+' 元 <button class="del" onclick="ledDel('+i+')">删</button></span></li>';
+  }).join('');
+  var total = data.reduce(function(s,it){ return s + (+it.amt||0); },0);
+  el('ledTotal').textContent = total;
+}
+function ledAdd(){
+  var amt = parseFloat(el('ledAmt').value), note = el('ledNote').value.trim();
+  if (!amt || !note){ toast('金额和备注都要填哦（这就是 v0.1 该有的校验）'); return; }
+  el('ledList')._data.unshift({amt:amt, note:note});
+  try{ localStorage.setItem('vxc_led', JSON.stringify(el('ledList')._data)); }catch(e){}
+  el('ledAmt').value=''; el('ledNote').value='';
+  ledRender();
+  if (!has('ch04')) award('ch04');
+}
+function ledDel(i){ el('ledList')._data.splice(i,1); try{ localStorage.setItem('vxc_led', JSON.stringify(el('ledList')._data)); }catch(e){} ledRender(); }
+
+/* ================= 关卡/方向 卡片 ================= */
+var LEVELS = [
+  {id:'ch00', ico:'🔌', name:'开机', skill:'有话直说，不懂就问', goal:'跟阿V说上话，体验"你说→我做→你验收"的基本循环。', play:'试玩广场第 1 张卡', extra:'<ul><li>热身：随便下一个小指令，AI 真的执行</li><li>小考：三句话选哪句最适合对 AI 说</li></ul>'},
+  {id:'ch01', ico:'🗣️', name:'说需求', skill:'需求四要素', goal:'在村口告示板接一张委托（选方向），把一句模糊的想法改写成合格需求。', play:'试玩广场第 2 张卡', extra:'<ul><li>四要素：给谁用 / 解决什么问题 / 长什么样 / 不要什么</li><li>「不要什么」是防跑偏的缰绳——AI 最爱顺手多做事</li></ul>'},
+  {id:'ch02', ico:'🔪', name:'拆功能', skill:'必须/可以/先不要', goal:'把需求翻译成功能清单，挥刀砍出 MVP（最小可行产品）。', play:'试玩广场第 3 张卡', extra:'<ul><li>MVP=先做"最小但真的能用"的版本</li><li>口诀：必须的三五个，可以往后排，先不要写明</li></ul>'},
+  {id:'ch03', ico:'🧺', name:'找资源', skill:'提问三段式', goal:'动工前先看别人造好的轮子：让 AI 帮找开源项目和模板。', play:'试玩广场第 4 张卡', extra:'<ul><li>三段式：我要什么 + 拿来干什么 + 我的限制</li><li>顺带学开源 License：学习参考没问题，直接拿去卖要看条款</li></ul>'},
+  {id:'ch04', ico:'🧱', name:'搭骨架', skill:'验收标准前置', goal:'写出第一条真正的开发指令（需求+MVP+验收标准），AI 真的把 v0.1 做出来。', play:'试玩广场「成品屋」', extra:'<ul><li>做出来的项目是纯网页，双击就能打开</li><li>v0.1 会故意留一个已知短板，是下一关的教材</li></ul>'},
+  {id:'ch05', ico:'🛠️', name:'改需求', skill:'报 bug 四要素', goal:'学会 vibecoding 日常：报 bug 和提修改，项目升级 v0.2。', play:'试玩广场第 5 张卡', extra:'<ul><li>报 bug：做了什么/期望什么/实际什么/怎么复现</li><li>提修改：说「改成什么样」，不说「不好看」</li></ul>'},
+  {id:'ch06', ico:'🏺', name:'源码包', skill:'先读懂→再跑通→后修改', goal:'朋友深夜甩来一个源码包说"帮我改改"——学会接手别人的代码。', play:'试玩广场「找茬现场」', extra:'<ul><li>没看过病别急着吃药：不知道它是什么就别让 AI 改</li><li>职业习惯：复制副本再动手，不在原件上改</li></ul>'},
+  {id:'ch07', ico:'🎓', name:'毕业', skill:'复盘与举一反三', goal:'独立走一遍微缩全流程（新委托：家人生日提醒），领毕业证书出村。', play:'试玩广场「毕业」', extra:'<ul><li>完整版会独立验收你的需求/MVP/开工令三件套</li><li>出村后：想清楚四要素→砍MVP→验收前置→四要素报错→说"改成什么样"</li></ul>'}
+];
+var TRACKS = [
+  {ico:'🏨', name:'管理后台', from:'客栈老板', desc:'客人名单管理台：谁住哪个房间、电话多少，一查就知道。', mvp:'添加客人（姓名/房间/电话）· 列表 · 删除 · 编辑 · 姓名搜索', short:'预埋短板：数据存内存，刷新名单全没（第 5 关修成 localStorage）'},
+  {ico:'🎮', name:'小游戏', from:'游戏厅老板', desc:'给客人打发时间的网页打地鼠：一秒上手，点一点就行。', mvp:'3×3 地鼠洞 · 冒头点中加分 · 30 秒倒计时 · 结算+重玩', short:'预埋短板：最高分只存内存，刷新清零（第 5 关修持久化）'},
+  {ico:'🧮', name:'实用小工具', from:'杂货铺老板', desc:'简单记账：花了多少、买了啥，月底看总数。', mvp:'记一笔（金额+备注）· 流水列表 · 总金额 · 删除', short:'预埋短板：账目刷新全丢（第 5 关修持久化）'},
+  {ico:'🧑‍💼', name:'个人主页', from:'村长', desc:'让外村人认识村长：名字、事迹、联系方式，一页搞定。', mvp:'头像名字一句话 · 关于我 · 三张作品卡 · 联系方式', short:'预埋短板：深色模式刷新变回亮色（第 5 关修持久化)'}
+];
+function renderLevelCards(){
+  var box = el('levelCards');
+  LEVELS.forEach(function(L){
+    var d = document.createElement('div'); d.className='card';
+    d.innerHTML = '<div class="lv"><span>'+L.id.toUpperCase()+'</span>'+(has(L.id)?'<span class="done-mark">✓</span>':'')+'</div>'
+      + '<div class="ico">'+L.ico+'</div><h3>'+L.name+'</h3><p>'+L.skill+'</p><div class="go">点看详情 →</div>';
+    d.onclick = function(){
+      openLevelModal(L);
+    };
+    box.appendChild(d);
+  });
+}
+function openLevelModal(L){
+  el('modal').innerHTML = '<button class="close" onclick="closeModal()">✕</button>'
+    + '<h3>'+L.ico+' '+L.id.toUpperCase()+' · '+L.name+'</h3><div class="mh">教的表达技巧：'+L.skill+'</div>'
+    + '<div class="body"><h4>这一关干嘛</h4><p>'+L.goal+'</p><h4>剧本要点</h4>'+L.extra
+    + '<h4>预览版去哪玩</h4><p>'+L.play+'（通关点亮徽章【'+ALL[L.id].name+'】）</p></div>'
+    + '<div class="mfoot"><button class="btn2 primary" onclick="closeModal();scrollToId(\'demo\')">去试玩</button></div>';
+  el('mask').classList.add('on');
+}
+function renderTrackCards(){
+  var box = el('trackCards');
+  TRACKS.forEach(function(T){
+    var d = document.createElement('div'); d.className='card';
+    d.innerHTML = '<div class="ico">'+T.ico+'</div><h3>'+T.name+'</h3><p>'+T.from+'的委托</p><div class="go">点看委托书 →</div>';
+    d.onclick = function(){
+      el('modal').innerHTML = '<button class="close" onclick="closeModal()">✕</button>'
+        + '<h3>'+T.ico+' '+T.name+'</h3><div class="mh">委托人：'+T.from+'</div>'
+        + '<div class="body"><h4>委托内容</h4><p>'+T.desc+'</p><h4>MVP 范围（第 2 关砍出来的）</h4><p>'+T.mvp+'</p>'
+        + '<h4>v0.1 的已知短板</h4><p>'+T.short+'</p>'
+        + '<h4>毕业后的进阶方向</h4><p>导出/图表/音效/部署上线……完整版通关后可回村继续加。</p></div>'
+        + '<div class="mfoot"><button class="btn2 primary" onclick="closeModal();scrollToId(\'demo\')">去开工</button></div>';
+      el('mask').classList.add('on');
+    };
+    box.appendChild(d);
+  });
+}
+/* 翻卡 */
+var VS = [
+  {t:'报 bug', bad:'坏了，出 bug 了，你看看', good:'我在搜索框输入"张"，本该只显示姓张的客人，结果列表整个空了。复现：添加两个客人，搜索任意一个字就出现'},
+  {t:'提样式修改', bad:'界面不好看，改好看点', good:'标题字号从 20 调到 28，主色换墨绿，卡片之间留 16px 间距'},
+  {t:'接手源码包', bad:'帮我把这个改好', good:'第一步：先帮我看看这个项目是做什么的、什么结构、怎么跑起来'},
+  {t:'找资源', bad:'有没有好项目推荐', good:'帮我找 3 个 GitHub 上开源的网页记账项目，我想参考界面，要求免费、浏览器直接跑'},
+  {t:'下开发指令', bad:'做好了跟我说', good:'做完的标准是：双击打开不报错；添加能上列表；每项可删；刷新不丢。照这个交卷'},
+  {t:'AI 跑偏时', bad:'不是这样的……算了', good:'打住。我要的是 A，你做成了 B。我先复述需求，你复述你的理解，对齐了再动手'}
+];
+function renderVs(){
+  var box = el('vsCards');
+  VS.forEach(function(v){
+    var d = document.createElement('div'); d.className='flip';
+    d.innerHTML = '<div class="inner"><div class="face front"><b>❌ '+v.t+'</b><div>"'+v.bad+'"</div><div class="hint">👆 点击翻面看高手怎么说</div></div>'
+      + '<div class="face back"><b>✅ '+v.t+'</b><div>"'+v.good+'"</div></div></div>';
+    d.onclick = function(){ d.classList.toggle('flipped'); };
+    box.appendChild(d);
+  });
+}
+
+/* ================= init ================= */
+loadP(); renderBadges(); renderCh02(); renderCh05(); renderLevelCards(); renderTrackCards(); renderVs();
 </script>
 </body>
 </html>
