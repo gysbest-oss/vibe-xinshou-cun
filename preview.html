@@ -231,6 +231,20 @@ iframe.play{width:100%;height:460px;border:1px solid var(--line);border-radius:1
 .rstep .why{font-size:12.5px;color:var(--muted);margin-bottom:6px;}
 .rstep .tpl{font-size:12px;line-height:1.9;margin:8px 0;}
 .rstep .chk{font-size:12.5px;color:var(--amber);margin-top:8px;}
+.tipcard{background:#1a2f1d;border:1px solid var(--amber);border-radius:12px;padding:18px 20px;margin-top:12px;animation:pop .25s ease;}
+.tipcard .tt{color:var(--amber);font-weight:bold;font-size:16px;margin-bottom:6px;}
+.tipcard .tb{font-size:13.5px;}
+.tipcard .te{font-size:12.5px;color:#bce9c6;margin-top:8px;background:rgba(0,0,0,.25);border-radius:8px;padding:8px 12px;font-family:Consolas,monospace;}
+.tdots{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
+.tdots span{width:22px;height:22px;border-radius:50%;border:1px dashed var(--line);color:var(--muted);font-size:11px;display:flex;align-items:center;justify-content:center;font-family:Consolas,monospace;}
+.tdots span.got{border:1px solid var(--amber);color:var(--amber);}
+.qexp{margin-top:10px;font-size:13px;padding:10px 14px;border-radius:8px;background:var(--panel2);border:1px solid var(--line);}
+.qexp b{color:var(--green);}
+.plan{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:13.5px;cursor:pointer;}
+.plan.done{border-color:var(--green-dim);}
+.plan .cbx{width:20px;height:20px;border-radius:6px;border:1px solid var(--green-dim);display:flex;align-items:center;justify-content:center;color:var(--green);flex-shrink:0;font-size:13px;}
+.plan .dy{color:var(--green);font-family:Consolas,monospace;margin-right:4px;flex-shrink:0;}
+.plan a{color:var(--amber);text-decoration:none;}
 @media(max-width:680px){.wiz-panel .grid2{grid-template-columns:1fr;}}
 
 footer{max-width:920px;margin:40px auto 0;padding:24px 20px 44px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;text-align:center;}
@@ -252,6 +266,7 @@ footer a{color:var(--green);text-decoration:none;}
   <a href="#vs">表达对照</a>
   <a href="#school">学堂</a>
   <a href="#factory">开工工场</a>
+  <a href="#lab">练功房</a>
   <a href="#badges">徽章墙</a>
   <a href="#how">完整版</a>
   <span class="cnt" id="navCnt">🏅 0/8</span>
@@ -545,9 +560,37 @@ footer a{color:var(--green);text-decoration:none;}
   </div>
 </section>
 
+<!-- ============ 练功房 ============ -->
+<section id="lab">
+  <h2><span class="no">07</span>🎓 练功房 · 边玩边学</h2>
+  <p class="sec-sub">四样东西：<b style="color:var(--text)">黑话词典</b>（行话都能听懂）、<b style="color:var(--text)">出村资格考试</b>（10 题问答带评级）、<b style="color:var(--text)">技巧抽卡</b>（每天抽一招，集齐 12 张）、<b style="color:var(--text)">7 天上手计划</b>（照着走完就出师）。进度全部存本机。</p>
+
+  <div class="mh2">① 📖 黑话词典（18 个高频词，点卡片看人话解释）</div>
+  <div class="grid c3" id="termCards"></div>
+
+  <div class="mh2" style="margin-top:24px">② 📝 出村资格考试</div>
+  <div class="demo open" id="quizbox">
+    <div class="demo-body" style="display:block;border-top:none;padding-top:12px">
+      <div id="quizBody"></div>
+    </div>
+  </div>
+
+  <div class="mh2" style="margin-top:24px">③ 🎴 技巧抽卡（12 张表达技巧，每天抽一招）</div>
+  <div class="inrow" style="border:none">
+    <button class="btn2 primary" onclick="drawTip()">🎴 抽一招</button>
+    <span style="font-size:12.5px;color:var(--muted);align-self:center" id="tipCnt"></span>
+  </div>
+  <div id="tipCard"></div>
+  <div class="tdots" id="tipDots"></div>
+
+  <div class="mh2" style="margin-top:24px">④ 📅 7 天上手计划（点一行打勾，勾完的当天任务就算出师一步）</div>
+  <div id="planDays"></div>
+  <p style="font-size:12.5px;color:var(--muted)" id="planProg"></p>
+</section>
+
 <!-- ============ 徽章墙 ============ -->
 <section id="badges">
-  <h2><span class="no">07</span>🏅 徽章墙（点击看获得条件）</h2>
+  <h2><span class="no">08</span>🏅 徽章墙（点击看获得条件）</h2>
   <p class="sec-sub">章节徽章试玩对应关卡即可点亮；预览版把隐藏徽章的条件也公开了。</p>
   <div class="badges" id="badgeWall"></div>
   <div class="inrow" style="border:none;padding-top:14px"><button class="btn2 ghost" onclick="resetProgress()">🗑 清空本机存档重来</button></div>
@@ -555,7 +598,7 @@ footer a{color:var(--green);text-decoration:none;}
 
 <!-- ============ 完整版 ============ -->
 <section id="how">
-  <h2><span class="no">08</span>📦 完整版怎么玩</h2>
+  <h2><span class="no">09</span>📦 完整版怎么玩</h2>
   <p class="sec-sub">完整版是一个文件夹，由真 AI 当主持人：你说的话它真的接、真的执行、项目真的诞生。本页演示只是写死的剧本。</p>
   <div class="steps">
     <div class="step"><span class="n"></span><h3>下载并解压</h3><p>下载完整版 zip 并解压，里面是全部游戏：规则、8 关剧本、4 方向、2 个带 bug 的源码包。</p></div>
@@ -576,7 +619,7 @@ footer a{color:var(--green);text-decoration:none;}
 
 <footer>
   <b>黎小小VibeCoding新手村练手</b> · 完整版：AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置源码包<br>
-  适合转给任何想学用 AI 编程工具的小白 · v4.0 · 2026-10-12
+  适合转给任何想学用 AI 编程工具的小白 · v5.0 · 2026-10-12
 </footer>
 
 <!-- modal / toast / confetti -->
@@ -1484,10 +1527,188 @@ function wizReset(){
   toast('已清空，重新填一份');
 }
 
+/* ================= 练功房 · 黑话词典 ================= */
+var TERMS = [
+  {t:'前端', e:'你眼睛看到、手指点的那部分界面', m:'好比餐厅的用餐区', r:'前端'},
+  {t:'后端', e:'在服务器里默默干活、你看不到的部分：存数据、算账、管权限', m:'好比餐厅的后厨', r:'后端'},
+  {t:'接口（API）', e:'程序之间点菜的单子：一方按规定格式要，另一方按规定格式给', m:'服务员递进厨房的那张单子', r:'接口'},
+  {t:'数据库', e:'专门存数据的大仓库，能查能改能统计', m:'一个永远不丢页的超级记事本', r:'数据库'},
+  {t:'localStorage', e:'浏览器里给每个网站配的小储物柜，存进去的数据刷新页面还在。本页打地鼠的最高分就存在这', m:'游戏机的存档格', r:'存储'},
+  {t:'部署上线', e:'把做好的东西放到服务器上，让全世界能用网址访问', m:'把菜从厨房端上桌，客人才能吃', r:'上线'},
+  {t:'域名', e:'网址的名字，比如 github.com', m:'店铺的招牌', r:'上线'},
+  {t:'开源', e:'代码公开，任何人都能看、用、改', m:'公开的菜谱，谁都能照着做', r:'开源'},
+  {t:'License（开源协议）', e:'开源东西的使用规则：能不能拿去卖、要不要署名。抄之前看一眼', m:'菜谱上的"仅供学习"字样', r:'开源'},
+  {t:'Bug', e:'程序里的问题：本来该对的，它错了', m:'菜里吃出的沙子', r:'Bug'},
+  {t:'MVP', e:'最小可行产品：最小但真的能用的第一版。先跑通，再加料', m:'先煎个蛋证明火候，再谈满汉全席', r:'MVP'},
+  {t:'框架', e:'别人搭好的半成品结构，你往里填自己的东西，省得从零开始', m:'毛坯房——水电都通了，你只管装修', r:'框架'},
+  {t:'命令行', e:'用打字下指令的黑色窗口。别怕：AI 会替你打，你只管复制粘贴', m:'对讲机：说一句，它干一件', r:'工具'},
+  {t:'仓库（Repo）', e:'一个项目所有文件+全部修改历史的家，一般住在 GitHub 上', m:'房子的房产证+装修记录', r:'工具'},
+  {t:'环境', e:'程序运行需要的条件。本页教的项目都是零环境——有个浏览器就是环境', m:'养鱼要水，养多肉只要晒太阳', r:'工具'},
+  {t:'版本号', e:'v0.1、v0.2……数字越大越新。每改一轮记一版，出问题能退回去', m:'游戏的 1.0 版、2.0 版', r:'工程'},
+  {t:'验收', e:'亲自动手检查东西合不合格：打开、点一遍、刷新看数据还在不在', m:'收货时当场开箱验货', r:'工程'},
+  {t:'响应式', e:'手机、平板、电脑上打开都显示正常。检查法：把浏览器窗口拖窄看塌不塌', m:'一件衣服胖瘦都能穿', r:'工程'}
+];
+function renderTerms(){
+  var box = el('termCards');
+  TERMS.forEach(function(t){
+    var d = document.createElement('div'); d.className='card frag';
+    d.innerHTML = '<p style="color:var(--green);font-weight:bold;font-size:14px">'+t.t+' <span style="font-size:10px;color:var(--muted);font-weight:normal">'+t.r+'</span></p>'
+      + '<div class="more"><p style="font-size:12.5px">'+t.e+'</p><p class="out" style="font-size:12px;margin-top:6px">比方：'+t.m+'</p></div>'
+      + '<div class="go">👆 人话解释</div>';
+    d.onclick = function(){
+      d.classList.toggle('open');
+      d.querySelector('.go').textContent = d.classList.contains('open') ? '收起 ▲' : '👆 人话解释';
+    };
+    box.appendChild(d);
+  });
+}
+
+/* ================= 练功房 · 出村资格考试 ================= */
+var QUIZZ = [
+  {q:'「需求四要素」是哪四个？', o:['给谁用 / 解决什么问题 / 长什么样 / 不要什么','功能多不多 / 界面美不美 / 速度快不快 / 价格贵不贵','技术 / 算法 / 数据 / 网络'], a:0, e:'四要素=给谁用、解决什么问题、大概长什么样、明确不要什么。「不要什么」是防跑偏的缰绳。'},
+  {q:'报 bug 的四要素是？', o:['骂一顿 / 截图 / 重启 / 重装','我做了什么 / 期望什么 / 实际什么 / 怎么复现','标题 / 正文 / 图片 / 附件'], a:1, e:'四条齐了，AI 十有八九一次修对；只说「坏了」它只能猜。'},
+  {q:'MVP 是什么意思？', o:['最有价值玩家','最小可行产品：最小但真的能用的第一版','高级会员套餐'], a:1, e:'先煎个蛋证明火候，再谈满汉全席。第一版只留"没有它就不成立"的功能。'},
+  {q:'第一版功能怎么选？', o:['越多越好，显得专业','必须的三五个，能覆盖主流程就行','全都要'], a:1, e:'口诀：必须的三五个，可以往后排，先不要写明。'},
+  {q:'让 AI 帮找开源项目，最好的问法是？', o:['有没有好项目推荐','你看着办','我要什么 + 拿来干什么 + 我的限制（三段式）'], a:2, e:'提问三段式：要什么、干什么用、什么限制。限制越多筛得越准。'},
+  {q:'「你看着办」为什么不推荐？', o:['AI 会累','把"你想要什么"交给了运气，返工更贵','显得不专业'], a:1, e:'哪怕只写两句具体要求，也好过全交出去。'},
+  {q:'AI 说"做完了"，你应该？', o:['直接相信它','亲手验收：打开、点一遍、刷新看数据还在不在','马上发朋友圈'], a:1, e:'收货当场验货。你的角色是产品经理+验收官。'},
+  {q:'localStorage 是什么？', o:['一种编程语言','浏览器里的小储物柜，数据刷新不丢','一个远程服务器'], a:1, e:'本页打地鼠的最高分就存在这里——所以刷新后纪录还在。'},
+  {q:'朋友甩来一个源码包说"帮我改改"，第一步？', o:['直接让 AI 改好','先读懂：它是什么、什么结构、怎么跑起来','删了重写'], a:1, e:'没看过病别急着吃药。三步法：先读懂→再跑通→后修改，还要在副本上改。'},
+  {q:'想改界面颜色，怎么说？', o:['不好看，改好看点','主色换成墨绿 #2F5233，卡片加圆角','随便改改'], a:1, e:'提修改要说"改成什么样"：具体字号、颜色、间距。'}
+];
+var qIdx = -1, qScore = 0, qDone = false;
+function quizBest(){ try{ return +(localStorage.getItem('vxc_quiz_best')||0); }catch(e){ return 0; } }
+function quizStart(){
+  qIdx = 0; qScore = 0; qDone = false; quizRender();
+}
+function quizHome(){
+  var best = quizBest();
+  el('quizBody').innerHTML =
+    '<p style="font-size:13.5px">10 道选择题，全部出自本页教过的内容。合格线 7 题，满分是「出村王者」。</p>'
+    + '<p style="font-size:13px;margin:8px 0">历史最好成绩：<b style="color:var(--amber)">'+best+'/10</b></p>'
+    + '<button class="btn2 primary" onclick="quizStart()">📝 开始考试</button>';
+}
+function quizRender(){
+  if (qIdx >= QUIZZ.length){ quizEnd(); return; }
+  var Q = QUIZZ[qIdx];
+  var h = '<p style="font-size:12.5px;color:var(--muted)">第 '+(qIdx+1)+'/'+QUIZZ.length+' 题 · 当前得分 '+qScore+'</p>'
+    + '<p style="font-size:14.5px;margin:6px 0 10px"><b>'+Q.q+'</b></p><div class="choices" id="qOpts">';
+  Q.o.forEach(function(o,i){ h += '<button onclick="quizPick('+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>'; });
+  h += '</div><div id="qExp"></div>';
+  el('quizBody').innerHTML = h;
+}
+function quizPick(i){
+  var Q = QUIZZ[qIdx];
+  var btns = document.querySelectorAll('#qOpts button');
+  Array.prototype.forEach.call(btns, function(b,j){
+    b.disabled = true; b.onclick = null;
+    if (j===Q.a) b.classList.add('right');
+    if (j===i && i!==Q.a) b.classList.add('wrong');
+  });
+  if (i===Q.a) qScore++;
+  el('qExp').innerHTML = '<div class="qexp">'+(i===Q.a?'✅ <b>答对了！</b> ':'❌ <b>正确是 '+String.fromCharCode(65+Q.a)+'。</b> ')+Q.e+'</div>'
+    + '<div class="inrow" style="border:none"><button class="btn2" onclick="quizNext()">'+(qIdx===QUIZZ.length-1?'看成绩 🏁':'下一题 →')+'</button></div>';
+}
+function quizNext(){ qIdx++; quizRender(); }
+function quizEnd(){
+  qDone = true;
+  var best = quizBest();
+  if (qScore > best){ best = qScore; try{ localStorage.setItem('vxc_quiz_best', best); }catch(e){} }
+  var rank = qScore>=10 ? ['🏆 出村王者','满分！你已经比大多数新手都会跟 AI 打交道'] :
+             qScore>=7  ? ['🥇 黄金','合格线以上！出村没问题，边做边查词典即可'] :
+             qScore>=4  ? ['🥈 白银','基础有了，回「学堂」和「练功房」补一补再来'] :
+                          ['🥉 青铜','别灰心——把「试玩广场」玩一遍再来考，肯定过线'];
+  el('quizBody').innerHTML = '<div class="badge-card" style="display:inline-block">'+rank[0]+' · '+qScore+'/10</div>'
+    + '<p style="font-size:13.5px;margin:10px 0">'+rank[1]+'</p>'
+    + '<p style="font-size:12.5px;color:var(--muted)">历史最好：'+best+'/10</p>'
+    + '<button class="btn2" onclick="quizStart()">🔄 重考</button>';
+  if (qScore>=7){ confetti(); }
+}
+
+/* ================= 练功房 · 技巧抽卡 ================= */
+var TIPS = [
+  {t:'验收前置', b:'下指令时先写"怎么算做完"，AI 有靶子你有尺子', e:'「做完的标准是：双击能打开、点添加能出现、刷新不丢」'},
+  {t:'一次一个', b:'一个需求改完、验收过，再提下一个。出错才知道是谁引起的', e:'「先把按钮变大，我看了再说下一个」'},
+  {t:'四要素开场', b:'给谁用、解决什么、长什么样、不要什么——一句话变结构化', e:'「给我妈用的记账页，记流水看总额，上面输入下面列表，不要登录」'},
+  {t:'复述确认', b:'大改动前让 AI 先复述理解，对齐再动手，免得惊天意外', e:'「先别写代码，复述一遍你的理解」'},
+  {t:'报错四要素', b:'做了什么/期望什么/实际什么/怎么复现——一次修对的秘诀', e:'「我点了删除，本该只剩2条，结果全空了，复现：删最后一条」'},
+  {t:'说"改成什么样"', b:'别让 AI 猜你的审美，说具体的字号颜色间距', e:'「标题字号20改28，主色墨绿，卡片间距16px」'},
+  {t:'三段式找资源', b:'要什么+干什么用+限制条件，问得好才找得准', e:'「找3个开源网页记账项目，参考界面用，要免费、浏览器直接跑」'},
+  {t:'说不通就换说法', b:'改三遍还不对，停下来换描述方式，别在原话上死磕', e:'「换个说法：不是列表，是一张一张的卡片，像朋友圈那样」'},
+  {t:'先方案后动手', b:'大改动前让 AI 交方案，确认了再让它改代码', e:'「先告诉我你打算怎么改、影响哪些文件，我确认再动」'},
+  {t:'小步提交', b:'先要"最丑但能用"的版本，再一步步美化，每步都能验收', e:'「先实现最丑但能用的版本，我再逐条提改进」'},
+  {t:'打回要说清', b:'不满意就打回，但要说清我要A你做成了B', e:'「我要的是按时间排序，你做成了按名字。重新理解一下」'},
+  {t:'不懂就问', b:'任何听不懂的词，让 AI 用人话+比方解释，这是你的权利', e:'「用一句话+生活比方解释什么是API，我是小白」'}
+];
+var tipsGot = [];
+function tipsLoad(){ try{ tipsGot = JSON.parse(localStorage.getItem('vxc_tips')||'[]'); }catch(e){ tipsGot = []; } }
+function tipsSave(){ try{ localStorage.setItem('vxc_tips', JSON.stringify(tipsGot)); }catch(e){} }
+function renderTipDots(){
+  var d = el('tipDots'); d.innerHTML='';
+  TIPS.forEach(function(t,i){
+    var sp = document.createElement('span');
+    var idx = tipsGot.indexOf(t.t);
+    sp.textContent = idx>-1 ? '✓' : (i+1);
+    if (idx>-1) sp.className='got';
+    sp.title = idx>-1 ? t.t : '未抽到';
+    d.appendChild(sp);
+  });
+  el('tipCnt').textContent = '已收集 '+tipsGot.length+'/'+TIPS.length;
+}
+function drawTip(){
+  var pool = TIPS.filter(function(t){ return tipsGot.indexOf(t.t)===-1; });
+  if (!pool.length){
+    var any = TIPS[Math.floor(Math.random()*TIPS.length)];
+    showTipCard(any, true);
+    return;
+  }
+  var t = pool[Math.floor(Math.random()*pool.length)];
+  if (tipsGot.indexOf(t.t)===-1){ tipsGot.push(t.t); tipsSave(); }
+  showTipCard(t, false);
+  renderTipDots();
+  if (tipsGot.length===TIPS.length){ confetti(); toast('🎴 12 招集齐！出村资格+1'); }
+}
+function showTipCard(t, again){
+  el('tipCard').innerHTML = '<div class="tipcard"><div class="tt">🎴 '+t.t+(again?'（已集齐，随机复习）':'')+'</div>'
+    + '<div class="tb">'+t.b+'</div><div class="te">例：'+t.e+'</div></div>';
+}
+
+/* ================= 练功房 · 7天计划 ================= */
+var PLANS = [
+  {d:'第1天', t:'逛完「试玩广场」，至少点亮 3 枚徽章', h:'#demo'},
+  {d:'第2天', t:'玩完 8 个试玩，领取毕业证书', h:'#demo'},
+  {d:'第3天', t:'学堂过一遍：把「一条需求的诞生」6 步走完', h:'#school'},
+  {d:'第4天', t:'用「生成器」产出你的开工令，复制保存好', h:'#factory'},
+  {d:'第5天', t:'挑一条路线图，把 STEP 1-2 真的发给 Codex 跑一遍', h:'#factory'},
+  {d:'第6天', t:'读一遍黑话词典，把不懂的词记进自己的笔记', h:'#lab'},
+  {d:'第7天', t:'出村资格考试拿到黄金（7 题）以上', h:'#lab'}
+];
+var planDone = [];
+function planLoad(){ try{ planDone = JSON.parse(localStorage.getItem('vxc_plan')||'[]'); }catch(e){ planDone = []; } }
+function planSave(){ try{ localStorage.setItem('vxc_plan', JSON.stringify(planDone)); }catch(e){} }
+function renderPlan(){
+  var box = el('planDays'); box.innerHTML='';
+  PLANS.forEach(function(p,i){
+    var d = document.createElement('div');
+    d.className = 'plan' + (planDone.indexOf(i)>-1 ? ' done' : '');
+    d.innerHTML = '<span class="cbx">'+(planDone.indexOf(i)>-1?'✓':'')+'</span><span class="dy">'+p.d+'</span><span>'+p.t+' <a href="'+p.h+'">→ 去完成</a></span>';
+    d.onclick = function(e){
+      if (e.target.tagName==='A') return;
+      var k = planDone.indexOf(i);
+      if (k>-1) planDone.splice(k,1); else planDone.push(i);
+      planSave(); renderPlan();
+      if (planDone.length===PLANS.length){ confetti(); toast('📅 7 天计划全部完成，出师！'); }
+    };
+    box.appendChild(d);
+  });
+  el('planProg').textContent = '进度：'+planDone.length+'/'+PLANS.length+' 天';
+}
+
 /* ================= init ================= */
 loadP(); renderBadges(); renderCh02(); renderCh05(); renderLevelCards(); renderTrackCards(); renderVs();
 renderFrag(); renderSD(); renderMis();
 wizLoad(); renderWizTypes(); syncPlaceholders(); showWizPanel(); renderTrks();
+renderTerms(); quizHome(); tipsLoad(); renderTipDots(); planLoad(); renderPlan();
 </script>
 </body>
 </html>
