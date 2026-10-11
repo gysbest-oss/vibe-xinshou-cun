@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>待办清单 v0.1 - by 小王</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; background:#f4f4f4; max-width:520px; margin:40px auto; color:#333; }
+  h1 { font-size:22px; }
+  #box { background:#fff; padding:20px 24px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+  #a { padding:8px; width:66%; border:1px solid #ccc; border-radius:4px; }
+  button { padding:8px 14px; margin-left:8px; border:0; border-radius:4px; background:#4a90d9; color:#fff; cursor:pointer; }
+  ul { list-style:none; padding:0; margin-top:16px; }
+  li { padding:10px 6px; border-bottom:1px dashed #ddd; display:flex; justify-content:space-between; align-items:center; }
+  li .del { opacity:0; font-size:10px; padding:2px 6px; margin-left:0; background:#e74c3c; transition:opacity .2s; }
+  li:hover .del { opacity:1; }
+  .tip { color:#999; font-size:12px; margin-top:12px; }
+</style>
+</head>
+<body>
+<div id="box">
+  <h1>📝 我的待办清单</h1>
+  <div>
+    <input id="a" placeholder="想做什么？">
+    <button onclick="go()">添加</button>
+  </div>
+  <ul id="b"></ul>
+  <p class="tip">提示：把鼠标移到条目上可以删除哦</p>
+</div>
+<script>
+var tmp = [];
+function go() {
+  var v = document.getElementById('a').value;
+  tmp.push(v);
+  draw();
+}
+function draw() {
+  var s = '';
+  for (var i = 0; i < tmp.length; i++) {
+    s += '<li><span>' + tmp[i] + '</span><button class="del" onclick="del(' + i + ')">删</button></li>';
+  }
+  document.getElementById('b').innerHTML = s;
+}
+function del(i) {
+  tmp.splice(i, 1);
+  draw();
+}
+</script>
+</body>
+</html>
