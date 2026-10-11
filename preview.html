@@ -575,7 +575,7 @@ footer a{color:var(--green);text-decoration:none;}
 <!-- ============ 练功房 ============ -->
 <section id="lab">
   <h2><span class="no">07</span>🎓 练功房 · 边玩边学</h2>
-  <p class="sec-sub">六样东西：<b style="color:var(--text)">成长档案</b>（学习数据总览+导出）、<b style="color:var(--text)">黑话词典</b>、<b style="color:var(--text)">出村资格考试</b>（含每日一题）、<b style="color:var(--text)">技巧抽卡</b>、<b style="color:var(--text)">术语配对</b>、<b style="color:var(--text)">7 天上手计划</b>。进度全部存本机。</p>
+  <p class="sec-sub">六样东西：<b style="color:var(--text)">成长档案</b>、<b style="color:var(--text)">黑话词典</b>（可投稿自己的词卡）、<b style="color:var(--text)">出村资格考试</b>（每日一题打卡 + 错题本自动收错题）、<b style="color:var(--text)">技巧抽卡</b>、<b style="color:var(--text)">术语配对</b>（三档难度）、<b style="color:var(--text)">7 天计划</b>。进度全部存本机。</p>
 
   <div class="lab-stats" id="labStats"></div>
   <div class="inrow" style="border:none;margin:-8px 0 20px"><button class="btn2 ghost" onclick="exportProfile()">🎒 导出我的学习档案（txt）</button></div>
@@ -584,12 +584,28 @@ footer a{color:var(--green);text-decoration:none;}
   <input type="text" id="termQ" placeholder="🔍 搜一个词，比如：localStorage、部署、AI 幻觉…" style="width:100%;max-width:420px;display:block;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:9px 13px;font-size:13.5px;outline:none;margin-bottom:12px" oninput="renderTerms()">
   <div class="grid c3" id="termCards"></div>
 
+  <div class="card frag" style="margin-top:14px">
+    <p style="color:var(--amber);font-weight:bold">📮 词条投稿箱</p>
+    <p style="font-size:12.5px;color:var(--muted)">遇到词典没有的新词？让 AI 用「一句话+比方」解释，然后把词卡投进村里——自己随时复习，转发给别人也能看：</p>
+    <div class="qa">
+      <div class="grid2">
+        <input type="text" id="myT" placeholder="术语，例：云开发">
+        <input type="text" id="myE" placeholder="人话解释，一句话">
+      </div>
+      <input type="text" id="myM" placeholder="比方，例：水电煤气都是现成的，接上就用" style="width:100%;margin-top:8px;background:#0a140d;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:9px 12px;font-size:13.5px;outline:none">
+      <div class="inrow" style="border:none"><button class="btn2" onclick="addMyTerm()">📮 投进词典</button></div>
+    </div>
+  </div>
+
   <div class="mh2" style="margin-top:24px">② 📝 出村资格考试</div>
   <div class="demo open" id="quizbox">
     <div class="demo-body" style="display:block;border-top:none;padding-top:12px">
       <div id="quizBody"></div>
     </div>
   </div>
+
+  <div class="mh2" style="margin-top:16px">📕 错题本（考试答错自动收录，重练答对自动移出）</div>
+  <div id="wrongBox"></div>
 
   <div class="mh2" style="margin-top:24px">③ 🎴 技巧抽卡（12 张表达技巧，每天抽一招）</div>
   <div class="inrow" style="border:none">
@@ -603,7 +619,8 @@ footer a{color:var(--green);text-decoration:none;}
   <div id="planDays"></div>
   <p style="font-size:12.5px;color:var(--muted)" id="planProg"></p>
 
-  <div class="mh2" style="margin-top:24px">⑤ 🃏 术语记忆配对（16 张牌翻出术语和它的解释，练到条件反射）</div>
+  <div class="mh2" style="margin-top:24px">⑤ 🃏 术语记忆配对（三档难度，练到条件反射）</div>
+  <div class="tabs" id="memTabs"></div>
   <div class="inrow" style="border:none">
     <button class="btn2 primary" onclick="memInit()">🔄 开始/重开一局</button>
     <span style="font-size:12.5px;color:var(--muted);align-self:center" id="memInfo">点牌翻开，两张配对（术语↔解释）即消除</span>
@@ -642,7 +659,7 @@ footer a{color:var(--green);text-decoration:none;}
 
 <footer>
   <b>黎小小VibeCoding新手村练手</b> · 完整版：AGENTS.md/CLAUDE.md 双入口 + 8 关卡 + 4 方向 + 2 个内置源码包<br>
-  适合转给任何想学用 AI 编程工具的小白 · v7.0 · 2026-10-12
+  适合转给任何想学用 AI 编程工具的小白 · v8.0 · 2026-10-12
 </footer>
 
 <!-- modal / toast / confetti -->
@@ -1606,14 +1623,32 @@ var TERMS = [
 var termsOpened = [];
 function termsLoad(){ try{ termsOpened = JSON.parse(localStorage.getItem('vxc_terms')||'[]'); }catch(e){ termsOpened = []; } }
 function termsSave(){ try{ localStorage.setItem('vxc_terms', JSON.stringify(termsOpened)); }catch(e){} }
+var myTerms = [];
+function myTermsLoad(){ try{ myTerms = JSON.parse(localStorage.getItem('vxc_myterms')||'[]'); }catch(e){ myTerms = []; } }
+function myTermsSave(){ try{ localStorage.setItem('vxc_myterms', JSON.stringify(myTerms)); }catch(e){} }
+function addMyTerm(){
+  var t = el('myT').value.trim(), e2 = el('myE').value.trim(), m = el('myM').value.trim() || '（还没想好比方）';
+  if (!t || !e2){ toast('术语和人话解释都要填哦'); return; }
+  if (TERMS.concat(myTerms).some(function(x){ return x.t===t; })){ toast('词典里已经有「'+t+'」啦'); return; }
+  myTerms.push({t:t, e:e2, m:m, r:'我的'}); myTermsSave();
+  el('myT').value=''; el('myE').value=''; el('myM').value='';
+  renderTerms(); renderLabStats();
+  confetti(); toast('📮 词卡「'+t+'」已投进词典！');
+}
+function delMyTerm(name){
+  myTerms = myTerms.filter(function(x){ return x.t!==name; });
+  myTermsSave(); renderTerms(); toast('已撤下「'+name+'」');
+}
 function renderTerms(){
   var kw = (el('termQ') ? el('termQ').value : '').trim();
   var box = el('termCards'); box.innerHTML='';
-  var list = TERMS.filter(function(t){ return !kw || (t.t+t.e+t.r+t.m).indexOf(kw)>-1; });
-  if (!list.length){ box.innerHTML = '<p style="color:var(--muted);font-size:13px;grid-column:1/-1">没找到「'+kw+'」。可以让 AI 用一句话+比方给你解释，然后自己造一张词卡 🙂</p>'; return; }
+  var all = TERMS.concat(myTerms);
+  var list = all.filter(function(t){ return !kw || (t.t+t.e+t.r+t.m).indexOf(kw)>-1; });
+  if (!list.length){ box.innerHTML = '<p style="color:var(--muted);font-size:13px;grid-column:1/-1">没找到「'+kw+'」。可以让 AI 用一句话+比方给你解释，然后在下方投稿箱自己造一张词卡 🙂</p>'; return; }
   list.forEach(function(t){
     var d = document.createElement('div'); d.className='card frag';
-    d.innerHTML = '<p style="color:var(--green);font-weight:bold;font-size:14px">'+t.t+' <span style="font-size:10px;color:var(--muted);font-weight:normal">'+t.r+'</span></p>'
+    var delBtn = myTerms.indexOf(t)>-1 ? '<span style="float:right;color:var(--muted);cursor:pointer;font-size:12px" onclick="event.stopPropagation();delMyTerm(\''+t.t.replace(/'/g,'')+'\')">🗑</span>' : '';
+    d.innerHTML = '<p style="color:var(--green);font-weight:bold;font-size:14px">'+delBtn+t.t+' <span style="font-size:10px;color:var(--muted);font-weight:normal">'+t.r+'</span></p>'
       + '<div class="more"><p style="font-size:12.5px">'+t.e+'</p><p class="out" style="font-size:12px;margin-top:6px">比方：'+t.m+'</p></div>'
       + '<div class="go">👆 人话解释</div>';
     d.onclick = function(){
@@ -1655,12 +1690,32 @@ var QUIZZ = [
   {q:'vibecoding 时代你最该苦练的两项核心能力？', o:['背代码 + 手速','把话说清楚 + 亲手验收','数学 + 英语'], a:1, e:'你是产品经理+验收官，说话和验货就是你的专业。'},
   {q:'游戏里"点中地鼠播咚声"，不依赖音频文件的做法？', o:['Web Audio 现场合成','用文字"咚"代替','不能实现'], a:0, e:'Web Audio 能直接生成短音效，零文件零依赖。'}
 ];
-var qIdx = -1, qScore = 0, qDone = false, qDraw = [];
+var qIdx = -1, qScore = 0, qDone = false, qDraw = [], qMode = 'all';
+var vxcWrong = [];
+function wrongLoad(){ try{ vxcWrong = JSON.parse(localStorage.getItem('vxc_wrong')||'[]'); }catch(e){ vxcWrong = []; } }
+function wrongSave(){ try{ localStorage.setItem('vxc_wrong', JSON.stringify(vxcWrong)); }catch(e){} }
+function renderWrong(){
+  var box = el('wrongBox'); if (!box) return;
+  if (!vxcWrong.length){
+    box.innerHTML = '<div class="result ok">错题本空空如也——要么还没考过，要么全消灭了 👏</div>';
+    return;
+  }
+  var h = '<div class="result bad" style="margin-bottom:10px">还有 <b>'+vxcWrong.length+'</b> 题没攻克：</div>';
+  vxcWrong.forEach(function(qi){
+    var Q = QUIZZ[qi];
+    h += '<div class="vs" style="margin-bottom:8px"><h3>'+Q.q+'</h3><p style="font-size:13px;color:#bce9c6">✅ '+Q.o[Q.a]+'</p><p class="why">'+Q.e+'</p></div>';
+  });
+  h += '<button class="btn2" onclick="quizStart(\'wrong\')">🔁 重练错题（答对自动移出）</button> <button class="btn2 ghost" onclick="clearWrong()">清空错题本</button>';
+  box.innerHTML = h;
+}
+function clearWrong(){ vxcWrong = []; wrongSave(); renderWrong(); renderLabStats(); toast('错题本已清空'); }
 function quizBest(){ try{ return +(localStorage.getItem('vxc_quiz_best')||0); }catch(e){ return 0; } }
-function quizStart(){
-  var idx = QUIZZ.map(function(_,i){ return i; });
-  for (var i=idx.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=idx[i]; idx[i]=idx[j]; idx[j]=t; }
-  qDraw = idx.slice(0,10);
+function quizStart(mode){
+  qMode = mode || 'all';
+  var pool = (qMode==='wrong') ? vxcWrong.slice() : QUIZZ.map(function(_,i){ return i; });
+  if (!pool.length){ toast('错题本是空的，先去考一场吧'); return; }
+  for (var i=pool.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
+  qDraw = pool.slice(0, Math.min(10, pool.length));
   qIdx = 0; qScore = 0; qDone = false; quizRender();
 }
 function quizHome(){
@@ -1669,8 +1724,9 @@ function quizHome(){
   var dqKey = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
   var dqI = (d.getDate() + (d.getMonth()+1)*17 + d.getFullYear()) % QUIZZ.length;
   var dqState = {}; try{ dqState = JSON.parse(localStorage.getItem('vxc_dq')||'{}'); }catch(e){}
+  var streakTxt = dqState.streak>0 ? ' · 🔥 已连续打卡 '+dqState.streak+' 天' : '';
   var Q = QUIZZ[dqI];
-  var h = '<div class="result" style="margin-bottom:14px"><b>📌 今日一题</b>（'+dqKey+'，每天换一题）'
+  var h = '<div class="result" style="margin-bottom:14px"><b>📌 今日一题</b>（'+dqKey+streakTxt+'）'
     + '<div style="margin-top:6px;font-size:13.5px"><b>'+Q.q+'</b></div>';
   if (dqState.key===dqKey && dqState.done){
     h += '<p style="font-size:12.5px;color:var(--muted);margin-top:6px">✅ 今天已完成，明天再来。'+Q.e+'</p>';
@@ -1681,8 +1737,9 @@ function quizHome(){
   }
   h += '</div>';
   h += '<p style="font-size:13.5px">从 29 题题库<b>随机抽 10 题</b>，全部出自本页教过的内容。合格线 7 题，满分是「出村王者」。</p>'
-    + '<p style="font-size:13px;margin:8px 0">历史最好成绩：<b style="color:var(--amber)">'+best+'/10</b></p>'
-    + '<button class="btn2 primary" onclick="quizStart()">📝 开始考试</button>';
+    + '<p style="font-size:13px;margin:8px 0">历史最好成绩：<b style="color:var(--amber)">'+best+'/10</b> · 错题本：<b style="color:'+(vxcWrong.length?'var(--red)':'var(--muted)')+'">'+vxcWrong.length+'</b> 题（下方可重练）</p>'
+    + '<button class="btn2 primary" onclick="quizStart()">📝 开始考试</button>'
+    + (vxcWrong.length ? ' <button class="btn2 amber" onclick="quizStart(\'wrong\')">🔁 先重练错题</button>' : '');
   el('quizBody').innerHTML = h;
 }
 function dqPick(qi, i){
@@ -1694,8 +1751,13 @@ function dqPick(qi, i){
     if (j===i && i!==Q.a) b.classList.add('wrong');
   });
   var d = new Date();
-  try{ localStorage.setItem('vxc_dq', JSON.stringify({key:d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(), done:true})); }catch(e){}
-  el('dqExp').innerHTML = '<div class="qexp">'+(i===Q.a?'✅ <b>答对了，今天打卡成功！</b> ':'❌ <b>正确是 '+String.fromCharCode(65+Q.a)+'。</b> ')+Q.e+'</div>';
+  var todayKey = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  var y = new Date(Date.now()-86400000);
+  var yKey = y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();
+  var prev = {}; try{ prev = JSON.parse(localStorage.getItem('vxc_dq')||'{}'); }catch(e){}
+  var streak = (prev.lastKey===yKey && prev.streak) ? prev.streak+1 : 1;
+  try{ localStorage.setItem('vxc_dq', JSON.stringify({key:todayKey, done:true, lastKey:todayKey, streak:streak})); }catch(e){}
+  el('dqExp').innerHTML = '<div class="qexp">'+(i===Q.a?'✅ <b>答对了，今天打卡成功！'+(streak>1?'🔥 已连续 '+streak+' 天':'')+'</b> ':'❌ <b>正确是 '+String.fromCharCode(65+Q.a)+'。</b> ')+Q.e+'</div>';
 }
 function quizRender(){
   if (qIdx >= qDraw.length){ quizEnd(); return; }
@@ -1708,13 +1770,22 @@ function quizRender(){
 }
 function quizPick(i){
   var Q = QUIZZ[qDraw[qIdx]];
+  var real = qDraw[qIdx];
   var btns = document.querySelectorAll('#qOpts button');
   Array.prototype.forEach.call(btns, function(b,j){
     b.disabled = true; b.onclick = null;
     if (j===Q.a) b.classList.add('right');
     if (j===i && i!==Q.a) b.classList.add('wrong');
   });
-  if (i===Q.a) qScore++;
+  if (i===Q.a){
+    qScore++;
+    if (qMode==='wrong'){
+      var k = vxcWrong.indexOf(real);
+      if (k>-1){ vxcWrong.splice(k,1); wrongSave(); renderWrong(); }
+    }
+  } else if (vxcWrong.indexOf(real)===-1){
+    vxcWrong.push(real); wrongSave();
+  }
   el('qExp').innerHTML = '<div class="qexp">'+(i===Q.a?'✅ <b>答对了！</b> ':'❌ <b>正确是 '+String.fromCharCode(65+Q.a)+'。</b> ')+Q.e+'</div>'
     + '<div class="inrow" style="border:none"><button class="btn2" onclick="quizNext()">'+(qIdx===QUIZZ.length-1?'看成绩 🏁':'下一题 →')+'</button></div>';
 }
@@ -1827,14 +1898,29 @@ var MEMP = [
   {a:'验收', b:'打开、点一遍、刷新看数据'},
   {a:'提示词', b:'你对 AI 说的每一句话'}
 ];
-var memFirst = null, memLock = false, memMoves = 0, memPairs = 0;
+var memFirst = null, memLock = false, memMoves = 0, memPairs = 0, memLevel = 8;
+var MEM_LEVELS = [{n:4,name:'简单·4对'},{n:6,name:'普通·6对'},{n:8,name:'困难·8对'}];
 function memWins(){ try{ return +(localStorage.getItem('vxc_mem_wins')||0); }catch(e){ return 0; } }
+function memBest(lv){ try{ return +(localStorage.getItem('vxc_mem_best_'+lv)||0); }catch(e){ return 0; } }
+function renderMemTabs(){
+  var t = el('memTabs'); if (!t) return; t.innerHTML='';
+  MEM_LEVELS.forEach(function(m){
+    var b = document.createElement('button');
+    b.textContent = m.name;
+    if (m.n===memLevel) b.className='on';
+    b.onclick = function(){ memLevel = m.n; renderMemTabs(); memInit(); };
+    t.appendChild(b);
+  });
+}
 function memInit(){
   memFirst = null; memLock = false; memMoves = 0; memPairs = 0;
-  el('memInfo').textContent = '点牌翻开，两张配对（术语↔解释）即消除';
+  el('memInfo').textContent = '点牌翻开，两张配对（术语↔解释）即消除 · 该难度最佳 '+ (memBest(memLevel)||'-') +' 步';
+  var pool = MEMP.slice();
+  for (var i=pool.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=pool[i]; pool[i]=pool[j]; pool[j]=t; }
+  pool = pool.slice(0, memLevel);
   var cards = [];
-  MEMP.forEach(function(p,i){ cards.push({p:i, txt:p.a}); cards.push({p:i, txt:p.b}); });
-  for (var i=cards.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=cards[i]; cards[i]=cards[j]; cards[j]=t; }
+  pool.forEach(function(p,i){ cards.push({p:i, txt:p.a}); cards.push({p:i, txt:p.b}); });
+  for (var i2=cards.length-1;i2>0;i2--){ var j2=Math.floor(Math.random()*(i2+1)); var t2=cards[i2]; cards[i2]=cards[j2]; cards[j2]=t2; }
   var g = el('memGrid'); g.innerHTML='';
   cards.forEach(function(c){
     var d = document.createElement('div');
@@ -1853,10 +1939,12 @@ function memFlip(card){
     f.classList.add('ok'); card.classList.add('ok');
     f.classList.remove('flip'); card.classList.remove('flip');
     memPairs++;
-    if (memPairs === MEMP.length){
+    if (memPairs === MEMP.slice(0, memLevel).length){
       var w = memWins()+1;
       try{ localStorage.setItem('vxc_mem_wins', w); }catch(e){}
-      el('memInfo').textContent = '🎉 完成！本局 '+memMoves+' 步 · 累计胜局 '+w;
+      var best = memBest(memLevel);
+      if (!best || memMoves < best){ best = memMoves; try{ localStorage.setItem('vxc_mem_best_'+memLevel, best); }catch(e){} }
+      el('memInfo').textContent = '🎉 完成！本局 '+memMoves+' 步 · 该难度最佳 '+best+' 步 · 累计胜局 '+w;
       confetti(); renderLabStats();
     } else {
       el('memInfo').textContent = '配对 '+memPairs+'/'+MEMP.length+' · 已用 '+memMoves+' 步';
@@ -1874,10 +1962,11 @@ function renderLabStats(){
     ['🏅','徽章', litCount()+'+'+hiddenLitCount(), '章节+隐藏'],
     ['📝','考试最好', quizBest()+'/10', '出村资格考试'],
     ['🎴','技巧卡', tipsGot.length+'/12', '集齐有奖'],
-    ['📖','词汇量', termsOpened.length+'/'+TERMS.length, '点开词卡累计'],
+    ['📖','词汇量', termsOpened.length+'/'+(TERMS.length+myTerms.length), '点开词卡累计'],
     ['📅','7天计划', planDone.length+'/7', '照着走出师'],
     ['⚙️','开工令', wizCount()+' 份', '工场已生成'],
     ['🃏','配对胜局', memWins(), '术语记忆配对'],
+    ['📕','错题本', vxcWrong.length, '答错自动收录'],
     ['🎒','学习档案', '导出', '发给朋友/自己存档', "exportProfile()"]
   ];
   box.innerHTML = '';
@@ -1902,7 +1991,8 @@ function buildProfileText(){
   L.push('## 学习数据');
   L.push('- 出村资格考试最好成绩：' + quizBest() + '/10');
   L.push('- 技巧卡收集：' + tipsGot.length + '/12');
-  L.push('- 词汇量（点开过的词卡）：' + termsOpened.length + '/' + TERMS.length);
+  L.push('- 词汇量（点开过的词卡）：' + termsOpened.length + '/' + (TERMS.length+myTerms.length));
+  L.push('- 错题本待攻克：' + vxcWrong.length + ' 题');
   L.push('- 7天计划进度：' + planDone.length + '/7');
   L.push('- 已生成开工令：' + wizCount() + ' 份');
   L.push('- 术语配对胜局：' + memWins());
@@ -1933,8 +2023,8 @@ function exportProfile(){
 loadP(); renderBadges(); renderCh02(); renderCh05(); renderLevelCards(); renderTrackCards(); renderVs();
 renderFrag(); renderSD(); renderMis();
 wizLoad(); renderWizTypes(); syncPlaceholders(); showWizPanel(); renderTrks();
-termsLoad(); renderTerms(); quizHome(); tipsLoad(); renderTipDots(); planLoad(); renderPlan();
-memInit(); renderLabStats();
+termsLoad(); myTermsLoad(); renderTerms(); quizHome(); tipsLoad(); renderTipDots(); planLoad(); renderPlan();
+wrongLoad(); renderWrong(); renderMemTabs(); memInit(); renderLabStats();
 </script>
 </body>
 </html>
